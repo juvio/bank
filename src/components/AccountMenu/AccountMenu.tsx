@@ -1,20 +1,21 @@
-"use client";
+'use client';
 
-import * as React from "react";
-import { useTheme } from "@mui/material/styles";
+import * as React from 'react';
+import { useTheme } from '@mui/material/styles';
 
-import Box from "@mui/material/Box";
-import Avatar from "@mui/material/Avatar";
-import Menu from "@mui/material/Menu";
-import MenuItem from "@mui/material/MenuItem";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import Divider from "@mui/material/Divider";
-import IconButton from "@mui/material/IconButton";
-import Typography from "@mui/material/Typography";
-import Tooltip from "@mui/material/Tooltip";
-import PersonAdd from "@mui/icons-material/PersonAdd";
-import Settings from "@mui/icons-material/Settings";
-import Logout from "@mui/icons-material/Logout";
+import {
+  Box,
+  Avatar,
+  Menu,
+  MenuItem,
+  ListItemIcon,
+  Divider,
+  IconButton,
+  Typography,
+  Tooltip,
+} from '@mui/material';
+import { PersonAdd, Settings, Logout } from '@mui/icons-material';
+import Link from 'next/link';
 
 export default function AccountMenu() {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -31,8 +32,8 @@ export default function AccountMenu() {
     <React.Fragment>
       <Box
         sx={{
-          display: "flex",
-          justifyContent: "space-between",
+          display: 'flex',
+          justifyContent: 'space-between',
           background: `linear-gradient(135deg, ${theme.palette.primary.main} 0%, ${theme.palette.secondary.main} 100%)`,
           borderRadius: 2,
           boxShadow: 3,
@@ -40,20 +41,50 @@ export default function AccountMenu() {
           m: 2,
         }}
       >
-        <Box sx={{ display: "flex", alignItems: "center", textAlign: "center" }}>
-          <Typography sx={{ minWidth: 100, color: "white", fontWeight: "bold" }}>Início</Typography>
-          <Typography sx={{ minWidth: 100, color: "white", fontWeight: "bold" }}>Transações</Typography>
+        <Box
+          sx={{ display: 'flex', alignItems: 'center', textAlign: 'center' }}
+        >
+          <Link href={'/home'} style={{ textDecoration: 'none' }}>
+            <Typography
+              sx={{ minWidth: 100, color: 'white', fontWeight: 'bold' }}
+            >
+              Início
+            </Typography>
+          </Link>
+          <Link href={'/transactions'} style={{ textDecoration: 'none' }}>
+            <Typography
+              sx={{
+                minWidth: 100,
+                color: 'white',
+                fontWeight: 'bold',
+                textDecoration: 'none',
+              }}
+            >
+              Transações
+            </Typography>
+          </Link>
         </Box>
-        <Box sx={{ display: "flex", alignItems: "center", textAlign: "center", justifyContent: "end" }}>
-          <Typography sx={{ minWidth: 100, color: "white", fontWeight: "bold" }}>Joana da Silva</Typography>
-          <Tooltip title="Account settings">
+        <Box
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            textAlign: 'center',
+            justifyContent: 'end',
+          }}
+        >
+          <Typography
+            sx={{ minWidth: 100, color: 'white', fontWeight: 'bold' }}
+          >
+            Joana da Silva
+          </Typography>
+          <Tooltip title='Account settings'>
             <IconButton
               onClick={handleClick}
-              size="small"
+              size='small'
               sx={{ ml: 2 }}
-              aria-controls={open ? "account-menu" : undefined}
-              aria-haspopup="true"
-              aria-expanded={open ? "true" : undefined}
+              aria-controls={open ? 'account-menu' : undefined}
+              aria-haspopup='true'
+              aria-expanded={open ? 'true' : undefined}
             >
               <Avatar sx={{ width: 32, height: 32 }}>M</Avatar>
             </IconButton>
@@ -62,7 +93,7 @@ export default function AccountMenu() {
       </Box>
       <Menu
         anchorEl={anchorEl}
-        id="account-menu"
+        id='account-menu'
         open={open}
         onClose={handleClose}
         onClick={handleClose}
@@ -70,32 +101,32 @@ export default function AccountMenu() {
           paper: {
             elevation: 0,
             sx: {
-              overflow: "visible",
-              filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
+              overflow: 'visible',
+              filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
               mt: 1.5,
-              "& .MuiAvatar-root": {
+              '& .MuiAvatar-root': {
                 width: 32,
                 height: 32,
                 ml: -0.5,
                 mr: 1,
               },
-              "&::before": {
+              '&::before': {
                 content: '""',
-                display: "block",
-                position: "absolute",
+                display: 'block',
+                position: 'absolute',
                 top: 0,
                 right: 14,
                 width: 10,
                 height: 10,
-                bgcolor: "background.paper",
-                transform: "translateY(-50%) rotate(45deg)",
+                bgcolor: 'background.paper',
+                transform: 'translateY(-50%) rotate(45deg)',
                 zIndex: 0,
               },
             },
           },
         }}
-        transformOrigin={{ horizontal: "right", vertical: "top" }}
-        anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
+        transformOrigin={{ horizontal: 'right', vertical: 'top' }}
+        anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
       >
         <MenuItem onClick={handleClose}>
           <Avatar /> Profile
@@ -106,19 +137,19 @@ export default function AccountMenu() {
         <Divider />
         <MenuItem onClick={handleClose}>
           <ListItemIcon>
-            <PersonAdd fontSize="small" />
+            <PersonAdd fontSize='small' />
           </ListItemIcon>
           Add another account
         </MenuItem>
         <MenuItem onClick={handleClose}>
           <ListItemIcon>
-            <Settings fontSize="small" />
+            <Settings fontSize='small' />
           </ListItemIcon>
           Settings
         </MenuItem>
         <MenuItem onClick={handleClose}>
           <ListItemIcon>
-            <Logout fontSize="small" />
+            <Logout fontSize='small' />
           </ListItemIcon>
           Logout
         </MenuItem>
