@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import { Card, CardContent, CardActions, Typography, TextField, MenuItem, Button, Box } from "@mui/material";
+import mock from '@/mocks/mock.json';
 
 interface NewTransaction {
   type: string;
@@ -10,12 +11,7 @@ interface NewTransaction {
   date: string;
 }
 
-const transactionTypes = [
-  { value: "transfer", label: "Transferência" },
-  { value: "payment", label: "Pagamento" },
-  { value: "deposit", label: "Depósito" },
-  { value: "withdrawal", label: "Saque" },
-];
+const transactionTypes = (mock as unknown as { transactionTypes: { value: string; label: string }[] }).transactionTypes;
 
 export default function NewTransactionCard() {
   const [newTransaction, setNewTransaction] = useState<NewTransaction>({
