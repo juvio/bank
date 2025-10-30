@@ -2,7 +2,9 @@
 
 import React, { useState } from "react";
 import { Card, CardContent, CardActions, Typography, TextField, MenuItem, Button, Box } from "@mui/material";
-import mock from '@/mocks/mock.json';
+import Link from "next/link";
+
+import mock from "@/mocks/mock.json";
 
 interface NewTransaction {
   type: string;
@@ -65,7 +67,12 @@ export default function NewTransactionCard() {
           <TextField
             label="Descrição"
             value={newTransaction.description}
-            onChange={(e) => setNewTransaction({ ...newTransaction, description: e.target.value })}
+            onChange={(e) =>
+              setNewTransaction({
+                ...newTransaction,
+                description: e.target.value,
+              })
+            }
             fullWidth
             multiline
             rows={4}
@@ -73,14 +80,16 @@ export default function NewTransactionCard() {
         </Box>
       </CardContent>
       <CardActions>
-        <Button
-          variant="contained"
-          fullWidth
-          onClick={handleTransactionSubmit}
-          disabled={!newTransaction.type || !newTransaction.amount}
-        >
-          Criar Transação
-        </Button>
+        <Link href={"/transaction"}>
+          <Button
+            variant="contained"
+            fullWidth
+            //onClick={handleTransactionSubmit}
+            disabled={!newTransaction.type || !newTransaction.amount}
+          >
+            Criar Transação
+          </Button>
+        </Link>
       </CardActions>
     </Card>
   );

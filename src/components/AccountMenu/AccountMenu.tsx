@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import { useTheme } from "@mui/material/styles";
+import { useRouter } from "next/navigation";
 
 import Box from "@mui/material/Box";
 import Avatar from "@mui/material/Avatar";
@@ -12,9 +13,9 @@ import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import Tooltip from "@mui/material/Tooltip";
-import AccountCircle from '@mui/icons-material/AccountCircle';
-import Settings from '@mui/icons-material/Settings';
-import Logout from '@mui/icons-material/Logout';
+import AccountCircle from "@mui/icons-material/AccountCircle";
+import Settings from "@mui/icons-material/Settings";
+import Logout from "@mui/icons-material/Logout";
 
 export type AccountMenuNavItem = {
   id?: string;
@@ -42,6 +43,7 @@ export default function AccountMenu({
 }) {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const theme = useTheme();
+  const router = useRouter();
 
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -53,11 +55,11 @@ export default function AccountMenu({
 
   const getIconForId = (id?: string) => {
     switch (id) {
-      case 'profile':
+      case "profile":
         return <AccountCircle fontSize="small" />;
-      case 'settings':
+      case "settings":
         return <Settings fontSize="small" />;
-      case 'logout':
+      case "logout":
         return <Logout fontSize="small" />;
       default:
         return null;
@@ -67,38 +69,34 @@ export default function AccountMenu({
   const handleNav = (navId?: string) => {
     if (!navId) return;
     switch (navId) {
-      case 'home':
-        window.location.assign('/');
+      case "home":
+        router.push("/home");
         break;
-      case 'transactions':
-        window.location.assign('/transactions');
+      case "transactions":
+        router.push("/transactions");
         break;
-      case 'cards':
-        window.location.assign('/cards');
+      case "cards":
+        router.push("/cards");
         break;
       default:
-        console.log('nav click', navId);
+        console.log("nav click", navId);
     }
   };
 
   const handleMenuAction = (actionId?: string) => {
     if (!actionId) return;
     switch (actionId) {
-      case 'profile':
-        window.location.assign('/profile');
+      case "profile":
+        router.push("/profile");
         break;
-      case 'settings':
-        window.location.assign('/settings');
+      case "settings":
+        router.push("/settings");
         break;
-      case 'logout':
-        try {
-          window.location.assign('/api/auth/logout');
-        } catch {
-          console.log('logout action');
-        }
+      case "logout":
+        router.push("/");
         break;
       default:
-        console.log('menu action', actionId);
+        console.log("menu action", actionId);
     }
   };
   return (
@@ -118,8 +116,16 @@ export default function AccountMenu({
           {navItems?.map((item) => (
             <Button
               key={item.id ?? item.label}
-              onClick={() => { if (item.onClick) item.onClick(); else handleNav(item.id); }}
-              sx={{ minWidth: { xs: 60, md: 100 }, color: "white", fontWeight: "bold", fontSize: { xs: '0.8rem', md: '1rem' } }}
+              onClick={() => {
+                if (item.onClick) item.onClick();
+                else handleNav(item.id);
+              }}
+              sx={{
+                minWidth: { xs: 60, md: 100 },
+                color: "white",
+                fontWeight: "bold",
+                fontSize: { xs: "0.8rem", md: "1rem" },
+              }}
             >
               {item.label}
             </Button>
@@ -127,7 +133,11 @@ export default function AccountMenu({
         </Box>
         <Box sx={{ display: "flex", alignItems: "center", textAlign: "center", justifyContent: "end" }}>
           {userName ? (
-            <Typography sx={{ display: { xs: 'none', md: 'block' }, minWidth: 100, color: "white", fontWeight: "bold" }}>{userName}</Typography>
+            <Typography
+              sx={{ display: { xs: "none", md: "block" }, minWidth: 100, color: "white", fontWeight: "bold" }}
+            >
+              {userName}
+            </Typography>
           ) : null}
           <Tooltip title="Account settings">
             <IconButton
@@ -138,7 +148,7 @@ export default function AccountMenu({
               aria-haspopup="true"
               aria-expanded={open ? "true" : undefined}
             >
-              <Avatar sx={{ width: { xs: 28, md: 32 }, height: { xs: 28, md: 32 } }}>{avatarContent ?? ''}</Avatar>
+              <Avatar sx={{ width: { xs: 28, md: 32 }, height: { xs: 28, md: 32 } }}>{avatarContent ?? ""}</Avatar>
             </IconButton>
           </Tooltip>
         </Box>
@@ -180,23 +190,21 @@ export default function AccountMenu({
         transformOrigin={{ horizontal: "right", vertical: "top" }}
         anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
       >
-        {menuItems?.length ? (
-          menuItems.map((mi) => (
-            <MenuItem
-              key={mi.id ?? mi.label}
-              onClick={() => {
-                handleClose();
-                if (mi.onClick) mi.onClick();
-                else handleMenuAction(mi.id);
-              }}
-            >
-              {(mi.icon ?? getIconForId(mi.id)) ? (
-                <ListItemIcon>{mi.icon ?? getIconForId(mi.id)}</ListItemIcon>
-              ) : null}
-              {mi.label}
-            </MenuItem>
-          ))
-        ) : null}
+        {menuItems?.length
+          ? menuItems.map((mi) => (
+              <MenuItem
+                key={mi.id ?? mi.label}
+                onClick={() => {
+                  handleClose();
+                  if (mi.onClick) mi.onClick();
+                  else handleMenuAction(mi.id);
+                }}
+              >
+                {mi.icon ?? getIconForId(mi.id) ? <ListItemIcon>{mi.icon ?? getIconForId(mi.id)}</ListItemIcon> : null}
+                {mi.label}
+              </MenuItem>
+            ))
+          : null}
       </Menu>
     </React.Fragment>
   );

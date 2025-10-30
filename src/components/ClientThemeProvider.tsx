@@ -1,19 +1,18 @@
-"use client";
+'use client';
 
-import { ThemeProvider, createTheme } from "@mui/material/styles";
-import CssBaseline from "@mui/material/CssBaseline";
+import { ThemeProvider, createTheme } from '@mui/material/styles';
 
 const theme = createTheme({
   palette: {
     primary: {
-      main: "#75e299ff",
+      main: '#75e299ff',
     },
     secondary: {
-      main: "#2b9d27ff",
+      main: '#2b9d27ff',
     },
   },
   typography: {
-    fontFamily: "Roboto, sans-serif",
+    fontFamily: 'Roboto, sans-serif',
     fontSize: 14,
   },
   components: {
@@ -27,11 +26,10 @@ const theme = createTheme({
   },
 });
 
-export default function ClientThemeProvider({ children }: { children: React.ReactNode }) {
-  return (
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
-      {children}
-    </ThemeProvider>
-  );
+export default function ClientThemeProvider({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return <ThemeProvider theme={theme}>{children}</ThemeProvider>;
 }
