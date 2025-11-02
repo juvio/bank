@@ -1,21 +1,24 @@
 'use client';
 
-import { removeTransaction } from '@/utils';
+import { useModalStore } from '@/stores/useModalStore';
 import { Box, Button, Typography } from '@mui/material';
+import Link from 'next/link';
 
 type TransactionCardProps = {
   id: number;
   type: string; //criar enum
   value: number;
+  removeTransaction: (id: number) => void;
 };
 
 export default function TransactionCard({
   id,
   type,
   value,
+  removeTransaction,
 }: TransactionCardProps) {
+  const { setEditModal } = useModalStore();
   return (
-    // Work in progress
     <Box
       sx={{
         width: '75%',
@@ -32,8 +35,11 @@ export default function TransactionCard({
     >
       <Typography>{value}</Typography>
       <Typography>{type}</Typography>
-      <Button>Deletar</Button>
-      <Button>Editar</Button>
+      <Button onClick={() => removeTransaction(id)}>Deletar</Button>
+
+      <Link href='/transaction'>
+        <Button onClick={() => setEditModal(true)}>Editar</Button>
+      </Link>
     </Box>
   );
 }

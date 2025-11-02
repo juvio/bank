@@ -1,9 +1,17 @@
-"use client";
+'use client';
 
-import { Button, Dialog, DialogTitle, DialogContent, DialogActions, Typography } from "@mui/material";
-import { useTheme } from "@mui/material/styles";
-import { useRouter } from "next/navigation";
-import { useState, ReactNode } from "react";
+import { useModalStore } from '@/stores/useModalStore';
+import {
+  Button,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  Typography,
+} from '@mui/material';
+import { useTheme } from '@mui/material/styles';
+import { useRouter } from 'next/navigation';
+import { useState, ReactNode } from 'react';
 
 interface ModalComponentProps {
   title?: string;
@@ -13,14 +21,15 @@ interface ModalComponentProps {
 }
 
 export default function ModalComponent({
-  title = "Confirmação",
-  content = "Tem certeza que deseja fazer esta operação?",
-  confirmText = "Confirmar",
-  cancelText = "Cancelar",
+  title = 'Confirmação',
+  content = 'Tem certeza que deseja fazer esta operação?',
+  confirmText = 'Confirmar',
+  cancelText = 'Cancelar',
 }: ModalComponentProps) {
   const router = useRouter();
   const theme = useTheme();
   const [open, setOpen] = useState(true);
+  const { editModal } = useModalStore();
 
   function onDismiss() {
     setOpen(false);
@@ -31,12 +40,12 @@ export default function ModalComponent({
     <Dialog
       open={open}
       onClose={onDismiss}
-      aria-labelledby="modal-title"
+      aria-labelledby='modal-title'
       slotProps={{
         paper: {
           sx: {
             borderRadius: 2,
-            width: { xs: "90%", sm: 480 },
+            width: { xs: '90%', sm: 480 },
             maxWidth: 480,
             p: 0,
           },
@@ -44,25 +53,25 @@ export default function ModalComponent({
       }}
     >
       <DialogTitle
-        id="modal-title"
+        id='modal-title'
         sx={{
           background: `linear-gradient(135deg, ${theme.palette.primary.main} 0%, ${theme.palette.secondary.main} 100%)`,
-          color: "white",
+          color: 'white',
           pb: 2,
         }}
       >
-        <Typography variant="h6" component="div" sx={{ fontWeight: "bold" }}>
-          {title}
+        <Typography variant='h6' component='div' sx={{ fontWeight: 'bold' }}>
+          {editModal ? 'Teste modal de edição' : title}
         </Typography>
       </DialogTitle>
 
       <DialogContent sx={{ pt: 3, px: 3, pb: 2 }}>
-        {typeof content === "string" ? (
+        {typeof content === 'string' ? (
           <Typography
-            variant="body1"
+            variant='body1'
             sx={{
               color: theme.palette.text.primary,
-              textAlign: "center",
+              textAlign: 'center',
               m: 2,
             }}
           >
@@ -76,25 +85,27 @@ export default function ModalComponent({
       <DialogActions sx={{ px: 3, pb: 3, gap: 1 }}>
         <Button
           onClick={onDismiss}
-          variant="outlined"
+          variant='outlined'
           sx={{
             flex: 1,
             borderRadius: 2,
-            textTransform: "none",
+            textTransform: 'none',
           }}
         >
           {cancelText}
         </Button>
         <Button
           onClick={onDismiss}
-          variant="contained"
+          variant='contained'
           sx={{
             flex: 1,
             borderRadius: 2,
-            textTransform: "none",
+            textTransform: 'none',
             background: `linear-gradient(135deg, ${theme.palette.primary.main} 0%, ${theme.palette.secondary.main} 100%)`,
-            "&:hover": {
-              background: `linear-gradient(135deg, ${theme.palette.primary.dark || theme.palette.primary.main} 0%, ${
+            '&:hover': {
+              background: `linear-gradient(135deg, ${
+                theme.palette.primary.dark || theme.palette.primary.main
+              } 0%, ${
                 theme.palette.secondary.dark || theme.palette.secondary.main
               } 100%)`,
             },
