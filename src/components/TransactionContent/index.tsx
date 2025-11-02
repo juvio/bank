@@ -15,7 +15,7 @@ export default function TransactionContent() {
           key={index}
           id={transaction.id}
           type={transaction.type}
-          value={transaction.value}
+          value={transaction.amount}
           removeTransaction={removeTransaction}
         />
       ))}

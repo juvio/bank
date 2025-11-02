@@ -12,12 +12,14 @@ import {
   Box,
 } from '@mui/material';
 import Link from 'next/link';
+import { useBankAccountStore } from '@/stores/useBankAccountStore';
+import { useModalStore } from '@/stores/useModalStore';
 
 interface NewTransaction {
   type: string;
-  amount: string;
-  description: string;
-  date: string;
+  amount: number;
+  id: number;
+  description?: string;
 }
 
 const transactionTypes = [
@@ -28,16 +30,20 @@ const transactionTypes = [
 ];
 
 export default function NewTransactionCard() {
+  const { transactions, setTransaction } = useBankAccountStore();
+  const { setAddModal } = useModalStore();
   const [newTransaction, setNewTransaction] = useState<NewTransaction>({
+    id: transactions.length + 1,
     type: '',
-    amount: '',
+    amount: 0,
     description: '',
-    date: '',
   });
 
   const handleTransactionSubmit = () => {
     console.log('Nova transação:', newTransaction);
-    setNewTransaction({ type: '', amount: '', description: '', date: '' });
+    setAddModal(true);
+    setTransaction(newTransaction);
+    // resetar valores após a confirmação
   };
 
   return (
@@ -68,23 +74,25 @@ export default function NewTransactionCard() {
           <TextField
             label='Valor'
             type='number'
-            value={newTransaction.amount}
             onChange={(e) =>
-              setNewTransaction({ ...newTransaction, amount: e.target.value })
+              setNewTransaction({
+                ...newTransaction,
+                amount: Number(e.target.value),
+              })
             }
             fullWidth
             InputProps={{
               startAdornment: <Typography sx={{ mr: 1 }}>R$</Typography>,
             }}
           />
-          <TextField
+          {/* <TextField
             type='date'
             value={newTransaction.date}
             onChange={(e) =>
               setNewTransaction({ ...newTransaction, date: e.target.value })
             }
             fullWidth
-          />
+          /> */}
           <TextField
             label='Descrição'
             value={newTransaction.description}
@@ -105,7 +113,7 @@ export default function NewTransactionCard() {
           <Button
             variant='contained'
             fullWidth
-            //onClick={handleTransactionSubmit}
+            onClick={handleTransactionSubmit}
             disabled={!newTransaction.type || !newTransaction.amount}
           >
             Criar Transação
