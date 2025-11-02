@@ -2,6 +2,8 @@
 
 import { useBankAccountStore } from '@/stores/useBankAccountStore';
 import { useModalStore } from '@/stores/useModalStore';
+import { transactionTypes } from '@/types';
+import { NewTransaction } from '@/types/new-transaction.type';
 import {
   Button,
   Dialog,
@@ -9,6 +11,8 @@ import {
   DialogContent,
   DialogActions,
   Typography,
+  TextField,
+  MenuItem,
 } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { useRouter } from 'next/navigation';
@@ -21,6 +25,13 @@ interface ModalComponentProps {
   cancelText?: string;
 }
 
+interface EditTransaction {
+  type: string;
+  amount: number;
+  id: number;
+  description?: string;
+}
+
 export default function ModalComponent({
   title = 'Confirmação',
   content = 'Tem certeza que deseja fazer esta operação?',
@@ -30,9 +41,17 @@ export default function ModalComponent({
   const router = useRouter();
   const theme = useTheme();
   const [open, setOpen] = useState(true);
-  const { editModal, addModal, setAddModal } = useModalStore();
-  const { transaction, addTransaction, resetTransaction } =
-    useBankAccountStore();
+  const { editModal, addModal, setAddModal, setEditModal } = useModalStore();
+  const {
+    transaction,
+    addTransaction,
+    resetTransaction,
+    editTransaction,
+    transactions,
+  } = useBankAccountStore();
+  const [newTransaction, setNewTransaction] = useState<
+    Partial<EditTransaction>
+  >({});
 
   function onDismiss() {
     setOpen(false);
@@ -44,6 +63,12 @@ export default function ModalComponent({
     onDismiss();
     setAddModal(false);
     resetTransaction(true);
+  };
+
+  const handleEditTransaction = () => {
+    onDismiss();
+    setEditModal(false);
+    editTransaction(transaction.id, newTransaction);
   };
 
   return (
@@ -78,24 +103,56 @@ export default function ModalComponent({
               component='div'
               sx={{ fontWeight: 'bold' }}
             >
-              {title}
+              Editar transação
             </Typography>
           </DialogTitle>
           <DialogContent sx={{ pt: 3, px: 3, pb: 2 }}>
-            {typeof content === 'string' ? (
-              <Typography
-                variant='body1'
-                sx={{
-                  color: theme.palette.text.primary,
-                  textAlign: 'center',
-                  m: 2,
-                }}
-              >
-                {content}
-              </Typography>
-            ) : (
-              content
-            )}
+            <TextField
+              select
+              label='Tipo de Transação'
+              value={newTransaction.type ?? transaction.type}
+              onChange={(e) =>
+                setNewTransaction({ ...newTransaction, type: e.target.value })
+              }
+              fullWidth
+              sx={{ pt: 4 }}
+            >
+              {transactionTypes.map((option) => (
+                <MenuItem key={option.value} value={option.value}>
+                  {option.label}
+                </MenuItem>
+              ))}
+            </TextField>
+            <TextField
+              label='Valor'
+              type='number'
+              value={newTransaction.amount}
+              onChange={(e) =>
+                setNewTransaction({
+                  ...newTransaction,
+                  amount: Number(e.target.value),
+                })
+              }
+              fullWidth
+              sx={{ pt: 4 }}
+              InputProps={{
+                startAdornment: <Typography sx={{ mr: 1 }}>R$</Typography>,
+              }}
+            />
+            <TextField
+              label='Descrição'
+              value={newTransaction.description}
+              onChange={(e) =>
+                setNewTransaction({
+                  ...newTransaction,
+                  description: e.target.value,
+                })
+              }
+              fullWidth
+              multiline
+              rows={4}
+              sx={{ pt: 4 }}
+            />
           </DialogContent>
           <DialogActions sx={{ px: 3, pb: 3, gap: 1 }}>
             <Button
@@ -110,7 +167,7 @@ export default function ModalComponent({
               {cancelText}
             </Button>
             <Button
-              onClick={onDismiss}
+              onClick={handleEditTransaction}
               variant='contained'
               sx={{
                 flex: 1,

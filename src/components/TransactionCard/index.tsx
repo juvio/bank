@@ -1,5 +1,6 @@
 'use client';
 
+import { useBankAccountStore } from '@/stores/useBankAccountStore';
 import { useModalStore } from '@/stores/useModalStore';
 import { TransactionMapper } from '@/types';
 import { Box, Button, Typography } from '@mui/material';
@@ -8,17 +9,32 @@ import Link from 'next/link';
 type TransactionCardProps = {
   id: number;
   type: string;
-  value: number;
-  removeTransaction: (id: number) => void;
+  description?: string;
+  amount: number;
 };
 
 export default function TransactionCard({
   id,
   type,
-  value,
-  removeTransaction,
+  amount,
+  description,
 }: TransactionCardProps) {
   const { setEditModal } = useModalStore();
+  const { transactions, setTransaction } = useBankAccountStore();
+
+  const handleOpenEditModal = () => {
+    setTransaction({
+      id: id,
+      type: type,
+      amount: amount,
+    });
+    setEditModal(true);
+  };
+
+  const handleOpenDeleteModal = () => {
+    // set delete modal
+  };
+
   return (
     <Box
       sx={{
@@ -34,12 +50,14 @@ export default function TransactionCard({
         m: 2,
       }}
     >
-      <Typography>{value}</Typography>
+      <Typography>{amount}</Typography>
       <Typography>{TransactionMapper[type]}</Typography>
-      <Button onClick={() => removeTransaction(id)}>Deletar</Button>
-
+      <Typography>{description}</Typography>
       <Link href='/transaction'>
-        <Button onClick={() => setEditModal(true)}>Editar</Button>
+        <Button onClick={handleOpenDeleteModal}>Deletar</Button>
+      </Link>
+      <Link href='/transaction'>
+        <Button onClick={handleOpenEditModal}>Editar</Button>
       </Link>
     </Box>
   );

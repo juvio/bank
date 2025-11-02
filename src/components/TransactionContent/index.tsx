@@ -5,8 +5,7 @@ import { Typography } from '@mui/material';
 import TransactionCard from '../TransactionCard';
 
 export default function TransactionContent() {
-  const { transactions, removeTransaction, editTransaction } =
-    useBankAccountStore();
+  const { transactions } = useBankAccountStore();
   return (
     <>
       <Typography>Confira aqui suas transações</Typography>
@@ -15,8 +14,8 @@ export default function TransactionContent() {
           key={index}
           id={transaction.id}
           type={transaction.type}
-          value={transaction.amount}
-          removeTransaction={removeTransaction}
+          amount={transaction.amount}
+          description={transaction.description}
         />
       ))}
     </>

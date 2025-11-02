@@ -14,20 +14,8 @@ import {
 import Link from 'next/link';
 import { useBankAccountStore } from '@/stores/useBankAccountStore';
 import { useModalStore } from '@/stores/useModalStore';
-
-interface NewTransaction {
-  type: string;
-  amount: string;
-  id: number;
-  description?: string;
-}
-
-const transactionTypes = [
-  { value: 'transfer', label: 'Transferência' },
-  { value: 'payment', label: 'Pagamento' },
-  { value: 'deposit', label: 'Depósito' },
-  { value: 'withdrawal', label: 'Saque' },
-];
+import { transactionTypes } from '@/types';
+import { NewTransaction } from '@/types/new-transaction.type';
 
 export default function NewTransactionCard() {
   const {
