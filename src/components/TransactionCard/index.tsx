@@ -1,12 +1,13 @@
 'use client';
 
 import { useModalStore } from '@/stores/useModalStore';
+import { TransactionMapper } from '@/types';
 import { Box, Button, Typography } from '@mui/material';
 import Link from 'next/link';
 
 type TransactionCardProps = {
   id: number;
-  type: string; //criar enum
+  type: string;
   value: number;
   removeTransaction: (id: number) => void;
 };
@@ -34,7 +35,7 @@ export default function TransactionCard({
       }}
     >
       <Typography>{value}</Typography>
-      <Typography>{type}</Typography>
+      <Typography>{TransactionMapper[type]}</Typography>
       <Button onClick={() => removeTransaction(id)}>Deletar</Button>
 
       <Link href='/transaction'>

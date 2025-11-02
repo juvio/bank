@@ -1,20 +1,16 @@
+import { TransactionType } from '@/types';
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
 type AccountBankStore = {
   transaction: TransactionType;
   setTransaction: (transaction: TransactionType) => void;
+  transactionShouldReset: boolean;
+  resetTransaction: (shouldReset: boolean) => void;
   transactions: TransactionType[];
   addTransaction: (newTransaction: TransactionType) => void;
   removeTransaction: (id: number) => void;
   editTransaction: (id: number, updatedItem: Partial<TransactionType>) => void;
-};
-
-type TransactionType = {
-  id: number;
-  type: string;
-  amount: number;
-  description?: string;
 };
 
 export const useBankAccountStore = create<AccountBankStore>()(
@@ -23,6 +19,9 @@ export const useBankAccountStore = create<AccountBankStore>()(
       transaction: {} as TransactionType,
       setTransaction: (transaction: TransactionType) =>
         set({ transaction: transaction }),
+      transactionShouldReset: false,
+      resetTransaction: (shouldReset: boolean) =>
+        set({ transactionShouldReset: shouldReset }),
       transactions: [
         {
           id: 0,

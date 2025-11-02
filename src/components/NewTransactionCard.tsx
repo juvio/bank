@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Card,
   CardContent,
@@ -17,7 +17,7 @@ import { useModalStore } from '@/stores/useModalStore';
 
 interface NewTransaction {
   type: string;
-  amount: number;
+  amount: string;
   id: number;
   description?: string;
 }
@@ -30,21 +30,41 @@ const transactionTypes = [
 ];
 
 export default function NewTransactionCard() {
-  const { transactions, setTransaction } = useBankAccountStore();
+  const {
+    transactions,
+    setTransaction,
+    transactionShouldReset,
+    resetTransaction,
+  } = useBankAccountStore();
   const { setAddModal } = useModalStore();
   const [newTransaction, setNewTransaction] = useState<NewTransaction>({
     id: transactions.length + 1,
     type: '',
-    amount: 0,
+    amount: '',
     description: '',
   });
 
   const handleTransactionSubmit = () => {
     console.log('Nova transação:', newTransaction);
+    resetTransaction(false);
     setAddModal(true);
-    setTransaction(newTransaction);
-    // resetar valores após a confirmação
+    setTransaction({
+      id: newTransaction.id,
+      type: newTransaction.type,
+      amount: Number(newTransaction.amount),
+      description: newTransaction.description,
+    });
   };
+
+  useEffect(() => {
+    if (transactionShouldReset)
+      setNewTransaction({
+        id: transactions.length + 1,
+        type: '',
+        amount: '',
+        description: '',
+      });
+  }, [transactionShouldReset]);
 
   return (
     <Card sx={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
@@ -74,10 +94,11 @@ export default function NewTransactionCard() {
           <TextField
             label='Valor'
             type='number'
+            value={newTransaction.amount}
             onChange={(e) =>
               setNewTransaction({
                 ...newTransaction,
-                amount: Number(e.target.value),
+                amount: e.target.value,
               })
             }
             fullWidth

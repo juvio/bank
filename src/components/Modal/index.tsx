@@ -31,7 +31,8 @@ export default function ModalComponent({
   const theme = useTheme();
   const [open, setOpen] = useState(true);
   const { editModal, addModal, setAddModal } = useModalStore();
-  const { transaction, addTransaction } = useBankAccountStore();
+  const { transaction, addTransaction, resetTransaction } =
+    useBankAccountStore();
 
   function onDismiss() {
     setOpen(false);
@@ -42,6 +43,7 @@ export default function ModalComponent({
     addTransaction(transaction);
     onDismiss();
     setAddModal(false);
+    resetTransaction(true);
   };
 
   return (
