@@ -19,20 +19,27 @@ export default function TransactionCard({
   amount,
   description,
 }: TransactionCardProps) {
-  const { setEditModal } = useModalStore();
-  const { transactions, setTransaction } = useBankAccountStore();
+  const { setEditModal, setDeleteModal } = useModalStore();
+  const { setTransaction } = useBankAccountStore();
 
   const handleOpenEditModal = () => {
     setTransaction({
       id: id,
       type: type,
       amount: amount,
+      description: description,
     });
     setEditModal(true);
   };
 
   const handleOpenDeleteModal = () => {
-    // set delete modal
+    setTransaction({
+      id: id,
+      type: type,
+      amount: amount,
+      description: description,
+    });
+    setDeleteModal(true);
   };
 
   return (

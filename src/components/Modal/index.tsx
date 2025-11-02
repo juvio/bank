@@ -41,13 +41,20 @@ export default function ModalComponent({
   const router = useRouter();
   const theme = useTheme();
   const [open, setOpen] = useState(true);
-  const { editModal, addModal, setAddModal, setEditModal } = useModalStore();
+  const {
+    editModal,
+    addModal,
+    setAddModal,
+    setEditModal,
+    deleteModal,
+    setDeleteModal,
+  } = useModalStore();
   const {
     transaction,
     addTransaction,
     resetTransaction,
     editTransaction,
-    transactions,
+    removeTransaction,
   } = useBankAccountStore();
   const [newTransaction, setNewTransaction] = useState<
     Partial<EditTransaction>
@@ -69,6 +76,12 @@ export default function ModalComponent({
     onDismiss();
     setEditModal(false);
     editTransaction(transaction.id, newTransaction);
+  };
+
+  const handleRemoveTransaction = () => {
+    onDismiss();
+    setDeleteModal(false);
+    removeTransaction(transaction.id);
   };
 
   return (
@@ -141,7 +154,7 @@ export default function ModalComponent({
             />
             <TextField
               label='Descrição'
-              value={newTransaction.description}
+              value={transaction.description}
               onChange={(e) =>
                 setNewTransaction({
                   ...newTransaction,
@@ -253,6 +266,71 @@ export default function ModalComponent({
               }}
             >
               {confirmText}
+            </Button>
+          </DialogActions>
+        </>
+      )}
+      {deleteModal && (
+        <>
+          {' '}
+          <DialogTitle
+            id='modal-title'
+            sx={{
+              background: `linear-gradient(135deg, ${theme.palette.primary.main} 0%, ${theme.palette.secondary.main} 100%)`,
+              color: 'white',
+              pb: 2,
+            }}
+          >
+            <Typography
+              variant='h6'
+              component='div'
+              sx={{ fontWeight: 'bold' }}
+            >
+              Remover transação
+            </Typography>
+          </DialogTitle>
+          <DialogContent sx={{ pt: 3, px: 3, pb: 2 }}>
+            <Typography
+              variant='body1'
+              sx={{
+                color: theme.palette.text.primary,
+                textAlign: 'center',
+                m: 2,
+              }}
+            >
+              Tem certeza que desejar remover a transação?
+            </Typography>
+          </DialogContent>
+          <DialogActions sx={{ px: 3, pb: 3, gap: 1 }}>
+            <Button
+              onClick={onDismiss}
+              variant='outlined'
+              sx={{
+                flex: 1,
+                borderRadius: 2,
+                textTransform: 'none',
+              }}
+            >
+              {cancelText}
+            </Button>
+            <Button
+              onClick={handleRemoveTransaction}
+              variant='contained'
+              sx={{
+                flex: 1,
+                borderRadius: 2,
+                textTransform: 'none',
+                background: `linear-gradient(135deg, ${theme.palette.primary.main} 0%, ${theme.palette.secondary.main} 100%)`,
+                '&:hover': {
+                  background: `linear-gradient(135deg, ${
+                    theme.palette.primary.dark || theme.palette.primary.main
+                  } 0%, ${
+                    theme.palette.secondary.dark || theme.palette.secondary.main
+                  } 100%)`,
+                },
+              }}
+            >
+              Remover
             </Button>
           </DialogActions>
         </>
