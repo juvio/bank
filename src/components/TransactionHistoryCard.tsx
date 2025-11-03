@@ -23,41 +23,6 @@ interface Transaction {
   status: "completed" | "pending" | "failed";
 }
 
-const mockTransactions: Transaction[] = [
-  {
-    id: "1",
-    type: "transfer",
-    amount: -250.0,
-    description: "Transferência para João Silva",
-    date: "2024-01-20",
-    status: "completed",
-  },
-  {
-    id: "2",
-    type: "deposit",
-    amount: 1500.0,
-    description: "Depósito via PIX",
-    date: "2024-01-19",
-    status: "completed",
-  },
-  {
-    id: "3",
-    type: "payment",
-    amount: -89.9,
-    description: "Pagamento de conta de luz",
-    date: "2024-01-18",
-    status: "completed",
-  },
-  {
-    id: "4",
-    type: "withdrawal",
-    amount: -100.0,
-    description: "Saque no caixa eletrônico",
-    date: "2024-01-17",
-    status: "pending",
-  },
-];
-
 const getTransactionTypeLabel = (type: string) => {
   const types: { [key: string]: string } = {
     transfer: "Transferência",
@@ -90,14 +55,18 @@ const getStatusLabel = (status: string) => {
   return labels[status] || status;
 };
 
-export default function TransactionHistoryCard() {
+interface Props {
+  transactions: Transaction[];
+}
+
+export default function TransactionHistoryCard({ transactions }: Props) {
   return (
-    <Card >
-      <CardContent sx={{ flex: 1 }}>
+    <Card sx={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
+      <CardContent sx={{ flex: 1, display: 'flex', flexDirection: 'column', p: 2 }}>
         <Typography variant="h6" component="h2" gutterBottom>
           Histórico de Transações
         </Typography>
-        <TableContainer sx={{ overflowX: "hidden" }}>
+        <TableContainer sx={{ overflowX: 'hidden', overflowY: 'auto', flex: 1 }}>
           <Table>
             <TableHead>
               <TableRow>
@@ -109,7 +78,7 @@ export default function TransactionHistoryCard() {
               </TableRow>
             </TableHead>
             <TableBody>
-              {mockTransactions.map((transaction) => (
+              {transactions.map((transaction) => (
                 <TableRow key={transaction.id}>
                   <TableCell>{new Date(transaction.date).toLocaleDateString("pt-BR")}</TableCell>
                   <TableCell>{getTransactionTypeLabel(transaction.type)}</TableCell>

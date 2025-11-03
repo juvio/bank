@@ -1,25 +1,49 @@
-'use client';
+"use client";
 
-import * as React from 'react';
-import { useTheme } from '@mui/material/styles';
+import * as React from "react";
+import { useTheme } from "@mui/material/styles";
+import { useRouter } from "next/navigation";
 
-import {
-  Box,
-  Avatar,
-  Menu,
-  MenuItem,
-  ListItemIcon,
-  Divider,
-  IconButton,
-  Typography,
-  Tooltip,
-} from '@mui/material';
-import { PersonAdd, Settings, Logout } from '@mui/icons-material';
-import Link from 'next/link';
+import Box from "@mui/material/Box";
+import Avatar from "@mui/material/Avatar";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import Button from "@mui/material/Button";
+import IconButton from "@mui/material/IconButton";
+import Typography from "@mui/material/Typography";
+import Tooltip from "@mui/material/Tooltip";
+import AccountCircle from "@mui/icons-material/AccountCircle";
+import Settings from "@mui/icons-material/Settings";
+import Logout from "@mui/icons-material/Logout";
 
-export default function AccountMenu() {
+export type AccountMenuNavItem = {
+  id?: string;
+  label: string;
+  onClick?: () => void;
+};
+
+export type AccountMenuAction = {
+  id?: string;
+  label: string;
+  icon?: React.ReactNode;
+  onClick?: () => void;
+};
+
+export default function AccountMenu({
+  userName,
+  avatarContent,
+  navItems,
+  menuItems,
+}: {
+  userName?: string;
+  avatarContent?: React.ReactNode;
+  navItems?: AccountMenuNavItem[];
+  menuItems?: AccountMenuAction[] | undefined;
+}) {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const theme = useTheme();
+  const router = useRouter();
 
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -28,72 +52,110 @@ export default function AccountMenu() {
   const handleClose = () => {
     setAnchorEl(null);
   };
+
+  const getIconForId = (id?: string) => {
+    switch (id) {
+      case "profile":
+        return <AccountCircle fontSize="small" />;
+      case "settings":
+        return <Settings fontSize="small" />;
+      case "logout":
+        return <Logout fontSize="small" />;
+      default:
+        return null;
+    }
+  };
+
+  const handleNav = (navId?: string) => {
+    if (!navId) return;
+    switch (navId) {
+      case "home":
+        router.push("/home");
+        break;
+      case "transactions":
+        router.push("/transactions");
+        break;
+      case "cards":
+        router.push("/cards");
+        break;
+      default:
+        console.log("nav click", navId);
+    }
+  };
+
+  const handleMenuAction = (actionId?: string) => {
+    if (!actionId) return;
+    switch (actionId) {
+      case "profile":
+        router.push("/profile");
+        break;
+      case "settings":
+        router.push("/settings");
+        break;
+      case "logout":
+        router.push("/");
+        break;
+      default:
+        console.log("menu action", actionId);
+    }
+  };
   return (
     <React.Fragment>
       <Box
         sx={{
-          display: 'flex',
-          justifyContent: 'space-between',
+          display: "flex",
+          justifyContent: "space-between",
           background: `linear-gradient(135deg, ${theme.palette.primary.main} 0%, ${theme.palette.secondary.main} 100%)`,
           borderRadius: 2,
           boxShadow: 3,
-          p: 2,
-          m: 2,
+          p: { xs: 1, md: 2 },
+          m: { xs: 1, md: 2 },
         }}
       >
-        <Box
-          sx={{ display: 'flex', alignItems: 'center', textAlign: 'center' }}
-        >
-          <Link href={'/home'} style={{ textDecoration: 'none' }}>
-            <Typography
-              sx={{ minWidth: 100, color: 'white', fontWeight: 'bold' }}
-            >
-              Início
-            </Typography>
-          </Link>
-          <Link href={'/transactions'} style={{ textDecoration: 'none' }}>
-            <Typography
+        <Box sx={{ display: "flex", alignItems: "center", textAlign: "center", gap: 1 }}>
+          {navItems?.map((item) => (
+            <Button
+              key={item.id ?? item.label}
+              onClick={() => {
+                if (item.onClick) item.onClick();
+                else handleNav(item.id);
+              }}
               sx={{
-                minWidth: 100,
-                color: 'white',
-                fontWeight: 'bold',
-                textDecoration: 'none',
+                minWidth: { xs: 60, md: 100 },
+                color: "white",
+                fontWeight: "bold",
+                fontSize: { xs: "0.8rem", md: "1rem" },
               }}
             >
-              Transações
-            </Typography>
-          </Link>
+              {item.label}
+            </Button>
+          ))}
         </Box>
-        <Box
-          sx={{
-            display: 'flex',
-            alignItems: 'center',
-            textAlign: 'center',
-            justifyContent: 'end',
-          }}
-        >
-          <Typography
-            sx={{ minWidth: 100, color: 'white', fontWeight: 'bold' }}
-          >
-            Joana da Silva
-          </Typography>
-          <Tooltip title='Account settings'>
+        <Box sx={{ display: "flex", alignItems: "center", textAlign: "center", justifyContent: "end" }}>
+          {userName ? (
+            <Typography
+              sx={{ display: { xs: "none", md: "block" }, minWidth: 100, color: "white", fontWeight: "bold" }}
+            >
+              {userName}
+            </Typography>
+          ) : null}
+          <Tooltip title="Account settings">
             <IconButton
               onClick={handleClick}
-              size='small'
+              size="small"
               sx={{ ml: 2 }}
-              aria-controls={open ? 'account-menu' : undefined}
-              aria-haspopup='true'
-              aria-expanded={open ? 'true' : undefined}
+              aria-controls={open ? "account-menu" : undefined}
+              aria-haspopup="true"
+              aria-expanded={open ? "true" : undefined}
             >
-              <Avatar sx={{ width: 32, height: 32 }}>M</Avatar>
+              <Avatar sx={{ width: { xs: 28, md: 32 }, height: { xs: 28, md: 32 } }}>{avatarContent ?? ""}</Avatar>
             </IconButton>
           </Tooltip>
         </Box>
       </Box>
       <Menu
         anchorEl={anchorEl}
-        id='account-menu'
+        id="account-menu"
         open={open}
         onClose={handleClose}
         onClick={handleClose}
@@ -101,58 +163,48 @@ export default function AccountMenu() {
           paper: {
             elevation: 0,
             sx: {
-              overflow: 'visible',
-              filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
+              overflow: "visible",
+              filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
               mt: 1.5,
-              '& .MuiAvatar-root': {
+              "& .MuiAvatar-root": {
                 width: 32,
                 height: 32,
                 ml: -0.5,
                 mr: 1,
               },
-              '&::before': {
+              "&::before": {
                 content: '""',
-                display: 'block',
-                position: 'absolute',
+                display: "block",
+                position: "absolute",
                 top: 0,
                 right: 14,
                 width: 10,
                 height: 10,
-                bgcolor: 'background.paper',
-                transform: 'translateY(-50%) rotate(45deg)',
+                bgcolor: "background.paper",
+                transform: "translateY(-50%) rotate(45deg)",
                 zIndex: 0,
               },
             },
           },
         }}
-        transformOrigin={{ horizontal: 'right', vertical: 'top' }}
-        anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+        transformOrigin={{ horizontal: "right", vertical: "top" }}
+        anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
       >
-        <MenuItem onClick={handleClose}>
-          <Avatar /> Profile
-        </MenuItem>
-        <MenuItem onClick={handleClose}>
-          <Avatar /> My account
-        </MenuItem>
-        <Divider />
-        <MenuItem onClick={handleClose}>
-          <ListItemIcon>
-            <PersonAdd fontSize='small' />
-          </ListItemIcon>
-          Add another account
-        </MenuItem>
-        <MenuItem onClick={handleClose}>
-          <ListItemIcon>
-            <Settings fontSize='small' />
-          </ListItemIcon>
-          Settings
-        </MenuItem>
-        <MenuItem onClick={handleClose}>
-          <ListItemIcon>
-            <Logout fontSize='small' />
-          </ListItemIcon>
-          Logout
-        </MenuItem>
+        {menuItems?.length
+          ? menuItems.map((mi) => (
+              <MenuItem
+                key={mi.id ?? mi.label}
+                onClick={() => {
+                  handleClose();
+                  if (mi.onClick) mi.onClick();
+                  else handleMenuAction(mi.id);
+                }}
+              >
+                {mi.icon ?? getIconForId(mi.id) ? <ListItemIcon>{mi.icon ?? getIconForId(mi.id)}</ListItemIcon> : null}
+                {mi.label}
+              </MenuItem>
+            ))
+          : null}
       </Menu>
     </React.Fragment>
   );

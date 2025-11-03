@@ -5,6 +5,7 @@ import { useTheme } from "@mui/material/styles";
 
 import { Card, CardContent, Typography, IconButton, Box } from "@mui/material";
 import { AccountBalance, Visibility, VisibilityOff } from "@mui/icons-material";
+import mock from '@/mocks/mock.json';
 
 interface AccountCardProps {
   accountBalance: number;
@@ -21,6 +22,9 @@ export default function AccountCard({ accountBalance }: AccountCardProps) {
     }).format(Math.abs(value));
   };
 
+  const fullName = (mock as unknown as { account: { userName: string } }).account.userName;
+  const firstName = fullName.split(' ')[0] ?? fullName;
+
   return (
     <Card
       sx={{
@@ -28,10 +32,10 @@ export default function AccountCard({ accountBalance }: AccountCardProps) {
         color: "white",
       }}
     >
-      <CardContent>
+      <CardContent sx={{ p: 6 }}>
         <Box sx={{ mb: 3 }}>
           <Typography variant="h4" component="h1" gutterBottom sx={{ color: "white" }}>
-            Olá, Joana! 👋
+            Olá, {firstName}! 👋
           </Typography>
           <Typography variant="subtitle1" sx={{ opacity: 0.9, mb: 2 }}>
             Bem-vinda de volta ao SuperBank. Aqui está um resumo da sua conta.
