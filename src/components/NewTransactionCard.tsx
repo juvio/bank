@@ -1,32 +1,44 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Card, CardContent, CardActions, Typography, TextField, MenuItem, Button, Box } from "@mui/material";
 import Link from "next/link";
-
-import mock from "@/mocks/mock.json";
-
-interface NewTransaction {
-  type: string;
-  amount: string;
-  description: string;
-  date: string;
-}
-
-const transactionTypes = (mock as unknown as { transactionTypes: { value: string; label: string }[] }).transactionTypes;
+import { useBankAccountStore } from "@/stores/useBankAccountStore";
+import { useModalStore } from "@/stores/useModalStore";
+import { transactionTypes } from "@/types";
+import { NewTransaction } from "@/types/new-transaction.type";
 
 export default function NewTransactionCard() {
+  const { transactions, setTransaction, transactionShouldReset, resetTransaction } = useBankAccountStore();
+  const { setAddModal } = useModalStore();
   const [newTransaction, setNewTransaction] = useState<NewTransaction>({
+    id: transactions.length + 1,
     type: "",
     amount: "",
     description: "",
-    date: "",
   });
 
   const handleTransactionSubmit = () => {
     console.log("Nova transação:", newTransaction);
-    setNewTransaction({ type: "", amount: "", description: "", date: "" });
+    resetTransaction(false);
+    setAddModal(true);
+    setTransaction({
+      id: newTransaction.id,
+      type: newTransaction.type,
+      amount: Number(newTransaction.amount),
+      description: newTransaction.description,
+    });
   };
+
+  useEffect(() => {
+    if (transactionShouldReset)
+      setNewTransaction({
+        id: transactions.length + 1,
+        type: "",
+        amount: "",
+        description: "",
+      });
+  }, [transactionShouldReset]);
 
   return (
     <Card sx={{ flex: 1, display: "flex", flexDirection: "column" }}>
@@ -52,18 +64,23 @@ export default function NewTransactionCard() {
             label="Valor"
             type="number"
             value={newTransaction.amount}
-            onChange={(e) => setNewTransaction({ ...newTransaction, amount: e.target.value })}
+            onChange={(e) =>
+              setNewTransaction({
+                ...newTransaction,
+                amount: e.target.value,
+              })
+            }
             fullWidth
             InputProps={{
               startAdornment: <Typography sx={{ mr: 1 }}>R$</Typography>,
             }}
           />
-          <TextField
-            type="date"
+          {/* <TextField
+            type='date'
             value={newTransaction.date}
             onChange={(e) => setNewTransaction({ ...newTransaction, date: e.target.value })}
             fullWidth
-          />
+          /> */}
           <TextField
             label="Descrição"
             value={newTransaction.description}
@@ -84,7 +101,7 @@ export default function NewTransactionCard() {
           <Button
             variant="contained"
             fullWidth
-            //onClick={handleTransactionSubmit}
+            onClick={handleTransactionSubmit}
             disabled={!newTransaction.type || !newTransaction.amount}
           >
             Criar Transação

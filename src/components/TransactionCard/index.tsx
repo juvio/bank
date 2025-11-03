@@ -1,21 +1,48 @@
 'use client';
 
-import { removeTransaction } from '@/utils';
+import { useBankAccountStore } from '@/stores/useBankAccountStore';
+import { useModalStore } from '@/stores/useModalStore';
+import { TransactionMapper } from '@/types';
 import { Box, Button, Typography } from '@mui/material';
+import Link from 'next/link';
 
 type TransactionCardProps = {
   id: number;
-  type: string; //criar enum
-  value: number;
+  type: string;
+  description?: string;
+  amount: number;
 };
 
 export default function TransactionCard({
   id,
   type,
-  value,
+  amount,
+  description,
 }: TransactionCardProps) {
+  const { setEditModal, setDeleteModal } = useModalStore();
+  const { setTransaction } = useBankAccountStore();
+
+  const handleOpenEditModal = () => {
+    setTransaction({
+      id: id,
+      type: type,
+      amount: amount,
+      description: description,
+    });
+    setEditModal(true);
+  };
+
+  const handleOpenDeleteModal = () => {
+    setTransaction({
+      id: id,
+      type: type,
+      amount: amount,
+      description: description,
+    });
+    setDeleteModal(true);
+  };
+
   return (
-    // Work in progress
     <Box
       sx={{
         width: '75%',
@@ -30,10 +57,15 @@ export default function TransactionCard({
         m: 2,
       }}
     >
-      <Typography>{value}</Typography>
-      <Typography>{type}</Typography>
-      <Button>Deletar</Button>
-      <Button>Editar</Button>
+      <Typography>{amount}</Typography>
+      <Typography>{TransactionMapper[type]}</Typography>
+      <Typography>{description}</Typography>
+      <Link href='/transaction'>
+        <Button onClick={handleOpenDeleteModal}>Deletar</Button>
+      </Link>
+      <Link href='/transaction'>
+        <Button onClick={handleOpenEditModal}>Editar</Button>
+      </Link>
     </Box>
   );
 }

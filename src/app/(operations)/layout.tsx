@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import AccountMenu, { AccountMenuAction, AccountMenuNavItem } from "@/components/AccountMenu/AccountMenu";
+import AccountMenu, { AccountMenuAction, AccountMenuNavItem } from "@/components/AccountMenu";
 import mock from "@/mocks/mock.json";
 
 export const metadata: Metadata = {
