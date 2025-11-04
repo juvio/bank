@@ -11,8 +11,9 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  Chip,
 } from "@mui/material";
+import { useBankAccountStore } from "@/stores/useBankAccountStore";
+import { TransactionMapper } from "@/types";
 
 interface Transaction {
   id: string;
@@ -20,53 +21,32 @@ interface Transaction {
   amount: number;
   description: string;
   date: string;
-  status: "completed" | "pending" | "failed";
 }
-
-const getTransactionTypeLabel = (type: string) => {
-  const types: { [key: string]: string } = {
-    transfer: "Transferência",
-    payment: "Pagamento",
-    deposit: "Depósito",
-    withdrawal: "Saque",
-  };
-  return types[type] || type;
-};
-
-const getStatusColor = (status: string): "success" | "warning" | "error" | "default" => {
-  switch (status) {
-    case "completed":
-      return "success";
-    case "pending":
-      return "warning";
-    case "failed":
-      return "error";
-    default:
-      return "default";
-  }
-};
-
-const getStatusLabel = (status: string) => {
-  const labels: { [key: string]: string } = {
-    completed: "Concluída",
-    pending: "Pendente",
-    failed: "Falhou",
-  };
-  return labels[status] || status;
-};
 
 interface Props {
-  transactions: Transaction[];
+  transactions?: Transaction[];
 }
 
-export default function TransactionHistoryCard({ transactions }: Props) {
+export default function TransactionHistoryCard({ transactions: propTransactions }: Props) {
+  const { transactions: storeTransactions } = useBankAccountStore();
+
+  const transactions =
+    propTransactions ||
+    storeTransactions.map((t) => ({
+      id: t.id.toString(),
+      type: t.type,
+      amount: t.amount,
+      description: t.description || "",
+      date: t.date || new Date().toISOString().split("T")[0],
+      status: "completed" as const,
+    }));
   return (
-    <Card sx={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
-      <CardContent sx={{ flex: 1, display: 'flex', flexDirection: 'column', p: 2 }}>
+    <Card sx={{ flex: 1, display: "flex", flexDirection: "column" }}>
+      <CardContent sx={{ flex: 1, display: "flex", flexDirection: "column", p: 2 }}>
         <Typography variant="h6" component="h2" gutterBottom>
           Histórico de Transações
         </Typography>
-        <TableContainer sx={{ overflowX: 'hidden', overflowY: 'auto', flex: 1 }}>
+        <TableContainer sx={{ overflowX: "hidden", overflowY: "auto", flex: 1 }}>
           <Table>
             <TableHead>
               <TableRow>
@@ -74,31 +54,23 @@ export default function TransactionHistoryCard({ transactions }: Props) {
                 <TableCell>Tipo</TableCell>
                 <TableCell>Descrição</TableCell>
                 <TableCell align="right">Valor</TableCell>
-                <TableCell>Status</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {transactions.map((transaction) => (
-                <TableRow key={transaction.id}>
+              {transactions.map((transaction, index) => (
+                <TableRow key={`history-${transaction.id}-${index}`}>
                   <TableCell>{new Date(transaction.date).toLocaleDateString("pt-BR")}</TableCell>
-                  <TableCell>{getTransactionTypeLabel(transaction.type)}</TableCell>
+                  <TableCell>{TransactionMapper[transaction.type]}</TableCell>
                   <TableCell>{transaction.description}</TableCell>
                   <TableCell
                     align="right"
                     sx={{
-                      color: transaction.amount >= 0 ? "success.main" : "error.main",
+                      color: transaction.type === "deposit" ? "success.main" : "error.main",
                       fontWeight: "medium",
                     }}
                   >
-                    {transaction.amount >= 0 ? "+" : ""}
-                    R$ {Math.abs(transaction.amount).toFixed(2).replace(".", ",")}
-                  </TableCell>
-                  <TableCell>
-                    <Chip
-                      label={getStatusLabel(transaction.status)}
-                      color={getStatusColor(transaction.status)}
-                      size="small"
-                    />
+                    {transaction.type === "deposit" ? "+" : "-"}
+                    R$ {transaction.amount.toFixed(2).replace(".", ",")}
                   </TableCell>
                 </TableRow>
               ))}
