@@ -1,11 +1,18 @@
 'use client';
 
 import React, { useState } from 'react';
-import { useTheme } from '@mui/material/styles';
 
 import { Card, CardContent, Typography, IconButton, Box } from '@mui/material';
 import { AccountBalance, Visibility, VisibilityOff } from '@mui/icons-material';
 import mock from '@/mocks/mock.json';
+import {
+  BoxAccountBalanceSx,
+  BoxContaCorrenteSx,
+  CardContentSx,
+  CardWrapperSx,
+  SaldoTypographySx,
+  WelcomeTypographySx,
+} from './styles';
 
 interface AccountCardProps {
   accountBalance: number;
@@ -13,7 +20,6 @@ interface AccountCardProps {
 
 export default function AccountCard({ accountBalance }: AccountCardProps) {
   const [showBalance, setShowBalance] = useState(true);
-  const theme = useTheme();
 
   const formatCurrency = (value: number) => {
     return new Intl.NumberFormat('pt-BR', {
@@ -27,13 +33,8 @@ export default function AccountCard({ accountBalance }: AccountCardProps) {
   const firstName = fullName.split(' ')[0] ?? fullName;
 
   return (
-    <Card
-      sx={{
-        background: `linear-gradient(135deg, ${theme.palette.primary.main} 0%, ${theme.palette.secondary.main} 100%)`,
-        color: 'white',
-      }}
-    >
-      <CardContent sx={{ p: 6 }}>
+    <Card sx={CardWrapperSx}>
+      <CardContent sx={CardContentSx}>
         <Box sx={{ mb: 3 }}>
           <Typography
             variant='h4'
@@ -43,19 +44,12 @@ export default function AccountCard({ accountBalance }: AccountCardProps) {
           >
             Olá, {firstName}! 👋
           </Typography>
-          <Typography variant='subtitle1' sx={{ opacity: 0.9, mb: 2 }}>
+          <Typography variant='subtitle1' sx={WelcomeTypographySx}>
             Bem-vinda de volta ao ByteBank. Aqui está um resumo da sua conta.
           </Typography>
         </Box>
 
-        <Box
-          sx={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            mb: 2,
-          }}
-        >
+        <Box sx={BoxContaCorrenteSx}>
           <Typography variant='h6' component='h2'>
             Conta Corrente
           </Typography>
@@ -66,10 +60,10 @@ export default function AccountCard({ accountBalance }: AccountCardProps) {
             {showBalance ? <VisibilityOff /> : <Visibility />}
           </IconButton>
         </Box>
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+        <Box sx={BoxAccountBalanceSx}>
           <AccountBalance sx={{ fontSize: 40 }} />
           <Box>
-            <Typography variant='body2' sx={{ opacity: 0.9 }}>
+            <Typography variant='body2' sx={SaldoTypographySx}>
               Saldo Disponível
             </Typography>
             <Typography variant='h4' component='div' fontWeight='bold'>
