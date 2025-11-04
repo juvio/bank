@@ -6,13 +6,14 @@ import { TransactionMapper } from "@/types";
 import { Box, IconButton, Typography, Card, CardContent } from "@mui/material";
 import { Delete as DeleteIcon, Edit as EditIcon, Visibility as VisibilityIcon } from "@mui/icons-material";
 import Link from "next/link";
+import { formatDate } from "@/app/utils/date";
 
 type TransactionCardProps = {
   id: number;
   type: string;
   description?: string;
   amount: number;
-  date?: string;
+  date: string;
 };
 
 export default function TransactionCard({ id, type, amount, description, date }: TransactionCardProps) {
@@ -62,15 +63,6 @@ export default function TransactionCard({ id, type, amount, description, date }:
       date: date ?? "",
     });
     setViewModal(true);
-  };
-
-  const formatDate = (dateString?: string) => {
-    if (!dateString) return "";
-
-    const [year, month, day] = dateString.split("-");
-    const date = new Date(parseInt(year), parseInt(month) - 1, parseInt(day));
-
-    return date.toLocaleDateString("pt-BR");
   };
 
   return (
