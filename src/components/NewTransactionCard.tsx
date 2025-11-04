@@ -10,23 +10,29 @@ import { NewTransaction } from "@/types/new-transaction.type";
 
 export default function NewTransactionCard() {
   const { transactions, setTransaction, transactionShouldReset, resetTransaction } = useBankAccountStore();
-  const { setAddModal } = useModalStore();
+  const { setAddModal, setEditModal, setDeleteModal } = useModalStore();
   const [newTransaction, setNewTransaction] = useState<NewTransaction>({
     id: transactions.length + 1,
     type: "",
     amount: "",
     description: "",
+    date: new Date().toISOString().split("T")[0],
   });
 
   const handleTransactionSubmit = () => {
     console.log("Nova transação:", newTransaction);
     resetTransaction(false);
+
+    setEditModal(false);
+    setDeleteModal(false);
+
     setAddModal(true);
     setTransaction({
       id: newTransaction.id,
       type: newTransaction.type,
       amount: Number(newTransaction.amount),
       description: newTransaction.description,
+      date: newTransaction.date ?? "",
     });
   };
 
@@ -37,8 +43,9 @@ export default function NewTransactionCard() {
         type: "",
         amount: "",
         description: "",
+        date: new Date().toISOString().split("T")[0],
       });
-  }, [transactionShouldReset]);
+  }, [transactionShouldReset, transactions.length]);
 
   return (
     <Card sx={{ flex: 1, display: "flex", flexDirection: "column" }}>
@@ -53,9 +60,10 @@ export default function NewTransactionCard() {
             value={newTransaction.type}
             onChange={(e) => setNewTransaction({ ...newTransaction, type: e.target.value })}
             fullWidth
+            required
           >
-            {transactionTypes.map((option) => (
-              <MenuItem key={option.value} value={option.value}>
+            {transactionTypes.map((option, index) => (
+              <MenuItem key={`new-${option.value}-${index}`} value={option.value}>
                 {option.label}
               </MenuItem>
             ))}
@@ -71,16 +79,19 @@ export default function NewTransactionCard() {
               })
             }
             fullWidth
+            required
             InputProps={{
               startAdornment: <Typography sx={{ mr: 1 }}>R$</Typography>,
             }}
           />
-          {/* <TextField
-            type='date'
+          <TextField
+            label="Data"
+            type="date"
             value={newTransaction.date}
             onChange={(e) => setNewTransaction({ ...newTransaction, date: e.target.value })}
             fullWidth
-          /> */}
+            required
+          />
           <TextField
             label="Descrição"
             value={newTransaction.description}
@@ -102,7 +113,7 @@ export default function NewTransactionCard() {
             variant="contained"
             fullWidth
             onClick={handleTransactionSubmit}
-            disabled={!newTransaction.type || !newTransaction.amount}
+            disabled={!newTransaction.type || !newTransaction.amount || !newTransaction.date}
           >
             Criar Transação
           </Button>
