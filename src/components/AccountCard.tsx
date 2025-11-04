@@ -5,13 +5,13 @@ import { useTheme } from "@mui/material/styles";
 
 import { Card, CardContent, Typography, IconButton, Box } from "@mui/material";
 import { AccountBalance, Visibility, VisibilityOff } from "@mui/icons-material";
-import mock from '@/mocks/mock.json';
 
 interface AccountCardProps {
   accountBalance: number;
+  accountName: string;
 }
 
-export default function AccountCard({ accountBalance }: AccountCardProps) {
+export default function AccountCard({ accountBalance, accountName }: AccountCardProps) {
   const [showBalance, setShowBalance] = useState(true);
   const theme = useTheme();
 
@@ -22,8 +22,8 @@ export default function AccountCard({ accountBalance }: AccountCardProps) {
     }).format(Math.abs(value));
   };
 
-  const fullName = (mock as unknown as { account: { userName: string } }).account.userName;
-  const firstName = fullName.split(' ')[0] ?? fullName;
+  const fullName = accountName;
+  const firstName = fullName.split(" ")[0] ?? fullName;
 
   return (
     <Card
@@ -38,7 +38,7 @@ export default function AccountCard({ accountBalance }: AccountCardProps) {
             Olá, {firstName}! 👋
           </Typography>
           <Typography variant="subtitle1" sx={{ opacity: 0.9, mb: 2 }}>
-            Bem-vinda de volta ao SuperBank. Aqui está um resumo da sua conta.
+            Bem-vindo de volta ao SuperBank. Aqui está um resumo da sua conta.
           </Typography>
         </Box>
 

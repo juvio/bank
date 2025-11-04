@@ -13,6 +13,7 @@ export default function HomePage() {
   const { transactions } = useBankAccountStore();
   const initialBalance = (mock as unknown as { account: { balance: number } }).account.balance;
 
+  const fullName = (mock as unknown as { account: { userName: string } }).account.userName;
   const accountBalance = transactions.reduce((balance, transaction) => {
     if (transaction.type === "deposit") {
       return balance + transaction.amount;
@@ -26,7 +27,7 @@ export default function HomePage() {
     <Container maxWidth="lg" sx={{ py: 4 }}>
       <Box sx={{ display: "flex", flexDirection: "column", gap: 4 }}>
         <Box sx={{ flex: 1, display: "flex", flexDirection: "column" }}>
-          <AccountCard accountBalance={accountBalance} />
+          <AccountCard accountBalance={accountBalance} accountName={fullName} />
         </Box>
 
         <Box sx={{ display: "flex", gap: 4, flexDirection: { xs: "column", md: "row" } }}>
