@@ -1,6 +1,6 @@
-import ClientThemeProvider from '@/components/ClientThemeProvider';
 import './globals.css';
 import { Inter } from 'next/font/google';
+import ClientThemeProvider from '@/components/ClientThemeProvider';
 import { GlobalStyles } from '@mui/material';
 
 export const inter = Inter({
@@ -18,6 +18,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang='en'>
+      <head>
+        <title>Superbank</title>
+      </head>
       <body>
         <GlobalStyles
           styles={{
