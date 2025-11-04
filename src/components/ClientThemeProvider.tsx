@@ -1,5 +1,6 @@
 'use client';
 
+import { inter } from '@/app/layout';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 
 const theme = createTheme({
@@ -10,10 +11,32 @@ const theme = createTheme({
     secondary: {
       main: '#2b9d27ff',
     },
+    text: {
+      primary: '#222222',
+      secondary: 'black',
+      disabled: 'white',
+    },
   },
   typography: {
-    fontFamily: 'Roboto, sans-serif',
-    fontSize: 14,
+    h1: {
+      fontFamily: `${inter.style.fontFamily}`,
+      fontSize: '48px',
+      fontWeight: 500,
+      lineHeight: '62px',
+    },
+    h2: {
+      fontFamily: `${inter.style.fontFamily}`,
+      fontSize: '24px',
+      fontWeight: 400,
+    },
+    body1: {
+      fontFamily: 'Roboto, sans-serif',
+      fontSize: 14,
+    },
+    body2: {
+      fontFamily: `${inter.style.fontFamily}`,
+      fontSize: 14,
+    },
   },
   components: {
     MuiButton: {
