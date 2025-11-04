@@ -1,7 +1,6 @@
 'use client';
 
 import * as React from 'react';
-import { useTheme } from '@mui/material/styles';
 import { useRouter } from 'next/navigation';
 
 import {
@@ -16,6 +15,14 @@ import {
   Tooltip,
 } from '@mui/material';
 import { AccountCircle, Settings, Logout } from '@mui/icons-material/';
+import {
+  AvatarSx,
+  BoxSx,
+  BoxWrapperSx,
+  ButtonSx,
+  TypographyBoxSx,
+  TypographySx,
+} from './styles';
 
 export type AccountMenuNavItem = {
   id?: string;
@@ -42,7 +49,6 @@ export default function AccountMenu({
   menuItems?: AccountMenuAction[] | undefined;
 }) {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-  const theme = useTheme();
   const router = useRouter();
 
   const open = Boolean(anchorEl);
@@ -101,25 +107,8 @@ export default function AccountMenu({
   };
   return (
     <React.Fragment>
-      <Box
-        sx={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          background: `linear-gradient(135deg, ${theme.palette.primary.main} 0%, ${theme.palette.secondary.main} 100%)`,
-          borderRadius: 2,
-          boxShadow: 3,
-          p: { xs: 1, md: 2 },
-          m: { xs: 1, md: 2 },
-        }}
-      >
-        <Box
-          sx={{
-            display: 'flex',
-            alignItems: 'center',
-            textAlign: 'center',
-            gap: 1,
-          }}
-        >
+      <Box sx={BoxWrapperSx}>
+        <Box sx={BoxSx}>
           {navItems?.map((item) => (
             <Button
               key={item.id ?? item.label}
@@ -127,36 +116,15 @@ export default function AccountMenu({
                 if (item.onClick) item.onClick();
                 else handleNav(item.id);
               }}
-              sx={{
-                minWidth: { xs: 60, md: 100 },
-                color: 'white',
-                fontWeight: 'bold',
-                fontSize: { xs: '0.8rem', md: '1rem' },
-              }}
+              sx={ButtonSx}
             >
               {item.label}
             </Button>
           ))}
         </Box>
-        <Box
-          sx={{
-            display: 'flex',
-            alignItems: 'center',
-            textAlign: 'center',
-            justifyContent: 'end',
-          }}
-        >
+        <Box sx={TypographyBoxSx}>
           {userName ? (
-            <Typography
-              sx={{
-                display: { xs: 'none', md: 'block' },
-                minWidth: 100,
-                color: 'white',
-                fontWeight: 'bold',
-              }}
-            >
-              {userName}
-            </Typography>
+            <Typography sx={TypographySx}>{userName}</Typography>
           ) : null}
           <Tooltip title='Account settings'>
             <IconButton
@@ -167,11 +135,7 @@ export default function AccountMenu({
               aria-haspopup='true'
               aria-expanded={open ? 'true' : undefined}
             >
-              <Avatar
-                sx={{ width: { xs: 28, md: 32 }, height: { xs: 28, md: 32 } }}
-              >
-                {avatarContent ?? ''}
-              </Avatar>
+              <Avatar sx={AvatarSx}>{avatarContent ?? ''}</Avatar>
             </IconButton>
           </Tooltip>
         </Box>
