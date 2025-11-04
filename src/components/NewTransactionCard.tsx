@@ -20,7 +20,6 @@ export default function NewTransactionCard() {
   });
 
   const handleTransactionSubmit = () => {
-    console.log("Nova transação:", newTransaction);
     resetTransaction(false);
 
     setEditModal(false);
@@ -107,7 +106,7 @@ export default function NewTransactionCard() {
           />
         </Box>
       </CardContent>
-      <CardActions>
+      <CardActions sx={{ alignSelf: "center" }}>
         <Link href={"/transaction"}>
           <Button
             variant="contained"
