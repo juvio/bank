@@ -18,15 +18,6 @@ const meta: Meta<typeof AccountMenu> = {
       </ClientThemeProvider>
     ),
   ],
-  parameters: {
-    nextjs: {
-      appDirectory: true,
-      navigation: {
-        pathname: "/home",
-        query: {},
-      },
-    },
-  },
 };
 
 export default meta;
@@ -35,7 +26,7 @@ type Story = StoryObj<typeof AccountMenu>;
 
 export const Default: Story = {};
 
-export const WithCustomProps: Story = {
+export const Playground: Story = {
   args: {
     userName: "Mariana Oliveira",
     avatarContent: "M",
@@ -49,5 +40,13 @@ export const WithCustomProps: Story = {
       { id: "settings", label: "Configurações", icon: <SettingsIcon fontSize="small" /> },
       { id: "logout", label: "Sair", icon: <LogoutIcon fontSize="small" /> },
     ],
+  },
+  parameters: {
+    docs: {
+      description: {
+        story:
+          "🎮 **Playground interativo!** Use os controles abaixo para experimentar diferentes valores e ver como o componente se comporta em tempo real.",
+      },
+    },
   },
 };
