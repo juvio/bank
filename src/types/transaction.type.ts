@@ -3,4 +3,5 @@ export type TransactionType = {
   type: string;
   amount: number;
   description?: string;
+  date: string;
 };

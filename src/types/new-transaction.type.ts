@@ -3,4 +3,5 @@ export interface NewTransaction {
   amount: string;
   id: number;
   description?: string;
+  date: string;
 }

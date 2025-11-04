@@ -7,6 +7,8 @@ type ModalStore = {
   setEditModal: (editModal: boolean) => void;
   deleteModal: boolean;
   setDeleteModal: (deleteModal: boolean) => void;
+  viewModal: boolean;
+  setViewModal: (viewModal: boolean) => void;
 };
 
 export const useModalStore = create<ModalStore>((set) => ({
@@ -16,4 +18,6 @@ export const useModalStore = create<ModalStore>((set) => ({
   setAddModal: (addModal: boolean) => set({ addModal: addModal }),
   deleteModal: false,
   setDeleteModal: (deleteModal: boolean) => set({ deleteModal: deleteModal }),
+  viewModal: false,
+  setViewModal: (viewModal: boolean) => set({ viewModal: viewModal }),
 }));
