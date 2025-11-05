@@ -1,12 +1,27 @@
-"use client";
+'use client';
 
-import { useBankAccountStore } from "@/stores/useBankAccountStore";
-import { useModalStore } from "@/stores/useModalStore";
-import { TransactionMapper } from "@/types";
-import { Box, IconButton, Typography, Card, CardContent } from "@mui/material";
-import { Delete as DeleteIcon, Edit as EditIcon, Visibility as VisibilityIcon } from "@mui/icons-material";
-import Link from "next/link";
-import { formatDate } from "@/app/utils/date";
+import { useBankAccountStore } from '@/stores/useBankAccountStore';
+import { useModalStore } from '@/stores/useModalStore';
+import { TransactionMapper } from '@/types';
+import { Box, IconButton, Typography, Card, CardContent } from '@mui/material';
+import {
+  Delete as DeleteIcon,
+  Edit as EditIcon,
+  Visibility as VisibilityIcon,
+} from '@mui/icons-material';
+import Link from 'next/link';
+import {
+  BoxSx,
+  BoxViewSx,
+  CardWrapperSx,
+  IconButtonDeleteSx,
+  IconButtonEditSx,
+  IconButtonViewSx,
+  TransactionBoxSx,
+  TransactionTypographySx,
+  TypographyDateSx,
+} from './styles';
+import { formatDate } from '@/utils/date';
 
 type TransactionCardProps = {
   id: number;
@@ -16,8 +31,15 @@ type TransactionCardProps = {
   date: string;
 };
 
-export default function TransactionCard({ id, type, amount, description, date }: TransactionCardProps) {
-  const { setEditModal, setDeleteModal, setAddModal, setViewModal } = useModalStore();
+export default function TransactionCard({
+  id,
+  type,
+  amount,
+  description,
+  date,
+}: TransactionCardProps) {
+  const { setEditModal, setDeleteModal, setAddModal, setViewModal } =
+    useModalStore();
   const { setTransaction } = useBankAccountStore();
 
   const handleOpenEditModal = () => {
@@ -30,7 +52,7 @@ export default function TransactionCard({ id, type, amount, description, date }:
       type: type,
       amount: amount,
       description: description,
-      date: date ?? "",
+      date: date ?? '',
     });
     setEditModal(true);
   };
@@ -45,7 +67,7 @@ export default function TransactionCard({ id, type, amount, description, date }:
       type: type,
       amount: amount,
       description: description,
-      date: date ?? "",
+      date: date ?? '',
     });
     setDeleteModal(true);
   };
@@ -60,73 +82,64 @@ export default function TransactionCard({ id, type, amount, description, date }:
       type: type,
       amount: amount,
       description: description,
-      date: date ?? "",
+      date: date ?? '',
     });
     setViewModal(true);
   };
 
   return (
-    <Card sx={{ mb: 2, boxShadow: 2, width: "100%" }}>
+    <Card sx={CardWrapperSx}>
       <CardContent>
-        <Typography variant="caption" sx={{ color: "text.secondary", display: "block", mb: 0.5 }}>
+        <Typography variant='caption' sx={TypographyDateSx}>
           {formatDate(date)}
         </Typography>
 
-        <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+        <Box sx={BoxSx}>
           <Box sx={{ flex: 1 }}>
             <Typography
-              variant="h6"
-              sx={{ fontWeight: "bold", color: type === "deposit" ? "success.main" : "error.main" }}
+              variant='h6'
+              sx={{
+                fontWeight: 'bold',
+                color: type === 'deposit' ? 'success.main' : 'error.main',
+              }}
             >
               R$ {amount.toFixed(2)}
             </Typography>
           </Box>
 
-          <Box sx={{ flex: 1, display: "flex", justifyContent: "center" }}>
-            <Typography variant="body1" sx={{ fontWeight: 500 }}>
+          <Box sx={TransactionBoxSx}>
+            <Typography variant='body1' sx={TransactionTypographySx}>
               {TransactionMapper[type]}
             </Typography>
           </Box>
 
-          <Box sx={{ flex: 1, display: "flex", justifyContent: "flex-end", alignItems: "center", gap: 1 }}>
-            <Box sx={{ display: "flex", gap: 1 }}>
-              <Link href="/transaction">
+          <Box sx={BoxViewSx}>
+            <Box sx={{ display: 'flex', gap: 1 }}>
+              <Link href='/transaction'>
                 <IconButton
                   onClick={handleOpenViewModal}
-                  size="small"
-                  sx={{
-                    bgcolor: "info.main",
-                    color: "white",
-                    "&:hover": { bgcolor: "info.dark" },
-                  }}
+                  size='small'
+                  sx={IconButtonViewSx}
                 >
-                  <VisibilityIcon fontSize="small" />
+                  <VisibilityIcon fontSize='small' />
                 </IconButton>
               </Link>
-              <Link href="/transaction">
+              <Link href='/transaction'>
                 <IconButton
                   onClick={handleOpenEditModal}
-                  size="small"
-                  sx={{
-                    bgcolor: "primary.main",
-                    color: "white",
-                    "&:hover": { bgcolor: "primary.dark" },
-                  }}
+                  size='small'
+                  sx={IconButtonEditSx}
                 >
-                  <EditIcon fontSize="small" />
+                  <EditIcon fontSize='small' />
                 </IconButton>
               </Link>
-              <Link href="/transaction">
+              <Link href='/transaction'>
                 <IconButton
                   onClick={handleOpenDeleteModal}
-                  size="small"
-                  sx={{
-                    bgcolor: "error.main",
-                    color: "white",
-                    "&:hover": { bgcolor: "error.dark" },
-                  }}
+                  size='small'
+                  sx={IconButtonDeleteSx}
                 >
-                  <DeleteIcon fontSize="small" />
+                  <DeleteIcon fontSize='small' />
                 </IconButton>
               </Link>
             </Box>

@@ -1,39 +1,29 @@
 'use client';
+
 import React from 'react';
 import { Box, Typography, Button } from '@mui/material';
-import { useTheme } from '@mui/material/styles';
 import { useRouter } from 'next/navigation';
+import {
+  BoxSx,
+  BoxWrapperSx,
+  Typography404Sx,
+  TypographyDescriptionSx,
+  TypographyNotFoundSx,
+} from './styles';
 
 export default function NotFoundContent() {
-  const theme = useTheme();
   const router = useRouter();
 
   return (
-    <Box
-      sx={{
-        height: '100vh',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        background: `linear-gradient(180deg, ${theme.palette.background.default}, ${theme.palette.primary.light})`,
-        p: 3,
-      }}
-    >
-      <Box sx={{ textAlign: 'center', maxWidth: 640 }}>
-        <Typography
-          variant='h2'
-          component='h1'
-          sx={{ color: theme.palette.primary.contrastText, mb: 2 }}
-        >
+    <Box sx={BoxWrapperSx}>
+      <Box sx={BoxSx}>
+        <Typography variant='h2' component='h1' sx={Typography404Sx}>
           404
         </Typography>
-        <Typography
-          variant='h5'
-          sx={{ color: theme.palette.primary.contrastText, mb: 3 }}
-        >
+        <Typography variant='h5' sx={TypographyNotFoundSx}>
           Ops — página não encontrada
         </Typography>
-        <Typography sx={{ color: theme.palette.primary.contrastText, mb: 4 }}>
+        <Typography sx={TypographyDescriptionSx}>
           A página que você procura não existe ou foi removida. Verifique o
           endereço ou volte para a página inicial.
         </Typography>
