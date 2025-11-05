@@ -16,6 +16,12 @@ import { useBankAccountStore } from '@/stores/useBankAccountStore';
 import { useModalStore } from '@/stores/useModalStore';
 import { transactionTypes } from '@/types';
 import { NewTransaction } from '@/types/new-transaction.type';
+import {
+  BoxTextFieldSx,
+  CardActionsSx,
+  CardContentSx,
+  CardWrapperSx,
+} from './styles';
 
 export default function NewTransactionCard() {
   const {
@@ -74,15 +80,12 @@ export default function NewTransactionCard() {
   };
 
   return (
-    <Card sx={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
-      <CardContent sx={{ flex: 1 }}>
+    <Card sx={CardWrapperSx}>
+      <CardContent sx={CardContentSx}>
         <Typography variant='h6' component='h2' gutterBottom>
           Nova Transação
         </Typography>
-        <Box
-          component='form'
-          sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}
-        >
+        <Box component='form' sx={BoxTextFieldSx}>
           <TextField
             select
             label='Tipo de Transação'
@@ -143,7 +146,7 @@ export default function NewTransactionCard() {
           />
         </Box>
       </CardContent>
-      <CardActions sx={{ display: 'flex', justifyContent: 'center' }}>
+      <CardActions sx={CardActionsSx}>
         <Link
           href={'/transaction'}
           onClick={handleDisableLink}

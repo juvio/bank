@@ -68,7 +68,6 @@ export default function ModalComponent({
     deleteModal,
     setDeleteModal,
     viewModal,
-    setViewModal,
   } = useModalStore();
   const {
     transaction,
