@@ -15,6 +15,7 @@ import {
 import { useBankAccountStore } from '@/stores/useBankAccountStore';
 import { TransactionMapper } from '@/types';
 import { CardContentSx, CardWrapperSx } from './styles';
+import { formatDate } from '@/utils/date';
 
 interface Transaction {
   id: string;
@@ -64,9 +65,7 @@ export default function TransactionHistoryCard({
             <TableBody>
               {transactions.map((transaction, index) => (
                 <TableRow key={`history-${transaction.id}-${index}`}>
-                  <TableCell>
-                    {new Date(transaction.date).toLocaleDateString('pt-BR')}
-                  </TableCell>
+                  <TableCell>{formatDate(transaction.date)}</TableCell>
                   <TableCell>{TransactionMapper[transaction.type]}</TableCell>
                   <TableCell>{transaction.description}</TableCell>
                   <TableCell

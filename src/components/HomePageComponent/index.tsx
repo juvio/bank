@@ -22,6 +22,8 @@ export default function HomePage() {
   const initialBalance = (mock as unknown as { account: { balance: number } })
     .account.balance;
 
+  const fullName = (mock as unknown as { account: { userName: string } })
+    .account.userName;
   const accountBalance = transactions.reduce((balance, transaction) => {
     if (transaction.type === 'deposit') {
       return balance + transaction.amount;
@@ -39,7 +41,7 @@ export default function HomePage() {
     <Container maxWidth='lg' sx={ContainerSx}>
       <Box sx={BoxContainerSx}>
         <Box sx={BoxAccountCardSx}>
-          <AccountCard accountBalance={accountBalance} />
+          <AccountCard accountBalance={accountBalance} accountName={fullName} />
         </Box>
 
         <Box sx={BoxContainerHistoryCardSx}>

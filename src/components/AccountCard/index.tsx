@@ -16,9 +16,13 @@ import {
 
 interface AccountCardProps {
   accountBalance: number;
+  accountName: string;
 }
 
-export default function AccountCard({ accountBalance }: AccountCardProps) {
+export default function AccountCard({
+  accountBalance,
+  accountName,
+}: AccountCardProps) {
   const [showBalance, setShowBalance] = useState(true);
 
   const formatCurrency = (value: number) => {
@@ -28,8 +32,7 @@ export default function AccountCard({ accountBalance }: AccountCardProps) {
     }).format(Math.abs(value));
   };
 
-  const fullName = (mock as unknown as { account: { userName: string } })
-    .account.userName;
+  const fullName = accountName;
   const firstName = fullName.split(' ')[0] ?? fullName;
 
   return (

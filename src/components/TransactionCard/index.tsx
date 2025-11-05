@@ -21,13 +21,14 @@ import {
   TransactionTypographySx,
   TypographyDateSx,
 } from './styles';
+import { formatDate } from '@/utils/date';
 
 type TransactionCardProps = {
   id: number;
   type: string;
   description?: string;
   amount: number;
-  date?: string;
+  date: string;
 };
 
 export default function TransactionCard({
@@ -84,15 +85,6 @@ export default function TransactionCard({
       date: date ?? '',
     });
     setViewModal(true);
-  };
-
-  const formatDate = (dateString?: string) => {
-    if (!dateString) return '';
-
-    const [year, month, day] = dateString.split('-');
-    const date = new Date(parseInt(year), parseInt(month) - 1, parseInt(day));
-
-    return date.toLocaleDateString('pt-BR');
   };
 
   return (

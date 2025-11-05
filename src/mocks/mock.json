@@ -31,7 +31,7 @@
     },
     {
       "id": "4",
-      "type": "withdrawal",
+      "type": "withdraw",
       "amount": 100.0,
       "description": "Saque no caixa eletrônico",
       "date": "2024-01-17",
@@ -42,7 +42,7 @@
     { "value": "transfer", "label": "Transferência" },
     { "value": "payment", "label": "Pagamento" },
     { "value": "deposit", "label": "Depósito" },
-    { "value": "withdrawal", "label": "Saque" }
+    { "value": "withdraw", "label": "Saque" }
   ],
   "navItems": [
     { "id": "home", "label": "Início" },

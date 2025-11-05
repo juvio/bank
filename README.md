@@ -1,36 +1,103 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🏦 SuperBank
 
-## Getting Started
+Uma aplicação bancária moderna construída com Next.js, Material-UI e TypeScript, oferecendo uma experiência intuitiva para gerenciamento de contas e transações.
 
-First, run the development server:
+> **📚 Projeto Acadêmico**: Este projeto foi desenvolvido como trabalho de pós-graduação.
+
+## 👨‍💻 Autoras
+
+**[Juliana Vieira de Oliveira]**  
+**[Nayara Carolly Soares Barbosa]**
+
+## ✨ Funcionalidades
+
+- 💳 **Visualização de Saldo**: Exiba e oculte o saldo da conta com um clique
+- 📊 **Histórico de Transações**: Acompanhe todas as suas movimentações financeiras
+- 🔄 **Nova Transação**: Interface modal para criar novas transações
+- 📱 **Design Responsivo**: Interface adaptada para desktop e mobile
+- 🎨 **Temas Customizáveis**: Suporte a temas claro e escuro
+- 📚 **Storybook**: Componentes documentados e testáveis
+
+## 🛠️ Tecnologias
+
+- **Framework**: [Next.js 15](https://nextjs.org) com App Router
+- **UI Library**: [Material-UI (MUI)](https://mui.com/)
+- **Linguagem**: [TypeScript](https://www.typescriptlang.org/)
+- **Gerenciamento de Estado**: [Zustand](https://zustand-demo.pmnd.rs/)
+- **Documentação**: [Storybook](https://storybook.js.org/)
+- **Linting**: [ESLint](https://eslint.org/)
+
+## 🚀 Como executar
+
+### Pré-requisitos
+
+- Node.js 18+
+- npm, yarn, pnpm ou bun
+
+### Instalação
+
+1. Clone o repositório:
+
+```bash
+git clone <repository-url>
+cd superbank
+```
+
+2. Instale as dependências:
+
+```bash
+npm install
+# ou
+yarn install
+# ou
+pnpm install
+```
+
+### Executando em desenvolvimento
 
 ```bash
 npm run dev
-# or
+# ou
 yarn dev
-# or
+# ou
 pnpm dev
-# or
+# ou
 bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Abra [http://localhost:3000](http://localhost:3000) no seu navegador para ver a aplicação.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Executando o Storybook
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Para visualizar e testar os componentes isoladamente:
 
-## Learn More
+```bash
+npm run storybook
+# ou
+yarn storybook
+# ou
+pnpm storybook
+# ou
+bun storybook
+```
 
-To learn more about Next.js, take a look at the following resources:
+Abra [http://localhost:6006](http://localhost:6006) no seu navegador para ver o Storybook.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 📁 Estrutura do Projeto
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```
+src/
+├── app/                    # App Router do Next.js
+│   ├── (operations)/      # Grupo de rotas operacionais
+│   │   ├── home/          # Página principal
+│   │   └── transactions/  # Página de transações
+│   └── @modal/            # Slot paralelo para modais
+├── components/            # Componentes reutilizáveis
+│   ├── AccountCard/       # Card de conta bancária
+│   ├── TransactionCard/   # Card de transação
+│   └── Modal/             # Sistema de modal
+├── stores/                # Gerenciamento de estado (Zustand)
+├── types/                 # Definições de tipos TypeScript
+├── mocks/                 # Dados mockados para desenvolvimento
+└── stories/               # Histórias do Storybook
+```

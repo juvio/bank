@@ -17,4 +17,5 @@ export const BoxTextFieldSx: SxProps = {
 export const CardActionsSx: SxProps = {
   display: 'flex',
   justifyContent: 'center',
+  alignSelf: 'center',
 };
