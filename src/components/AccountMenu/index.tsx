@@ -14,7 +14,9 @@ import {
   Typography,
   Tooltip,
 } from '@mui/material';
-import { AccountCircle, Settings, Logout } from '@mui/icons-material/';
+import AccountCircle from '@mui/icons-material/AccountCircle';
+import Settings from '@mui/icons-material/Settings';
+import Logout from '@mui/icons-material/Logout';
 import {
   AvatarSx,
   BoxSx,
@@ -62,11 +64,11 @@ export default function AccountMenu({
   const getIconForId = (id?: string) => {
     switch (id) {
       case 'profile':
-        return <AccountCircle fontSize='small' />;
+        return <AccountCircle fontSize="small" />;
       case 'settings':
-        return <Settings fontSize='small' />;
+        return <Settings fontSize="small" />;
       case 'logout':
-        return <Logout fontSize='small' />;
+        return <Logout fontSize="small" />;
       default:
         return null;
     }
@@ -126,13 +128,13 @@ export default function AccountMenu({
           {userName ? (
             <Typography sx={TypographySx}>{userName}</Typography>
           ) : null}
-          <Tooltip title='Account settings'>
+          <Tooltip title="Account settings">
             <IconButton
               onClick={handleClick}
-              size='small'
+              size="small"
               sx={{ ml: 2 }}
               aria-controls={open ? 'account-menu' : undefined}
-              aria-haspopup='true'
+              aria-haspopup="true"
               aria-expanded={open ? 'true' : undefined}
             >
               <Avatar sx={AvatarSx}>{avatarContent ?? ''}</Avatar>
@@ -142,7 +144,7 @@ export default function AccountMenu({
       </Box>
       <Menu
         anchorEl={anchorEl}
-        id='account-menu'
+        id="account-menu"
         open={open}
         onClose={handleClose}
         onClick={handleClose}
