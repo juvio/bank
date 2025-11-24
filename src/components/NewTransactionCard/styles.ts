@@ -4,6 +4,7 @@ export const CardWrapperSx: SxProps = {
   flex: 1,
   display: 'flex',
   flexDirection: 'column',
+  height: '100%',
 };
 
 export const CardContentSx: SxProps = { flex: 1 };
