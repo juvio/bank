@@ -24,12 +24,12 @@ export const BoxTransactionHistoryCardSx: SxProps = {
   flex: 2,
   display: 'flex',
   flexDirection: 'column',
-  minHeight: { xs: 'auto', md: '400px' },
+  height: { xs: 'auto', md: '450px' },
 };
 
 export const BoxNewTransactionCard: SxProps = {
   flex: 1,
   display: 'flex',
   flexDirection: 'column',
-  minHeight: { xs: 'auto', md: '400px' },
+  height: { xs: 'auto', md: '450px' },
 };

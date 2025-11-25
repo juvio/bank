@@ -47,11 +47,31 @@ export default function TransactionHistoryCard({
   return (
     <Card sx={CardWrapperSx}>
       <CardContent sx={CardContentSx}>
-        <Typography variant='h6' component='h2' gutterBottom>
+        <Typography
+          variant="h6"
+          component="h2"
+          gutterBottom
+          sx={{ flexShrink: 0 }}
+        >
           Histórico de Transações
         </Typography>
         <TableContainer
-          sx={{ overflowX: 'hidden', overflowY: 'auto', flex: 1 }}
+          sx={{
+            overflowX: 'hidden',
+            overflowY: 'auto',
+            flex: 1,
+            '&::-webkit-scrollbar': {
+              width: '8px',
+            },
+            '&::-webkit-scrollbar-track': {
+              backgroundColor: 'background.default',
+              borderRadius: '4px',
+            },
+            '&::-webkit-scrollbar-thumb': {
+              backgroundColor: '#cecece',
+              borderRadius: '4px',
+            },
+          }}
         >
           <Table>
             <TableHead>
@@ -59,7 +79,7 @@ export default function TransactionHistoryCard({
                 <TableCell>Data</TableCell>
                 <TableCell>Tipo</TableCell>
                 <TableCell>Descrição</TableCell>
-                <TableCell align='right'>Valor</TableCell>
+                <TableCell align="right">Valor</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -69,7 +89,7 @@ export default function TransactionHistoryCard({
                   <TableCell>{TransactionMapper[transaction.type]}</TableCell>
                   <TableCell>{transaction.description}</TableCell>
                   <TableCell
-                    align='right'
+                    align="right"
                     sx={{
                       color:
                         transaction.type === 'deposit'

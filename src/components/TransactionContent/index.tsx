@@ -1,8 +1,12 @@
 'use client';
 
+import { useState, useMemo } from 'react';
 import { useBankAccountStore } from '@/stores/useBankAccountStore';
 import { Typography, Container, Box, Card, CardContent } from '@mui/material';
 import TransactionCard from '../TransactionCard';
+import TransactionFilter from '../TransactionFilter';
+import { transactionTypes } from '@/types/transaction-labels.type';
+import { TransactionType } from '@/types/transaction.type';
 import {
   BoxTransactionContentSx,
   BoxWrapperSx,
@@ -15,8 +19,109 @@ import {
   TypographyNoTransactionSx,
 } from './styles';
 
+function filterByType(
+  transactions: TransactionType[],
+  filterType: string
+): TransactionType[] {
+  if (filterType === 'all') return transactions;
+  return transactions.filter((transaction) => transaction.type === filterType);
+}
+
+function filterByPeriod(
+  transactions: TransactionType[],
+  filterPeriod: string
+): TransactionType[] {
+  if (filterPeriod === 'all') return transactions;
+
+  const now = new Date();
+  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+
+  return transactions.filter((transaction) => {
+    const transactionDate = new Date(transaction.date);
+
+    switch (filterPeriod) {
+      case 'today':
+        return transactionDate >= today;
+      case 'week':
+        const weekAgo = new Date(today);
+        weekAgo.setDate(weekAgo.getDate() - 7);
+        return transactionDate >= weekAgo;
+      case 'month':
+        const monthAgo = new Date(today);
+        monthAgo.setMonth(monthAgo.getMonth() - 1);
+        return transactionDate >= monthAgo;
+      case 'year':
+        const yearAgo = new Date(today);
+        yearAgo.setFullYear(yearAgo.getFullYear() - 1);
+        return transactionDate >= yearAgo;
+      default:
+        return true;
+    }
+  });
+}
+
+function matchesSearchTerm(
+  transaction: TransactionType,
+  searchLower: string
+): boolean {
+  const matchDescription = transaction.description
+    ?.toLowerCase()
+    .includes(searchLower);
+
+  const typeLabel =
+    transactionTypes
+      .find((t) => t.value === transaction.type)
+      ?.label?.toLowerCase() || '';
+  const matchType =
+    typeLabel.includes(searchLower) ||
+    transaction.type.toLowerCase().includes(searchLower);
+
+  const amountStr = transaction.amount.toString();
+  const formattedAmount = new Intl.NumberFormat('pt-BR', {
+    style: 'currency',
+    currency: 'BRL',
+  })
+    .format(transaction.amount)
+    .toLowerCase();
+  const matchAmount =
+    amountStr.includes(searchLower) || formattedAmount.includes(searchLower);
+
+  return matchDescription || matchType || matchAmount;
+}
+
+function filterBySearchTerm(
+  transactions: TransactionType[],
+  searchTerm: string
+): TransactionType[] {
+  if (searchTerm.trim() === '') return transactions;
+
+  const searchLower = searchTerm.toLowerCase();
+  return transactions.filter((transaction) =>
+    matchesSearchTerm(transaction, searchLower)
+  );
+}
+
 export default function TransactionContent() {
   const { transactions } = useBankAccountStore();
+  const [filterType, setFilterType] = useState('all');
+  const [filterPeriod, setFilterPeriod] = useState('all');
+  const [searchTerm, setSearchTerm] = useState('');
+
+  const filteredTransactions = useMemo(() => {
+    let filtered = [...transactions];
+
+    filtered = filterByType(filtered, filterType);
+    filtered = filterByPeriod(filtered, filterPeriod);
+    filtered = filterBySearchTerm(filtered, searchTerm);
+
+    return filtered;
+  }, [transactions, filterType, filterPeriod, searchTerm]);
+
+  const handleClearFilters = () => {
+    setFilterType('all');
+    setFilterPeriod('all');
+    setSearchTerm('');
+  };
 
   return (
     <Container maxWidth={false} sx={ContainerWrapperSx}>
@@ -24,23 +129,33 @@ export default function TransactionContent() {
         <Card sx={CardWrapperSx}>
           <CardContent sx={CardContentSx}>
             <Typography
-              variant='h5'
-              component='h1'
+              variant="h5"
+              component="h1"
               gutterBottom
               sx={TransactionTypographySx}
             >
               💰 Suas Transações
             </Typography>
-            <Typography variant='body1' sx={DescriptionTypographySx}>
+            <Typography variant="body1" sx={DescriptionTypographySx}>
               Confira aqui todo o histórico das suas movimentações financeiras
             </Typography>
           </CardContent>
         </Card>
 
+        <TransactionFilter
+          filterType={filterType}
+          filterPeriod={filterPeriod}
+          searchTerm={searchTerm}
+          onFilterTypeChange={setFilterType}
+          onFilterPeriodChange={setFilterPeriod}
+          onSearchTermChange={setSearchTerm}
+          onClearFilters={handleClearFilters}
+        />
+
         <Box sx={BoxTransactionContentSx}>
-          {transactions.length > 0 ? (
+          {filteredTransactions.length > 0 ? (
             <>
-              {transactions.map((transaction, index) => (
+              {filteredTransactions.map((transaction, index) => (
                 <TransactionCard
                   key={`transaction-${transaction.id}-${index}`}
                   id={transaction.id}
@@ -54,12 +169,13 @@ export default function TransactionContent() {
           ) : (
             <Card sx={CardNoTransactionSx}>
               <CardContent sx={{ py: 2 }}>
-                <Typography variant='h6' sx={TypographyNoTransactionSx}>
+                <Typography variant="h6" sx={TypographyNoTransactionSx}>
                   📋 Nenhuma transação encontrada
                 </Typography>
-                <Typography variant='body2' sx={{ color: 'text.secondary' }}>
-                  Suas transações aparecerão aqui quando você realizar
-                  movimentações na sua conta.
+                <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                  {transactions.length > 0
+                    ? 'Nenhuma transação corresponde aos filtros aplicados. Tente ajustar os critérios de busca.'
+                    : 'Suas transações aparecerão aqui quando você realizar movimentações na sua conta.'}
                 </Typography>
               </CardContent>
             </Card>
