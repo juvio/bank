@@ -33,39 +33,133 @@ Uma aplicação bancária moderna construída com Next.js, Material-UI e TypeScr
 
 - Node.js 18+
 - npm, yarn, pnpm ou bun
+- Docker e Docker Compose (para rodar com containers)
 
-### Instalação
+### Opção 1: Docker Completo (Produção/Deploy)
 
-1. Clone o repositório:
+Sobe toda a aplicação (MongoDB + Backend + Frontend) em containers. Ideal para produção.
 
 ```bash
-git clone <repository-url>
-cd superbank
+# Subir todos os serviços
+docker-compose up -d
+
+# Parar todos os serviços
+docker-compose down
+
+# Parar e remover volumes (limpa banco de dados)
+docker-compose down -v
 ```
 
-2. Instale as dependências:
+**Acesse:**
+- Frontend: [http://localhost:3000](http://localhost:3000)
+- Backend API: [http://localhost:5000](http://localhost:5000)
+- MongoDB: `localhost:27017`
+
+**Dados:** ✅ Persistem no volume Docker
+
+---
+
+### Opção 2: MongoDB no Docker + Backend/Frontend Local (Desenvolvimento)
+
+MongoDB roda em container, backend e frontend rodam localmente. Ideal para desenvolvimento com dados persistentes.
+
+#### 1. Subir apenas o MongoDB via Docker:
 
 ```bash
+docker-compose -f docker-compose.dev.yml up -d
+```
+
+#### 2. Instalar dependências:
+
+```bash
+# Backend
+cd backend
 npm install
-# ou
-yarn install
-# ou
-pnpm install
+
+# Frontend
+cd frontend
+npm install
 ```
 
-### Executando em desenvolvimento
+#### 3. Configurar variáveis de ambiente:
+
+Criar arquivo `backend/.env`:
+```env
+MONGO_URI=mongodb://admin:admin123@localhost:27017/bank_dev?authSource=admin
+```
+
+#### 4. Executar os servidores:
 
 ```bash
+# Backend (porta 5000)
+cd backend
+npm start
+
+# Frontend (porta 3000) - em outro terminal
+cd frontend
 npm run dev
-# ou
-yarn dev
-# ou
-pnpm dev
-# ou
-bun dev
 ```
 
-Abra [http://localhost:3000](http://localhost:3000) no seu navegador para ver a aplicação.
+#### 5. Parar o MongoDB (quando terminar):
+
+```bash
+docker-compose -f docker-compose.dev.yml down
+```
+
+**Acesse:**
+- Frontend: [http://localhost:3000](http://localhost:3000)
+- Backend API: [http://localhost:5000](http://localhost:5000)
+
+**Dados:** ✅ Persistem no volume Docker
+
+---
+
+### Opção 3: MongoDB em Memória (Desenvolvimento Rápido)
+
+Backend usa MongoDB em memória (sem Docker). Ideal para testes rápidos ou sem Docker disponível.
+
+#### 1. Instalar dependências:
+
+```bash
+# Backend
+cd backend
+npm install
+
+# Frontend
+cd frontend
+npm install
+```
+
+#### 2. Executar os servidores:
+
+```bash
+# Backend (porta 5000)
+cd backend
+npm start
+# ✅ Conecta automaticamente no MongoDB em memória
+
+# Frontend (porta 3000) - em outro terminal
+cd frontend
+npm run dev
+```
+
+**Acesse:**
+- Frontend: [http://localhost:3000](http://localhost:3000)
+- Backend API: [http://localhost:5000](http://localhost:5000)
+
+**Dados:** ❌ **Não persistem** (apagados ao parar o servidor)
+
+---
+
+### Comparação das Opções
+
+| Opção | Docker necessário? | Dados persistem? | Ideal para |
+|-------|-------------------|------------------|------------|
+| **1. Docker Completo** | ✅ Sim | ✅ Sim | Produção, deploy, testes de integração |
+| **2. MongoDB Docker + Local** | ✅ Sim (só MongoDB) | ✅ Sim | Desenvolvimento com dados reais |
+| **3. MongoDB em Memória** | ❌ Não | ❌ Não | Desenvolvimento rápido, testes unitários |
+
+---
 
 ### Executando o Storybook
 
