@@ -29,7 +29,7 @@ export default function IntroPage() {
           Bem vindo ao ByteBank
         </Typography>
         <Link
-          href={'/home'}
+          href={'/login'}
           style={{
             textDecoration: 'none',
           }}

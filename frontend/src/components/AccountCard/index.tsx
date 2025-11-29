@@ -4,7 +4,6 @@ import React, { useState } from 'react';
 
 import { Card, CardContent, Typography, IconButton, Box } from '@mui/material';
 import { AccountBalance, Visibility, VisibilityOff } from '@mui/icons-material';
-import mock from '@/mocks/mock.json';
 import {
   BoxAccountBalanceSx,
   BoxContaCorrenteSx,
@@ -40,20 +39,22 @@ export default function AccountCard({
       <CardContent sx={CardContentSx}>
         <Box sx={{ mb: 3 }}>
           <Typography
-            variant='h4'
-            component='h1'
+            variant="h4"
+            component="h1"
             gutterBottom
             sx={{ color: 'white' }}
           >
             Olá, {firstName}! 👋
           </Typography>
-          <Typography variant='subtitle1' sx={WelcomeTypographySx}>
-            Bem-vinda de volta ao ByteBank. Aqui está um resumo da sua conta.
+          <Typography variant="subtitle1" sx={WelcomeTypographySx}>
+            {accountBalance > 0
+              ? 'Bem-vindx de volta ao ByteBank. Aqui está um resumo da sua conta.'
+              : 'Bem-vindx ao ByteBank! Comece criando sua primeira transação.'}
           </Typography>
         </Box>
 
         <Box sx={BoxContaCorrenteSx}>
-          <Typography variant='h6' component='h2'>
+          <Typography variant="h6" component="h2">
             Conta Corrente
           </Typography>
           <IconButton
@@ -66,10 +67,10 @@ export default function AccountCard({
         <Box sx={BoxAccountBalanceSx}>
           <AccountBalance sx={{ fontSize: 40 }} />
           <Box>
-            <Typography variant='body2' sx={SaldoTypographySx}>
+            <Typography variant="body2" sx={SaldoTypographySx}>
               Saldo Disponível
             </Typography>
-            <Typography variant='h4' component='div' fontWeight='bold'>
+            <Typography variant="h4" component="div" fontWeight="bold">
               {showBalance ? formatCurrency(accountBalance) : '• • • • •'}
             </Typography>
           </Box>

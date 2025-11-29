@@ -1,5 +1,6 @@
 'use client';
 
+import { useEffect } from 'react';
 import { Box, Container } from '@mui/material';
 
 import AccountCard from '@/components/AccountCard';
@@ -7,7 +8,6 @@ import NewTransactionCard from '@/components/NewTransactionCard';
 import TransactionHistoryCard from '@/components/TransactionHistoryCard';
 import { useBankAccountStore } from '@/stores/useBankAccountStore';
 
-import mock from '@/mocks/mock.json';
 import {
   BoxAccountCardSx,
   BoxContainerHistoryCardSx,
@@ -16,32 +16,39 @@ import {
   BoxTransactionHistoryCardSx,
   ContainerSx,
 } from './styles';
+import { useAuthStore } from '@/stores/useAuthStore';
 
 export default function HomePage() {
-  const { transactions } = useBankAccountStore();
-  const initialBalance = (mock as unknown as { account: { balance: number } })
-    .account.balance;
+  const { transactions, balance, balanceNeedsUpdate } = useBankAccountStore();
+  const { user } = useAuthStore();
+  const fetchTransactions = useBankAccountStore(
+    (state) => state.fetchTransactions
+  );
+  const fetchBalance = useBankAccountStore((state) => state.fetchBalance);
 
-  const fullName = (mock as unknown as { account: { userName: string } })
-    .account.userName;
-  const accountBalance = transactions.reduce((balance, transaction) => {
-    if (transaction.type === 'deposit') {
-      return balance + transaction.amount;
-    } else if (
-      transaction.type === 'withdraw' ||
-      transaction.type === 'payment' ||
-      transaction.type === 'transfer'
-    ) {
-      return balance - transaction.amount;
+  useEffect(() => {
+    if (transactions.length === 0) {
+      fetchTransactions(0);
     }
-    return balance;
-  }, initialBalance);
+
+    if (balanceNeedsUpdate || balance === 0) {
+      fetchBalance();
+    }
+  }, [
+    transactions.length,
+    balanceNeedsUpdate,
+    balance,
+    fetchTransactions,
+    fetchBalance,
+  ]);
+
+  const fullName = user?.username ?? '';
 
   return (
-    <Container maxWidth='lg' sx={ContainerSx}>
+    <Container maxWidth="lg" sx={ContainerSx}>
       <Box sx={BoxContainerSx}>
         <Box sx={BoxAccountCardSx}>
-          <AccountCard accountBalance={accountBalance} accountName={fullName} />
+          <AccountCard accountBalance={balance} accountName={fullName} />
         </Box>
 
         <Box sx={BoxContainerHistoryCardSx}>

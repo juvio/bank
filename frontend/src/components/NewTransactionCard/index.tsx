@@ -11,7 +11,7 @@ import {
   Button,
   Box,
 } from '@mui/material';
-import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { useBankAccountStore } from '@/stores/useBankAccountStore';
 import { useModalStore } from '@/stores/useModalStore';
 import { transactionTypes } from '@/types';
@@ -24,6 +24,7 @@ import {
 } from './styles';
 
 export default function NewTransactionCard() {
+  const router = useRouter();
   const {
     transactions,
     setTransaction,
@@ -39,21 +40,19 @@ export default function NewTransactionCard() {
     date: new Date().toISOString().split('T')[0],
   });
 
-  const handleTransactionSubmit = () => {
-    console.log('Nova transação:', newTransaction);
-    resetTransaction(false);
-
-    setEditModal(false);
-    setDeleteModal(false);
-
-    setAddModal(true);
+  const handleOpenModal = () => {
     setTransaction({
-      id: newTransaction.id,
+      id: 0,
       type: newTransaction.type,
       amount: Number(newTransaction.amount),
       description: newTransaction.description,
-      date: newTransaction.date ?? '',
+      date: newTransaction.date,
     });
+    
+    setEditModal(false);
+    setDeleteModal(false);
+    setAddModal(true);
+    router.push('/transaction');
   };
 
   useEffect(() => {
@@ -67,28 +66,16 @@ export default function NewTransactionCard() {
       });
   }, [transactionShouldReset, transactions.length]);
 
-  const handleDisableLink = (
-    e: React.MouseEvent<HTMLAnchorElement, MouseEvent>
-  ) => {
-    if (
-      !newTransaction.type ||
-      !newTransaction.amount ||
-      !newTransaction.date
-    ) {
-      e.preventDefault();
-    }
-  };
-
   return (
     <Card sx={CardWrapperSx}>
       <CardContent sx={CardContentSx}>
-        <Typography variant='h6' component='h2' gutterBottom>
+        <Typography variant="h6" component="h2" gutterBottom>
           Nova Transação
         </Typography>
-        <Box component='form' sx={BoxTextFieldSx}>
+        <Box component="form" sx={BoxTextFieldSx}>
           <TextField
             select
-            label='Tipo de Transação'
+            label="Tipo de Transação"
             value={newTransaction.type}
             onChange={(e) =>
               setNewTransaction({ ...newTransaction, type: e.target.value })
@@ -106,8 +93,8 @@ export default function NewTransactionCard() {
             ))}
           </TextField>
           <TextField
-            label='Valor'
-            type='number'
+            label="Valor"
+            type="number"
             value={newTransaction.amount}
             onChange={(e) =>
               setNewTransaction({
@@ -122,8 +109,8 @@ export default function NewTransactionCard() {
             }}
           />
           <TextField
-            label='Data'
-            type='date'
+            label="Data"
+            type="date"
             value={newTransaction.date}
             onChange={(e) =>
               setNewTransaction({ ...newTransaction, date: e.target.value })
@@ -132,7 +119,7 @@ export default function NewTransactionCard() {
             required
           />
           <TextField
-            label='Descrição'
+            label="Descrição"
             value={newTransaction.description}
             onChange={(e) =>
               setNewTransaction({
@@ -147,24 +134,18 @@ export default function NewTransactionCard() {
         </Box>
       </CardContent>
       <CardActions sx={CardActionsSx}>
-        <Link
-          href={'/transaction'}
-          onClick={handleDisableLink}
-          aria-disabled='true'
+        <Button
+          variant="contained"
+          fullWidth
+          onClick={handleOpenModal}
+          disabled={
+            !newTransaction.type ||
+            !newTransaction.amount ||
+            !newTransaction.date
+          }
         >
-          <Button
-            variant='contained'
-            fullWidth
-            onClick={handleTransactionSubmit}
-            disabled={
-              !newTransaction.type ||
-              !newTransaction.amount ||
-              !newTransaction.date
-            }
-          >
-            Criar Transação
-          </Button>
-        </Link>
+          Criar Transação
+        </Button>
       </CardActions>
     </Card>
   );
