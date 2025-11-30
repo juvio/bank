@@ -4,4 +4,5 @@ export interface NewTransaction {
   id: number;
   description?: string;
   date: string;
+  attachment?: File | null;
 }

@@ -13,7 +13,9 @@ import {
   TextField,
   MenuItem,
   Box,
+  Link,
 } from '@mui/material';
+import AttachFileIcon from '@mui/icons-material/AttachFile';
 import { useRouter } from 'next/navigation';
 import { useState, ReactNode } from 'react';
 import {
@@ -89,7 +91,7 @@ export default function ModalComponent({
   const handleAddTransaction = async () => {
     try {
       await addTransaction(transaction);
-      await fetchBalance(); // Atualiza saldo imediatamente
+      await fetchBalance();
       onDismiss();
       setAddModal(false);
       resetTransaction(true);
@@ -403,6 +405,46 @@ export default function ModalComponent({
                   >
                     {transaction.description}
                   </Typography>
+                </Box>
+              )}
+              {transaction.attachmentUrl && (
+                <Box sx={{ mt: 2 }}>
+                  <Typography variant="body2" sx={DescriptionTitleSx}>
+                    Anexo:
+                  </Typography>
+                  {transaction.attachmentUrl?.endsWith('.pdf') ? (
+                    <Button
+                      variant="outlined"
+                      size="small"
+                      href={`http://localhost:5000${transaction.attachmentUrl}`}
+                      target="_blank"
+                      component="a"
+                      startIcon={<AttachFileIcon />}
+                      sx={{ mt: 1, textTransform: 'none' }}
+                    >
+                      Abrir PDF
+                    </Button>
+                  ) : (
+                    <Link
+                      href={`http://localhost:5000${transaction.attachmentUrl}`}
+                      target="_blank"
+                      sx={{ display: 'block', mt: 1 }}
+                    >
+                      <Box
+                        component="img"
+                        src={`http://localhost:5000${transaction.attachmentUrl}`}
+                        alt="Anexo"
+                        sx={{
+                          maxWidth: '100%',
+                          maxHeight: '200px',
+                          borderRadius: 2,
+                          cursor: 'pointer',
+                          border: '1px solid',
+                          borderColor: 'divider',
+                        }}
+                      />
+                    </Link>
+                  )}
                 </Box>
               )}
             </Box>

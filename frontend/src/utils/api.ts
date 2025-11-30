@@ -52,6 +52,30 @@ export const api = {
     options?: Omit<RequestOptions, 'method' | 'body'>
   ) => apiClient<T>(endpoint, { ...options, body, method: 'POST' }),
 
+  postFormData: async <T = any>(
+    endpoint: string,
+    formData: FormData
+  ): Promise<T> => {
+    const token = useAuthStore.getState().token;
+    
+    const response = await fetch(`${API_URL}${endpoint}`, {
+      method: 'POST',
+      headers: {
+        ...(token ? { Authorization: `Bearer ${token}` } : {}),
+      },
+      body: formData,
+    });
+
+    if (!response.ok) {
+      const error = await response.json().catch(() => ({}));
+      throw new Error(
+        error.message || `Erro na requisição: ${response.statusText}`
+      );
+    }
+
+    return response.json();
+  },
+
   put: <T = any>(
     endpoint: string,
     body?: any,
