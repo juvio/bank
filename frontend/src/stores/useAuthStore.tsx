@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
+import { api } from '@/utils/api';
 
 type AuthStore = {
   token: string | null;
@@ -18,8 +19,6 @@ type AuthStore = {
   isAuthenticated: () => boolean;
 };
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
-
 export const useAuthStore = create<AuthStore>()(
   persist(
     (set, get) => ({
@@ -28,19 +27,12 @@ export const useAuthStore = create<AuthStore>()(
 
       login: async (email: string, password: string) => {
         try {
-          const response = await fetch(`${API_URL}/user/auth`, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ email, password }),
-          });
+          const data = await api.post(
+            '/user/auth',
+            { email, password },
+            { requireAuth: false }
+          );
 
-          if (!response.ok) {
-            throw new Error('Credenciais inválidas');
-          }
-
-          const data = await response.json();
           const token = data.result.token;
 
           const payload = JSON.parse(atob(token.split('.')[1]));
@@ -71,19 +63,11 @@ export const useAuthStore = create<AuthStore>()(
 
       register: async (username: string, email: string, password: string) => {
         try {
-          const response = await fetch(`${API_URL}/user`, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ username, email, password }),
-          });
-
-          const data = await response.json();
-
-          if (!response.ok) {
-            throw new Error(data.error || 'Erro ao criar conta');
-          }
+          await api.post(
+            '/user',
+            { username, email, password },
+            { requireAuth: false }
+          );
         } catch (error) {
           console.error('Erro no registro:', error);
           throw error;
