@@ -413,6 +413,7 @@ export default function ModalComponent({
               variant="contained"
               fullWidth
               sx={CloseModalTextSx}
+              aria-label="Fechar modal"
             >
               Fechar
             </Button>

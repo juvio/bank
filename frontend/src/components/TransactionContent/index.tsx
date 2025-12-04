@@ -141,14 +141,21 @@ export default function TransactionContent() {
   };
 
   return (
-    <Container maxWidth={false} sx={ContainerWrapperSx}>
+    <Container
+      maxWidth={false}
+      sx={ContainerWrapperSx}
+      component="main"
+      role="region"
+      aria-labelledby="transactions-title"
+    >
       <Box sx={BoxWrapperSx}>
         <Card sx={CardWrapperSx}>
           <CardContent sx={CardContentSx}>
             <Typography
               variant="h5"
-              component="h1"
+              component="h2"
               gutterBottom
+              id="transactions-title"
               sx={TransactionTypographySx}
             >
               💰 Suas Transações
@@ -171,6 +178,9 @@ export default function TransactionContent() {
 
         {isLoading && transactions.length === 0 ? (
           <Box
+            role="status"
+            aria-live="polite"
+            aria-busy={isLoading}
             sx={{
               display: 'flex',
               flexDirection: 'column',
@@ -179,7 +189,7 @@ export default function TransactionContent() {
               py: 8,
             }}
           >
-            <CircularProgress size={50} thickness={4} />
+            <CircularProgress size={50} thickness={4} aria-hidden="true" />
             <Typography variant="body1" sx={{ color: 'text.secondary' }}>
               Carregando transações...
             </Typography>
@@ -198,6 +208,8 @@ export default function TransactionContent() {
               scrollThreshold={0.9}
               loader={
                 <Box
+                  role="status"
+                  aria-live="polite"
                   sx={{
                     display: 'flex',
                     flexDirection: 'column',
@@ -206,7 +218,11 @@ export default function TransactionContent() {
                     py: 3,
                   }}
                 >
-                  <CircularProgress size={30} thickness={4} />
+                  <CircularProgress
+                    size={30}
+                    thickness={4}
+                    aria-hidden="true"
+                  />
                   <Typography variant="body2" sx={{ color: 'text.secondary' }}>
                     Carregando mais transações...
                   </Typography>
@@ -217,28 +233,44 @@ export default function TransactionContent() {
                   <Typography
                     variant="body2"
                     sx={{ textAlign: 'center', py: 3, color: 'text.secondary' }}
+                    aria-live="polite"
                   >
                     Você viu todas as transações
                   </Typography>
                 ) : null
               }
             >
-              {filteredTransactions.map((transaction, index) => (
-                <TransactionCard
-                  key={`transaction-${transaction.id}-${index}`}
-                  id={transaction.id}
-                  type={transaction.type}
-                  amount={transaction.amount}
-                  description={transaction.description}
-                  date={transaction.date}
-                />
-              ))}
+              <Box
+                role="list"
+                aria-label="Lista de transações"
+                sx={{ display: 'grid', gap: 2 }}
+              >
+                {filteredTransactions.map((transaction, index) => (
+                  <Box
+                    role="listitem"
+                    key={`transaction-${transaction.id}-${index}`}
+                    tabIndex={-1}
+                  >
+                    <TransactionCard
+                      id={transaction.id}
+                      type={transaction.type}
+                      amount={transaction.amount}
+                      description={transaction.description}
+                      date={transaction.date}
+                    />
+                  </Box>
+                ))}
+              </Box>
             </InfiniteScroll>
           </Box>
         ) : (
-          <Card sx={CardNoTransactionSx}>
+          <Card sx={CardNoTransactionSx} role="status" aria-live="polite">
             <CardContent sx={{ py: 2 }}>
-              <Typography variant="h6" sx={TypographyNoTransactionSx}>
+              <Typography
+                variant="h6"
+                component="h3"
+                sx={TypographyNoTransactionSx}
+              >
                 📋 Nenhuma transação encontrada
               </Typography>
               <Typography variant="body2" sx={{ color: 'text.secondary' }}>

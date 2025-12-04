@@ -48,7 +48,7 @@ export default function NewTransactionCard() {
       description: newTransaction.description,
       date: newTransaction.date,
     });
-    
+
     setEditModal(false);
     setDeleteModal(false);
     setAddModal(true);
@@ -67,12 +67,21 @@ export default function NewTransactionCard() {
   }, [transactionShouldReset, transactions.length]);
 
   return (
-    <Card sx={CardWrapperSx}>
+    <Card sx={CardWrapperSx} role="region" aria-labelledby="new-transaction-title">
       <CardContent sx={CardContentSx}>
-        <Typography variant="h6" component="h2" gutterBottom>
+        <Typography
+          variant="h6"
+          component="h2"
+          gutterBottom
+          id="new-transaction-title"
+        >
           Nova Transação
         </Typography>
-        <Box component="form" sx={BoxTextFieldSx}>
+        <Box
+          component="form"
+          sx={BoxTextFieldSx}
+          aria-labelledby="new-transaction-title"
+        >
           <TextField
             select
             label="Tipo de Transação"
