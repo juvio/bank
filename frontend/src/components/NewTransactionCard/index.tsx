@@ -157,39 +157,43 @@ export default function NewTransactionCard() {
                 </MenuItem>
               ))}
             </TextField>
-            <TextField
-              label="Valor"
-              type="number"
-              value={newTransaction.amount}
-              onChange={(e) =>
-                setNewTransaction({
-                  ...newTransaction,
-                  amount: e.target.value,
-                })
-              }
-              fullWidth
-              required
-              InputProps={{
-                startAdornment: <Typography sx={{ mr: 1 }}>R$</Typography>,
-              }}
-              onBlur={() => handleAmountBlur()}
-              error={Boolean(errors)}
-              helperText={errors}
-            />
-            <DesktopDatePicker
-              label="Data"
-              value={dayjs(newTransaction.date)}
-              onChange={handleDateChange}
-              maxDate={dayjs()}
-              disableFuture
-              format="DD/MM/YYYY"
-              slotProps={{
-                textField: {
-                  fullWidth: true,
-                  required: true,
-                },
-              }}
-            />
+            <Box sx={{ display: 'flex', gap: 2 }}>
+              <TextField
+                label="Valor"
+                type="number"
+                value={newTransaction.amount}
+                onChange={(e) =>
+                  setNewTransaction({
+                    ...newTransaction,
+                    amount: e.target.value,
+                  })
+                }
+                fullWidth
+                required
+                slotProps={{
+                  input: {
+                    startAdornment: <Typography sx={{ mr: 1 }}>R$</Typography>,
+                  },
+                }}
+                onBlur={() => handleAmountBlur()}
+                error={Boolean(errors)}
+                helperText={errors}
+              />
+              <DesktopDatePicker
+                label="Data"
+                value={dayjs(newTransaction.date)}
+                onChange={handleDateChange}
+                maxDate={dayjs()}
+                disableFuture
+                format="DD/MM/YYYY"
+                slotProps={{
+                  textField: {
+                    fullWidth: true,
+                    required: true,
+                  },
+                }}
+              />
+            </Box>
             <TextField
               label="Descrição"
               value={newTransaction.description}
@@ -201,7 +205,8 @@ export default function NewTransactionCard() {
               }
               fullWidth
               multiline
-              rows={4}
+              rows={2}
+              sx={{ mt: errors ? -1.8 : 1 }}
             />
             <Box
               sx={{
@@ -247,17 +252,17 @@ export default function NewTransactionCard() {
               </Typography>
             )}
           </Box>
+          <CardActions sx={CardActionsSx}>
+            <Button
+              variant="contained"
+              fullWidth
+              onClick={handleOpenModal}
+              disabled={!isFormValid()}
+            >
+              Criar Transação
+            </Button>
+          </CardActions>
         </CardContent>
-        <CardActions sx={CardActionsSx}>
-          <Button
-            variant="contained"
-            fullWidth
-            onClick={handleOpenModal}
-            disabled={!isFormValid()}
-          >
-            Criar Transação
-          </Button>
-        </CardActions>
       </Card>
     </LocalizationProvider>
   );
