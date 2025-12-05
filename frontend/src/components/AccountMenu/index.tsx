@@ -66,11 +66,11 @@ export default function AccountMenu({
   const getIconForId = (id?: string) => {
     switch (id) {
       case 'profile':
-        return <AccountCircle fontSize='small' />;
+        return <AccountCircle fontSize="small" />;
       case 'settings':
-        return <Settings fontSize='small' />;
+        return <Settings fontSize="small" />;
       case 'logout':
-        return <Logout fontSize='small' />;
+        return <Logout fontSize="small" />;
       default:
         return null;
     }
@@ -131,14 +131,15 @@ export default function AccountMenu({
           {userName ? (
             <Typography sx={TypographySx}>{userName}</Typography>
           ) : null}
-          <Tooltip title='Account settings'>
+          <Tooltip title="Account settings">
             <IconButton
               onClick={handleClick}
-              size='small'
+              size="small"
               sx={{ ml: 2 }}
               aria-controls={open ? 'account-menu' : undefined}
-              aria-haspopup='true'
+              aria-haspopup="true"
               aria-expanded={open ? 'true' : undefined}
+              aria-label="Configurações da conta"
             >
               <Avatar sx={AvatarSx}>{avatarContent ?? ''}</Avatar>
             </IconButton>
@@ -147,7 +148,7 @@ export default function AccountMenu({
       </Box>
       <Menu
         anchorEl={anchorEl}
-        id='account-menu'
+        id="account-menu"
         open={open}
         onClose={handleClose}
         onClick={handleClose}
@@ -191,6 +192,7 @@ export default function AccountMenu({
                   if (mi.onClick) mi.onClick();
                   else handleMenuAction(mi.id);
                 }}
+                aria-label={mi.label}
               >
                 {mi.icon ?? getIconForId(mi.id) ? (
                   <ListItemIcon>{mi.icon ?? getIconForId(mi.id)}</ListItemIcon>

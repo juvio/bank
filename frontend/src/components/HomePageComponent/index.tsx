@@ -45,8 +45,21 @@ export default function HomePage() {
   const fullName = user?.username ?? '';
 
   return (
-    <Container maxWidth="lg" sx={ContainerSx}>
+    <Container maxWidth="lg" sx={ContainerSx} role="main" aria-labelledby="homepage-title">
       <Box sx={BoxContainerSx}>
+        <h1
+          id="homepage-title"
+          style={{
+            position: 'absolute',
+            left: '-10000px',
+            top: 'auto',
+            width: '1px',
+            height: '1px',
+            overflow: 'hidden',
+          }}
+        >
+          Página Inicial do Banco - {fullName}
+        </h1>
         <Box sx={BoxAccountCardSx}>
           <AccountCard accountBalance={balance} accountName={fullName} />
         </Box>

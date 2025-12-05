@@ -124,6 +124,7 @@ export default function TransactionCard({
                   onClick={handleOpenViewModal}
                   size="small"
                   sx={IconButtonViewSx}
+                  aria-label="Ver detalhes da transação"
                 >
                   <VisibilityIcon fontSize="small" />
                 </IconButton>
@@ -133,6 +134,7 @@ export default function TransactionCard({
                   onClick={handleOpenEditModal}
                   size="small"
                   sx={IconButtonEditSx}
+                  aria-label="Editar transação"
                 >
                   <EditIcon fontSize="small" />
                 </IconButton>
@@ -142,6 +144,7 @@ export default function TransactionCard({
                   onClick={handleOpenDeleteModal}
                   size="small"
                   sx={IconButtonDeleteSx}
+                  aria-label="Remover transação"
                 >
                   <DeleteIcon fontSize="small" />
                 </IconButton>

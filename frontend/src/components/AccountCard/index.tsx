@@ -35,18 +35,23 @@ export default function AccountCard({
   const firstName = fullName.split(' ')[0] ?? fullName;
 
   return (
-    <Card sx={CardWrapperSx}>
+    <Card sx={CardWrapperSx} role="region" aria-labelledby="account-card-title">
       <CardContent sx={CardContentSx}>
         <Box sx={{ mb: 3 }}>
           <Typography
             variant="h4"
-            component="h1"
+            id="account-card-title"
+            component="h2"
             gutterBottom
             sx={{ color: 'white' }}
           >
             Olá, {firstName}! 👋
           </Typography>
-          <Typography variant="subtitle1" sx={WelcomeTypographySx}>
+          <Typography
+            variant="subtitle1"
+            component="p"
+            sx={WelcomeTypographySx}
+          >
             {accountBalance > 0
               ? 'Bem-vindx de volta ao ByteBank. Aqui está um resumo da sua conta.'
               : 'Bem-vindx ao ByteBank! Comece criando sua primeira transação.'}
@@ -54,18 +59,19 @@ export default function AccountCard({
         </Box>
 
         <Box sx={BoxContaCorrenteSx}>
-          <Typography variant="h6" component="h2">
+          <Typography variant="h6" component="h2" id="account-type-title">
             Conta Corrente
           </Typography>
           <IconButton
             sx={{ color: 'white' }}
             onClick={() => setShowBalance(!showBalance)}
+            aria-label={showBalance ? 'Ocultar saldo' : 'Mostrar saldo'}
           >
             {showBalance ? <VisibilityOff /> : <Visibility />}
           </IconButton>
         </Box>
         <Box sx={BoxAccountBalanceSx}>
-          <AccountBalance sx={{ fontSize: 40 }} />
+          <AccountBalance sx={{ fontSize: 40 }} aria-hidden="true" />
           <Box>
             <Typography variant="body2" sx={SaldoTypographySx}>
               Saldo Disponível
