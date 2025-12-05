@@ -416,7 +416,14 @@ export default function ModalComponent({
                     <Button
                       variant="outlined"
                       size="small"
-                      href={`http://localhost:5000${transaction.attachmentUrl}`}
+                      href={
+                        transaction.attachmentUrl.startsWith('blob:')
+                          ? transaction.attachmentUrl
+                          : `${
+                              process.env.NEXT_PUBLIC_API_URL ||
+                              'http://localhost:5000'
+                            }${transaction.attachmentUrl}`
+                      }
                       target="_blank"
                       component="a"
                       startIcon={<AttachFileIcon />}
@@ -426,13 +433,27 @@ export default function ModalComponent({
                     </Button>
                   ) : (
                     <Link
-                      href={`http://localhost:5000${transaction.attachmentUrl}`}
+                      href={
+                        transaction.attachmentUrl.startsWith('blob:')
+                          ? transaction.attachmentUrl
+                          : `${
+                              process.env.NEXT_PUBLIC_API_URL ||
+                              'http://localhost:5000'
+                            }${transaction.attachmentUrl}`
+                      }
                       target="_blank"
                       sx={{ display: 'block', mt: 1 }}
                     >
                       <Box
                         component="img"
-                        src={`http://localhost:5000${transaction.attachmentUrl}`}
+                        src={
+                          transaction.attachmentUrl.startsWith('blob:')
+                            ? transaction.attachmentUrl
+                            : `${
+                                process.env.NEXT_PUBLIC_API_URL ||
+                                'http://localhost:5000'
+                              }${transaction.attachmentUrl}`
+                        }
                         alt="Anexo"
                         sx={{
                           maxWidth: '100%',

@@ -28,8 +28,20 @@ const mockHandlers: Record<string, any> = {
     return mockService.getTransactions(page, limit);
   },
 
-  'POST:/api/transactions': ({ body }: { body: any }) =>
-    mockService.addTransaction(body),
+  'POST:/api/transactions': ({ body }: { body: any }) => {
+    if (body instanceof FormData) {
+      const attachment = body.get('attachment') as File | null;
+      const transaction = {
+        type: body.get('type') as string,
+        amount: parseFloat(body.get('amount') as string),
+        description: body.get('description') as string,
+        date: body.get('date') as string,
+        ...(attachment && { attachment }),
+      };
+      return mockService.addTransaction(transaction);
+    }
+    return mockService.addTransaction(body);
+  },
 
   'PUT:/api/transactions/:id': ({
     endpoint,
@@ -135,8 +147,26 @@ export const api = {
     endpoint: string,
     formData: FormData
   ): Promise<T> => {
+    // Se estiver usando mock, intercepta FormData
+    if (USE_MOCK) {
+      console.log(`🎭 Mock Mode (FormData): POST ${endpoint}`);
+
+      const handler = findMockHandler('POST', endpoint);
+
+      if (handler) {
+        try {
+          return await handler({ endpoint, body: formData, method: 'POST' });
+        } catch (error: any) {
+          throw new Error(error.message || 'Erro no mock');
+        }
+      }
+
+      console.warn(`⚠️ Mock não encontrado para: POST ${endpoint}`);
+    }
+
+    // Chamada real para o backend
     const token = useAuthStore.getState().token;
-    
+
     const response = await fetch(`${API_URL}${endpoint}`, {
       method: 'POST',
       headers: {

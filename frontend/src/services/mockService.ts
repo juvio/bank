@@ -112,6 +112,7 @@ export const mockService = {
     amount: number;
     description: string;
     date: string;
+    attachment?: File;
   }) => {
     await delay();
 
@@ -122,6 +123,12 @@ export const mockService = {
       description: transaction.description,
       date: transaction.date,
     };
+
+    if (transaction.attachment) {
+      newTransaction.attachmentUrl = URL.createObjectURL(
+        transaction.attachment
+      );
+    }
 
     if (transaction.type === 'deposit') {
       mockState.balance += transaction.amount;
