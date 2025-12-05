@@ -181,6 +181,7 @@ export default function TransactionContent() {
             role="status"
             aria-live="polite"
             aria-busy={isLoading}
+            aria-label="Carregando suas transações"
             sx={{
               display: 'flex',
               flexDirection: 'column',
@@ -190,12 +191,20 @@ export default function TransactionContent() {
             }}
           >
             <CircularProgress size={50} thickness={4} aria-hidden="true" />
-            <Typography variant="body1" sx={{ color: 'text.secondary' }}>
+            <Typography
+              variant="body1"
+              sx={{ color: 'text.secondary' }}
+              id="loading-message"
+            >
               Carregando transações...
             </Typography>
           </Box>
         ) : filteredTransactions.length > 0 ? (
-          <Box sx={BoxTransactionContentSx}>
+          <Box
+            sx={BoxTransactionContentSx}
+            role="feed"
+            aria-label="Lista de transações"
+          >
             <InfiniteScroll
               dataLength={filteredTransactions.length}
               next={loadMore}
@@ -210,6 +219,7 @@ export default function TransactionContent() {
                 <Box
                   role="status"
                   aria-live="polite"
+                  aria-label="Carregando mais transações"
                   sx={{
                     display: 'flex',
                     flexDirection: 'column',
@@ -234,36 +244,54 @@ export default function TransactionContent() {
                     variant="body2"
                     sx={{ textAlign: 'center', py: 3, color: 'text.secondary' }}
                     aria-live="polite"
+                    role="status"
                   >
-                    Você viu todas as transações
+                    ✓ Você viu todas as {filteredTransactions.length} transações
                   </Typography>
                 ) : null
               }
             >
               {filteredTransactions.map((transaction, index) => (
-                <TransactionCard
+                <Box
                   key={`transaction-${transaction.id}-${index}`}
-                  id={transaction.id}
-                  type={transaction.type}
-                  amount={transaction.amount}
-                  description={transaction.description}
-                  date={transaction.date}
-                  attachmentUrl={transaction.attachmentUrl}
-                />
+                  role="article"
+                  aria-label={`Transação ${index + 1} de ${
+                    filteredTransactions.length
+                  }`}
+                >
+                  <TransactionCard
+                    id={transaction.id}
+                    type={transaction.type}
+                    amount={transaction.amount}
+                    description={transaction.description}
+                    date={transaction.date}
+                    attachmentUrl={transaction.attachmentUrl}
+                  />
+                </Box>
               ))}
             </InfiniteScroll>
           </Box>
         ) : (
-          <Card sx={CardNoTransactionSx} role="status" aria-live="polite">
+          <Card
+            sx={CardNoTransactionSx}
+            role="status"
+            aria-live="polite"
+            aria-label="Nenhuma transação encontrada"
+          >
             <CardContent sx={{ py: 2 }}>
               <Typography
                 variant="h6"
                 component="h3"
                 sx={TypographyNoTransactionSx}
+                id="empty-state-title"
               >
                 📋 Nenhuma transação encontrada
               </Typography>
-              <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+              <Typography
+                variant="body2"
+                sx={{ color: 'text.secondary' }}
+                aria-describedby="empty-state-title"
+              >
                 {transactions.length > 0
                   ? 'Nenhuma transação corresponde aos filtros aplicados. Tente ajustar os critérios de busca.'
                   : 'Suas transações aparecerão aqui quando você realizar movimentações na sua conta.'}
