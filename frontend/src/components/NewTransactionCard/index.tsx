@@ -10,11 +10,14 @@ import {
   MenuItem,
   Button,
   Box,
+  IconButton,
 } from '@mui/material';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 import dayjs, { Dayjs } from 'dayjs';
+import AttachFileIcon from '@mui/icons-material/AttachFile';
+import CloseIcon from '@mui/icons-material/Close';
 import { useRouter } from 'next/navigation';
 import { useBankAccountStore } from '@/stores/useBankAccountStore';
 import { useModalStore } from '@/stores/useModalStore';
@@ -38,6 +41,7 @@ export default function NewTransactionCard() {
     amount: '',
     description: '',
     date: new Date().toISOString().split('T')[0],
+    attachment: null,
   });
 
   const [errors, setErrors] = useState<string>('');
@@ -94,12 +98,22 @@ export default function NewTransactionCard() {
       amount: Number(newTransaction.amount),
       description: newTransaction.description,
       date: newTransaction.date,
+      attachment: newTransaction.attachment || undefined,
     });
 
     setEditModal(false);
     setDeleteModal(false);
     setAddModal(true);
     router.push('/transaction');
+  };
+
+  const onFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0] || null;
+    setNewTransaction({ ...newTransaction, attachment: file });
+  };
+
+  const onRemoveFile = () => {
+    setNewTransaction({ ...newTransaction, attachment: null });
   };
 
   useEffect(() => {
@@ -110,6 +124,7 @@ export default function NewTransactionCard() {
         amount: '',
         description: '',
         date: new Date().toISOString().split('T')[0],
+        attachment: null,
       });
       setErrors('');
     }
@@ -188,6 +203,49 @@ export default function NewTransactionCard() {
               multiline
               rows={4}
             />
+            <Box
+              sx={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: 1,
+                marginBottom: newTransaction.attachment ? 0 : 3,
+              }}
+            >
+              <Button
+                variant="outlined"
+                component="label"
+                startIcon={<AttachFileIcon />}
+                size="small"
+                sx={{ flex: 1, textTransform: 'none' }}
+              >
+                {newTransaction.attachment ? 'Trocar' : 'Anexar'}
+                <input
+                  type="file"
+                  hidden
+                  onChange={onFileChange}
+                  accept="image/*,.pdf"
+                />
+              </Button>
+              {newTransaction.attachment && (
+                <IconButton onClick={onRemoveFile} size="small" color="error">
+                  <CloseIcon />
+                </IconButton>
+              )}
+            </Box>
+            {newTransaction.attachment && (
+              <Typography
+                variant="caption"
+                color="text.secondary"
+                sx={{
+                  mt: -1,
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                  whiteSpace: 'nowrap',
+                }}
+              >
+                📎 {newTransaction.attachment.name}
+              </Typography>
+            )}
           </Box>
         </CardContent>
         <CardActions sx={CardActionsSx}>
