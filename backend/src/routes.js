@@ -205,6 +205,8 @@ router.get('/api/transactions', async (req, res) => {
       amount: t.value,
       description: t.from || t.to || 'Transação',
       date: t.date,
+      attachment: t.anexo,
+      attachmentUrl: t.urlAnexo,
     }));
 
     const hasNextPage = skip + limitNum < total;
@@ -240,7 +242,7 @@ router.get('/api/transactions', async (req, res) => {
  *     requestBody:
  *       required: true
  *       content:
- *         application/json:
+ *         multipart/form-data:
  *           schema:
  *             type: object
  *             required:
@@ -258,79 +260,123 @@ router.get('/api/transactions', async (req, res) => {
  *               date:
  *                 type: string
  *                 format: date
+ *               attachment:
+ *                 type: string
+ *                 format: binary
  *     responses:
  *       201:
  *         description: Transação criada com sucesso
  */
-router.post('/api/transactions', async (req, res) => {
-  try {
-    const { accountId, type, amount, description, date } = req.body;
+const multer = require('multer');
+const path = require('path');
 
-    if (!type || !amount || !description) {
-      return res.status(400).json({
-        error: 'type, amount e description são obrigatórios',
-      });
-    }
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, path.join(__dirname, '../uploads'));
+  },
+  filename: function (req, file, cb) {
+    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
+    cb(null, uniqueSuffix + path.extname(file.originalname));
+  },
+});
 
-    const DetailedAccountModel = require('./models/DetailedAccount');
-    const detailedAccountRepository = require('./infra/mongoose/repository/detailedAccountRepository');
-    const accountRepository = require('./infra/mongoose/repository/accountRepository');
-    const saveTransaction = require('./feature/Transaction/saveTransaction');
-    const mongoose = require('mongoose');
+const upload = multer({
+  storage: storage,
+  limits: { fileSize: 5 * 1024 * 1024 }, // 5MB
+  fileFilter: function (req, file, cb) {
+    const allowedTypes = /jpeg|jpg|png|pdf/;
+    const extname = allowedTypes.test(
+      path.extname(file.originalname).toLowerCase()
+    );
+    const mimetype = allowedTypes.test(file.mimetype);
 
-    // Buscar a conta do usuário logado
-    let validAccountId;
-    if (accountId && mongoose.Types.ObjectId.isValid(accountId)) {
-      validAccountId = accountId;
+    if (extname && mimetype) {
+      return cb(null, true);
     } else {
-      // Busca a conta do usuário logado (via JWT)
-      const userId = req.user.id;
-      const accounts = await accountRepository.get({
-        userId: new mongoose.Types.ObjectId(userId),
-      });
+      cb(new Error('Apenas imagens (JPEG, PNG) e PDF são permitidos'));
+    }
+  },
+});
 
-      if (!accounts || accounts.length === 0) {
-        return res
-          .status(404)
-          .json({ error: 'Conta não encontrada para este usuário' });
+router.post(
+  '/api/transactions',
+  upload.single('attachment'),
+  async (req, res) => {
+    try {
+      const { accountId, type, amount, description, date } = req.body;
+
+      if (!type || !amount) {
+        return res.status(400).json({
+          error: 'type e amount são obrigatórios',
+        });
       }
 
-      validAccountId = accounts[0]._id;
+      const DetailedAccountModel = require('./models/DetailedAccount');
+      const detailedAccountRepository = require('./infra/mongoose/repository/detailedAccountRepository');
+      const accountRepository = require('./infra/mongoose/repository/accountRepository');
+      const saveTransaction = require('./feature/Transaction/saveTransaction');
+      const mongoose = require('mongoose');
+
+      // Buscar a conta do usuário logado
+      let validAccountId;
+      if (accountId && mongoose.Types.ObjectId.isValid(accountId)) {
+        validAccountId = accountId;
+      } else {
+        // Busca a conta do usuário logado (via JWT)
+        const userId = req.user.id;
+        const accounts = await accountRepository.get({
+          userId: new mongoose.Types.ObjectId(userId),
+        });
+
+        if (!accounts || accounts.length === 0) {
+          return res
+            .status(404)
+            .json({ error: 'Conta não encontrada para este usuário' });
+        }
+
+        validAccountId = accounts[0]._id;
+      }
+
+      const attachmentName = req.file ? req.file.filename : null;
+      const attachmentUrl = req.file ? `/uploads/${req.file.filename}` : null;
+
+      const transactionDTO = new DetailedAccountModel({
+        accountId: validAccountId,
+        type: type,
+        value: amount,
+        from: type === 'deposit' ? description : null,
+        to: type !== 'deposit' ? description : null,
+        date: date ? new Date(date) : new Date(),
+        anexo: attachmentName,
+        urlAnexo: attachmentUrl,
+      });
+
+      const savedTransaction = await saveTransaction({
+        transaction: transactionDTO,
+        repository: detailedAccountRepository,
+      });
+
+      const formattedTransaction = {
+        id: savedTransaction.id,
+        type: savedTransaction.type,
+        amount: savedTransaction.value,
+        description:
+          savedTransaction.from || savedTransaction.to || description,
+        date: savedTransaction.date,
+        attachment: savedTransaction.anexo,
+        attachmentUrl: savedTransaction.urlAnexo,
+      };
+
+      res.status(201).json({
+        message: 'Transação criada com sucesso',
+        result: formattedTransaction,
+      });
+    } catch (error) {
+      console.error('Error creating transaction:', error);
+      res.status(500).json({ error: 'Erro ao criar transação' });
     }
-
-    const transactionDTO = new DetailedAccountModel({
-      accountId: validAccountId,
-      type: type,
-      value: amount,
-      from: type === 'deposit' ? description : null,
-      to: type !== 'deposit' ? description : null,
-      date: date ? new Date(date) : new Date(),
-      anexo: null,
-      urlAnexo: null,
-    });
-
-    const savedTransaction = await saveTransaction({
-      transaction: transactionDTO,
-      repository: detailedAccountRepository,
-    });
-
-    const formattedTransaction = {
-      id: savedTransaction.id,
-      type: savedTransaction.type,
-      amount: savedTransaction.value,
-      description: savedTransaction.from || savedTransaction.to || description,
-      date: savedTransaction.date,
-    };
-
-    res.status(201).json({
-      message: 'Transação criada com sucesso',
-      result: formattedTransaction,
-    });
-  } catch (error) {
-    console.error('Error creating transaction:', error);
-    res.status(500).json({ error: 'Erro ao criar transação' });
   }
-});
+);
 
 /**
  * @swagger

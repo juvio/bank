@@ -231,6 +231,7 @@ export default function TransactionContent() {
                   amount={transaction.amount}
                   description={transaction.description}
                   date={transaction.date}
+                  attachmentUrl={transaction.attachmentUrl}
                 />
               ))}
             </InfiniteScroll>

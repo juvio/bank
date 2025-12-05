@@ -29,6 +29,7 @@ type TransactionCardProps = {
   description?: string;
   amount: number;
   date: string;
+  attachmentUrl?: string;
 };
 
 export default function TransactionCard({
@@ -37,6 +38,7 @@ export default function TransactionCard({
   amount,
   description,
   date,
+  attachmentUrl,
 }: TransactionCardProps) {
   const { setEditModal, setDeleteModal, setAddModal, setViewModal } =
     useModalStore();
@@ -53,6 +55,7 @@ export default function TransactionCard({
       amount: amount,
       description: description,
       date: date ?? '',
+      attachmentUrl: attachmentUrl ?? '',
     });
     setEditModal(true);
   };
@@ -83,6 +86,7 @@ export default function TransactionCard({
       amount: amount,
       description: description,
       date: date ?? '',
+      attachmentUrl: attachmentUrl ?? '',
     });
     setViewModal(true);
   };
@@ -90,14 +94,14 @@ export default function TransactionCard({
   return (
     <Card sx={CardWrapperSx}>
       <CardContent>
-        <Typography variant='caption' sx={TypographyDateSx}>
+        <Typography variant="caption" sx={TypographyDateSx}>
           {formatDate(date)}
         </Typography>
 
         <Box sx={BoxSx}>
           <Box sx={{ flex: 1 }}>
             <Typography
-              variant='h6'
+              variant="h6"
               sx={{
                 fontWeight: 'bold',
                 color: type === 'deposit' ? 'success.main' : 'error.main',
@@ -108,38 +112,38 @@ export default function TransactionCard({
           </Box>
 
           <Box sx={TransactionBoxSx}>
-            <Typography variant='body1' sx={TransactionTypographySx}>
+            <Typography variant="body1" sx={TransactionTypographySx}>
               {TransactionMapper[type]}
             </Typography>
           </Box>
 
           <Box sx={BoxViewSx}>
             <Box sx={{ display: 'flex', gap: 1 }}>
-              <Link href='/transaction'>
+              <Link href="/transaction">
                 <IconButton
                   onClick={handleOpenViewModal}
-                  size='small'
+                  size="small"
                   sx={IconButtonViewSx}
                 >
-                  <VisibilityIcon fontSize='small' />
+                  <VisibilityIcon fontSize="small" />
                 </IconButton>
               </Link>
-              <Link href='/transaction'>
+              <Link href="/transaction">
                 <IconButton
                   onClick={handleOpenEditModal}
-                  size='small'
+                  size="small"
                   sx={IconButtonEditSx}
                 >
-                  <EditIcon fontSize='small' />
+                  <EditIcon fontSize="small" />
                 </IconButton>
               </Link>
-              <Link href='/transaction'>
+              <Link href="/transaction">
                 <IconButton
                   onClick={handleOpenDeleteModal}
-                  size='small'
+                  size="small"
                   sx={IconButtonDeleteSx}
                 >
-                  <DeleteIcon fontSize='small' />
+                  <DeleteIcon fontSize="small" />
                 </IconButton>
               </Link>
             </Box>
