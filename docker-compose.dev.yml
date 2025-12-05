@@ -1,0 +1,16 @@
+volumes:
+  mongodb_dev_data:
+
+services:
+  mongodb:
+    image: mongo:7
+    container_name: bank-mongodb-dev
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: admin123
+      MONGO_INITDB_DATABASE: bank_dev
+    volumes:
+      - mongodb_dev_data:/data/db

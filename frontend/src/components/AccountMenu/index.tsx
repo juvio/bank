@@ -1,0 +1,205 @@
+'use client';
+
+import * as React from 'react';
+import { useRouter } from 'next/navigation';
+import { useAuthStore } from '@/stores/useAuthStore';
+
+import {
+  Box,
+  Avatar,
+  Menu,
+  MenuItem,
+  ListItemIcon,
+  Button,
+  IconButton,
+  Typography,
+  Tooltip,
+} from '@mui/material';
+import AccountCircle from '@mui/icons-material/AccountCircle';
+import Settings from '@mui/icons-material/Settings';
+import Logout from '@mui/icons-material/Logout';
+import {
+  AvatarSx,
+  BoxSx,
+  BoxWrapperSx,
+  ButtonSx,
+  TypographyBoxSx,
+  TypographySx,
+} from './styles';
+
+export type AccountMenuNavItem = {
+  id?: string;
+  label: string;
+  onClick?: () => void;
+};
+
+export type AccountMenuAction = {
+  id?: string;
+  label: string;
+  icon?: React.ReactNode;
+  onClick?: () => void;
+};
+
+export default function AccountMenu({
+  userName,
+  avatarContent,
+  navItems,
+  menuItems,
+}: {
+  userName?: string;
+  avatarContent?: React.ReactNode;
+  navItems?: AccountMenuNavItem[];
+  menuItems?: AccountMenuAction[] | undefined;
+}) {
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const router = useRouter();
+  const logout = useAuthStore((state) => state.logout);
+
+  const open = Boolean(anchorEl);
+  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const getIconForId = (id?: string) => {
+    switch (id) {
+      case 'profile':
+        return <AccountCircle fontSize='small' />;
+      case 'settings':
+        return <Settings fontSize='small' />;
+      case 'logout':
+        return <Logout fontSize='small' />;
+      default:
+        return null;
+    }
+  };
+
+  const handleNav = (navId?: string) => {
+    if (!navId) return;
+    switch (navId) {
+      case 'home':
+        router.push('/home');
+        break;
+      case 'transactions':
+        router.push('/transactions');
+        break;
+      case 'cards':
+        router.push('/cards');
+        break;
+      default:
+        console.log('nav click', navId);
+    }
+  };
+
+  const handleMenuAction = (actionId?: string) => {
+    if (!actionId) return;
+    switch (actionId) {
+      case 'profile':
+        router.push('/profile');
+        break;
+      case 'settings':
+        router.push('/settings');
+        break;
+      case 'logout':
+        logout();
+        router.push('/login');
+        break;
+      default:
+        console.log('menu action', actionId);
+    }
+  };
+  return (
+    <React.Fragment>
+      <Box sx={BoxWrapperSx}>
+        <Box sx={BoxSx}>
+          {navItems?.map((item) => (
+            <Button
+              key={item.id ?? item.label}
+              onClick={() => {
+                if (item.onClick) item.onClick();
+                else handleNav(item.id);
+              }}
+              sx={ButtonSx}
+            >
+              {item.label}
+            </Button>
+          ))}
+        </Box>
+        <Box sx={TypographyBoxSx}>
+          {userName ? (
+            <Typography sx={TypographySx}>{userName}</Typography>
+          ) : null}
+          <Tooltip title='Account settings'>
+            <IconButton
+              onClick={handleClick}
+              size='small'
+              sx={{ ml: 2 }}
+              aria-controls={open ? 'account-menu' : undefined}
+              aria-haspopup='true'
+              aria-expanded={open ? 'true' : undefined}
+            >
+              <Avatar sx={AvatarSx}>{avatarContent ?? ''}</Avatar>
+            </IconButton>
+          </Tooltip>
+        </Box>
+      </Box>
+      <Menu
+        anchorEl={anchorEl}
+        id='account-menu'
+        open={open}
+        onClose={handleClose}
+        onClick={handleClose}
+        slotProps={{
+          paper: {
+            elevation: 0,
+            sx: {
+              overflow: 'visible',
+              filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
+              mt: 1.5,
+              '& .MuiAvatar-root': {
+                width: 32,
+                height: 32,
+                ml: -0.5,
+                mr: 1,
+              },
+              '&::before': {
+                content: '""',
+                display: 'block',
+                position: 'absolute',
+                top: 0,
+                right: 14,
+                width: 10,
+                height: 10,
+                bgcolor: 'background.paper',
+                transform: 'translateY(-50%) rotate(45deg)',
+                zIndex: 0,
+              },
+            },
+          },
+        }}
+        transformOrigin={{ horizontal: 'right', vertical: 'top' }}
+        anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+      >
+        {menuItems?.length
+          ? menuItems.map((mi) => (
+              <MenuItem
+                key={mi.id ?? mi.label}
+                onClick={() => {
+                  handleClose();
+                  if (mi.onClick) mi.onClick();
+                  else handleMenuAction(mi.id);
+                }}
+              >
+                {mi.icon ?? getIconForId(mi.id) ? (
+                  <ListItemIcon>{mi.icon ?? getIconForId(mi.id)}</ListItemIcon>
+                ) : null}
+                {mi.label}
+              </MenuItem>
+            ))
+          : null}
+      </Menu>
+    </React.Fragment>
+  );
+}

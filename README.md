@@ -33,39 +33,174 @@ Uma aplicação bancária moderna construída com Next.js, Material-UI e TypeScr
 
 - Node.js 18+
 - npm, yarn, pnpm ou bun
+- Docker e Docker Compose (para rodar com containers)
 
-### Instalação
+### Opção 1: Docker Completo
 
-1. Clone o repositório:
+Sobe toda a aplicação (MongoDB + Backend + Frontend) em containers.
 
 ```bash
-git clone <repository-url>
-cd superbank
+# Subir todos os serviços
+docker-compose up -d
+
+# Parar todos os serviços
+docker-compose down
+
+# Parar e remover volumes (limpa banco de dados)
+docker-compose down -v
 ```
 
-2. Instale as dependências:
+**Acesse:**
+
+- Frontend: [http://localhost:3000](http://localhost:3000)
+- Backend API: [http://localhost:5000](http://localhost:5000)
+- MongoDB: `localhost:27017`
+
+**Dados:** ✅ Persistem no volume Docker
+
+---
+
+### Opção 2: MongoDB no Docker + Backend/Frontend Local
+
+MongoDB roda em container, backend e frontend rodam localmente.
+
+#### 1. Subir apenas o MongoDB via Docker:
 
 ```bash
+docker-compose -f docker-compose.dev.yml up -d
+```
+
+#### 2. Instalar dependências:
+
+```bash
+# Backend
+cd backend
 npm install
-# ou
-yarn install
-# ou
-pnpm install
+
+# Frontend
+cd frontend
+npm install
 ```
 
-### Executando em desenvolvimento
+#### 3. Configurar variáveis de ambiente:
+
+Criar arquivo `backend/.env`:
+
+```env
+MONGO_URI=mongodb://admin:admin123@localhost:27017/bank_dev?authSource=admin
+```
+
+#### 4. Executar os servidores:
 
 ```bash
+# Backend (porta 5000)
+cd backend
+npm start
+
+# Frontend (porta 3000) - em outro terminal
+cd frontend
 npm run dev
-# ou
-yarn dev
-# ou
-pnpm dev
-# ou
-bun dev
 ```
 
-Abra [http://localhost:3000](http://localhost:3000) no seu navegador para ver a aplicação.
+#### 5. Parar o MongoDB (quando terminar):
+
+```bash
+docker-compose -f docker-compose.dev.yml down
+```
+
+**Acesse:**
+
+- Frontend: [http://localhost:3000](http://localhost:3000)
+- Backend API: [http://localhost:5000](http://localhost:5000)
+
+**Dados:** ✅ Persistem no volume Docker
+
+---
+
+### Opção 3: MongoDB em Memória
+
+Backend usa MongoDB em memória (sem Docker).
+
+#### 1. Instalar dependências:
+
+```bash
+# Backend
+cd backend
+npm install
+
+# Frontend
+cd frontend
+npm install
+```
+
+#### 2. Configurar variável de ambiente:
+
+Criar arquivo `frontend/.env.local`:
+
+```env
+NEXT_PUBLIC_USE_MOCK=false
+NEXT_PUBLIC_API_URL=http://localhost:5000
+```
+
+#### 3. Executar os servidores:
+
+```bash
+# Backend (porta 5000)
+cd backend
+npm start
+
+# Frontend (porta 3000) - em outro terminal
+cd frontend
+npm run dev
+```
+
+**Acesse:**
+
+- Frontend: [http://localhost:3000](http://localhost:3000)
+- Backend API: [http://localhost:5000](http://localhost:5000)
+
+**Dados:** ❌ **Não persistem** (apagados ao parar o servidor)
+
+---
+
+### Opção 4: Frontend com Mock (Sem Backend) 🎭
+
+Frontend roda com dados mockados, sem precisar de backend ou banco de dados. **Usado em produção na Vercel.**
+
+#### 1. Instalar dependências:
+
+```bash
+cd frontend
+npm install
+```
+
+#### 2. Configurar variável de ambiente:
+
+Criar arquivo `frontend/.env.local`:
+
+```env
+NEXT_PUBLIC_USE_MOCK=true
+```
+
+#### 3. Executar o frontend:
+
+```bash
+cd frontend
+npm run dev
+```
+
+**Acesse:**
+
+- Frontend: [http://localhost:3000](http://localhost:3000)
+
+**Credenciais de teste:**
+
+- Email: `user@test.com`
+- Senha: `123456`
+
+**Dados:** 🎭 Mockados em memória (resetados ao recarregar a página)
+
+---
 
 ### Executando o Storybook
 
@@ -97,7 +232,12 @@ src/
 │   ├── TransactionCard/   # Card de transação
 │   └── Modal/             # Sistema de modal
 ├── stores/                # Gerenciamento de estado (Zustand)
+├── services/              # Camada de serviços
+│   └── mockService.ts     # Serviço de dados mockados
+├── utils/                 # Utilitários
+│   └── api.ts             # Cliente de API (mock ou real)
 ├── types/                 # Definições de tipos TypeScript
 ├── mocks/                 # Dados mockados para desenvolvimento
+│   └── mock.json          # Dados de conta e transações
 └── stories/               # Histórias do Storybook
 ```
