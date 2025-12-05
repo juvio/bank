@@ -25,12 +25,8 @@ import {
 
 export default function NewTransactionCard() {
   const router = useRouter();
-  const {
-    transactions,
-    setTransaction,
-    transactionShouldReset,
-    resetTransaction,
-  } = useBankAccountStore();
+  const { transactions, setTransaction, transactionShouldReset } =
+    useBankAccountStore();
   const { setAddModal, setEditModal, setDeleteModal } = useModalStore();
   const [newTransaction, setNewTransaction] = useState<NewTransaction>({
     id: transactions.length + 1,
@@ -48,7 +44,7 @@ export default function NewTransactionCard() {
       description: newTransaction.description,
       date: newTransaction.date,
     });
-    
+
     setEditModal(false);
     setDeleteModal(false);
     setAddModal(true);

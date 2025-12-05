@@ -11,7 +11,7 @@ const convertMockTransactions = (): TransactionType[] => {
   }));
 };
 
-let mockState = {
+const mockState = {
   balance: mockData.account.balance,
   transactions: convertMockTransactions(),
   user: {
@@ -59,7 +59,7 @@ export const mockService = {
     throw new Error('Credenciais inválidas');
   },
 
-  register: async (username: string, email: string, password: string) => {
+  register: async (username: string, email: string) => {
     await delay();
 
     if (email === MOCK_CREDENTIALS.email) {

@@ -17,7 +17,7 @@ const mockHandlers: Record<string, any> = {
     mockService.login(body.email, body.password),
 
   'POST:/user': ({ body }: { body: any }) =>
-    mockService.register(body.username, body.email, body.password),
+    mockService.register(body.username, body.email),
 
   'GET:/account': () => mockService.getAccount(),
 
