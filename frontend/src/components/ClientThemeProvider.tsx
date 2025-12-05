@@ -13,7 +13,7 @@ const theme = createTheme({
     },
     text: {
       primary: '#222222',
-      secondary: 'black',
+      secondary: '#000',
       disabled: 'white',
     },
   },

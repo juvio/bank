@@ -240,27 +240,17 @@ export default function TransactionContent() {
                 ) : null
               }
             >
-              <Box
-                role="list"
-                aria-label="Lista de transações"
-                sx={{ display: 'grid', gap: 2 }}
-              >
-                {filteredTransactions.map((transaction, index) => (
-                  <Box
-                    role="listitem"
-                    key={`transaction-${transaction.id}-${index}`}
-                    tabIndex={-1}
-                  >
-                    <TransactionCard
-                      id={transaction.id}
-                      type={transaction.type}
-                      amount={transaction.amount}
-                      description={transaction.description}
-                      date={transaction.date}
-                    />
-                  </Box>
-                ))}
-              </Box>
+              {filteredTransactions.map((transaction, index) => (
+                <TransactionCard
+                  key={`transaction-${transaction.id}-${index}`}
+                  id={transaction.id}
+                  type={transaction.type}
+                  amount={transaction.amount}
+                  description={transaction.description}
+                  date={transaction.date}
+                  attachmentUrl={transaction.attachmentUrl}
+                />
+              ))}
             </InfiniteScroll>
           </Box>
         ) : (

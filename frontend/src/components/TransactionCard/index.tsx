@@ -29,6 +29,7 @@ type TransactionCardProps = {
   description?: string;
   amount: number;
   date: string;
+  attachmentUrl?: string;
 };
 
 export default function TransactionCard({
@@ -37,6 +38,7 @@ export default function TransactionCard({
   amount,
   description,
   date,
+  attachmentUrl,
 }: TransactionCardProps) {
   const { setEditModal, setDeleteModal, setAddModal, setViewModal } =
     useModalStore();
@@ -53,6 +55,7 @@ export default function TransactionCard({
       amount: amount,
       description: description,
       date: date ?? '',
+      attachmentUrl: attachmentUrl ?? '',
     });
     setEditModal(true);
   };
@@ -83,6 +86,7 @@ export default function TransactionCard({
       amount: amount,
       description: description,
       date: date ?? '',
+      attachmentUrl: attachmentUrl ?? '',
     });
     setViewModal(true);
   };
