@@ -44,7 +44,7 @@ export default function HomePage({ fullname }: { fullname: string }) {
     <Container maxWidth='lg' sx={ContainerSx}>
       <Box sx={BoxContainerSx}>
         <Box sx={BoxAccountCardSx}>
-          <AccountCard accountBalance={300} accountName={fullname} />
+          <AccountCard accountBalance={balance} accountName={fullname} />
         </Box>
 
         <Box sx={BoxContainerHistoryCardSx}>
