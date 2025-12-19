@@ -53,6 +53,16 @@ export const useAuthStore = create<AuthStore>()(
               email: payload.email,
             },
           });
+          // Salva token nos cookies para ser acessível para as rotas server side
+          if (typeof document !== 'undefined') {
+            const expires = payload.exp
+              ? `; expires=${new Date(payload.exp * 1000).toUTCString()}`
+              : '';
+            document.cookie =
+              `token=${encodeURIComponent(token)}; path=/` +
+              expires +
+              `; Secure; SameSite=Strict`;
+          }
 
           return token;
         } catch (error) {
