@@ -218,26 +218,3 @@ bun storybook
 
 Abra [http://localhost:6006](http://localhost:6006) no seu navegador para ver o Storybook.
 
-## 📁 Estrutura do Projeto
-
-```
-src/
-├── app/                    # App Router do Next.js
-│   ├── (operations)/      # Grupo de rotas operacionais
-│   │   ├── home/          # Página principal
-│   │   └── transactions/  # Página de transações
-│   └── @modal/            # Slot paralelo para modais
-├── components/            # Componentes reutilizáveis
-│   ├── AccountCard/       # Card de conta bancária
-│   ├── TransactionCard/   # Card de transação
-│   └── Modal/             # Sistema de modal
-├── stores/                # Gerenciamento de estado (Zustand)
-├── services/              # Camada de serviços
-│   └── mockService.ts     # Serviço de dados mockados
-├── utils/                 # Utilitários
-│   └── api.ts             # Cliente de API (mock ou real)
-├── types/                 # Definições de tipos TypeScript
-├── mocks/                 # Dados mockados para desenvolvimento
-│   └── mock.json          # Dados de conta e transações
-└── stories/               # Histórias do Storybook
-```

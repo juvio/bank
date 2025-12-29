@@ -23,6 +23,7 @@ import { useBankAccountStore } from '@/stores/useBankAccountStore';
 import { useModalStore } from '@/stores/useModalStore';
 import { transactionTypes } from '@/types';
 import { NewTransaction } from '@/types/new-transaction.type';
+import { useTransactionValidation } from '@/hooks/useTransactionValidation';
 import {
   BoxTextFieldSx,
   CardActionsSx,
@@ -44,41 +45,12 @@ export default function NewTransactionCard() {
     attachment: null,
   });
 
-  const [errors, setErrors] = useState<string>('');
-
-  const isAmountValid = (): boolean => {
-    if (!newTransaction.amount) {
-      return false;
-    }
-    const amountNum = Number(newTransaction.amount);
-    if (Number.isNaN(amountNum) || amountNum <= 0) {
-      return false;
-    }
-    return true;
-  };
-
-  const handleAmountBlur = () => {
-    let errorMsg = '';
-
-    if (!newTransaction.amount) {
-      errorMsg = 'Valor obrigatório';
-    } else {
-      const amountNum = Number(newTransaction.amount);
-      if (Number.isNaN(amountNum) || amountNum <= 0) {
-        errorMsg = 'Insira um valor válido';
-      }
-    }
-
-    setErrors(errorMsg);
-  };
-
-  const isFormValid = useCallback((): boolean => {
-    const amountValid = isAmountValid();
-    const dateValid = newTransaction.date !== '';
-    const typeValid = newTransaction.type !== '';
-
-    return amountValid && dateValid && typeValid;
-  }, [newTransaction]);
+  const { errors, isFormValid, handleAmountBlur, setErrors } =
+    useTransactionValidation(
+      newTransaction.amount,
+      newTransaction.type,
+      newTransaction.date
+    );
 
   const handleDateChange = (dateValue: Dayjs | null) => {
     const dateString = dateValue ? dateValue.format('YYYY-MM-DD') : '';
