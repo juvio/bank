@@ -167,14 +167,31 @@ npm run dev
 
 Frontend roda com dados mockados, sem precisar de backend ou banco de dados. **Usado em produção na Vercel.**
 
-#### 1. Instalar dependências:
+#### 1. Obter autorização para o pacote bank-design system:
+
+##### 1.1 Gerar token GitHub (PAT):
+
+- Acesse https://github.com/settings/tokens
+- Clique em Generate new Token > Generate new token (classic)
+- Selecione o scope read:packages
+- Copie o token gerado
+
+##### 1.2 Configurar acesso ao registry:
+
+- Defina a variável de ambiente (PowerShell sessão) no terminal na pasta /frontend do projeto:
+
+```bash
+$env:NPM_TOKEN="SEU_TOKEN_AQUI"
+```
+
+#### 2. Instalar dependências:
 
 ```bash
 cd frontend
 npm install
 ```
 
-#### 2. Configurar variável de ambiente:
+#### 3. Configurar variável de ambiente:
 
 Criar arquivo `frontend/.env.local`:
 
@@ -182,7 +199,7 @@ Criar arquivo `frontend/.env.local`:
 NEXT_PUBLIC_USE_MOCK=true
 ```
 
-#### 3. Executar o frontend:
+#### 4. Executar o frontend:
 
 ```bash
 cd frontend
