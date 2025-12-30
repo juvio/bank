@@ -102,7 +102,7 @@ function SearchField({
       fullWidth
       size="small"
       variant="outlined"
-      placeholder="Buscar por tipo, valor ou descrição..."
+      placeholder="Buscar por tipo ou valor..."
       value={searchTerm}
       onChange={(e) => onSearchTermChange(e.target.value)}
       sx={SearchFieldSx}

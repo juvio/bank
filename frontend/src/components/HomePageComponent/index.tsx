@@ -45,7 +45,7 @@ export default function HomePage() {
   const fullName = user?.username ?? '';
 
   return (
-    <Container maxWidth="lg" sx={ContainerSx}>
+    <Container maxWidth={false} sx={ContainerSx}>
       <Box sx={BoxContainerSx}>
         <Box sx={BoxAccountCardSx}>
           <AccountCard accountBalance={balance} accountName={fullName} />

@@ -16,6 +16,12 @@ import {
   Link,
 } from '@mui/material';
 import AttachFileIcon from '@mui/icons-material/AttachFile';
+import {
+  AccountBalanceWallet as WalletIcon,
+  TrendingUp as DepositIcon,
+  Payment as PaymentIcon,
+  TrendingDown as WithdrawIcon,
+} from '@mui/icons-material';
 import { useRouter } from 'next/navigation';
 import { useState, ReactNode } from 'react';
 import {
@@ -82,6 +88,21 @@ export default function ModalComponent({
   const [newTransaction, setNewTransaction] = useState<
     Partial<EditTransaction>
   >({});
+
+  const getTransactionIcon = (type: string) => {
+    switch (type) {
+      case 'deposit':
+        return DepositIcon;
+      case 'withdraw':
+        return WithdrawIcon;
+      case 'payment':
+        return PaymentIcon;
+      case 'transfer':
+        return WalletIcon;
+      default:
+        return WalletIcon;
+    }
+  };
 
   function onDismiss() {
     setOpen(false);
@@ -212,7 +233,7 @@ export default function ModalComponent({
               }
               fullWidth
               multiline
-              rows={4}
+              rows={3}
               sx={TextFieldSx}
             />
           </DialogContent>
@@ -293,13 +314,19 @@ export default function ModalComponent({
                 <Typography variant="body2" sx={TypographyTypeSx}>
                   Tipo:
                 </Typography>
-                <Typography variant="body1" sx={TypographyTypeOptionsSx}>
-                  {
-                    transactionTypes.find(
-                      (option) => option.value === transaction.type
-                    )?.label
-                  }
-                </Typography>
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                  {(() => {
+                    const Icon = getTransactionIcon(transaction.type);
+                    return <Icon sx={{ fontSize: 20, color: 'text.secondary' }} />;
+                  })()}
+                  <Typography variant="body1" sx={TypographyTypeOptionsSx}>
+                    {
+                      transactionTypes.find(
+                        (option) => option.value === transaction.type
+                      )?.label
+                    }
+                  </Typography>
+                </Box>
               </Box>
               <Box sx={TypographyBoxRemoveSx}>
                 <Typography variant="body2" sx={TypographyTypeSx}>
@@ -342,6 +369,7 @@ export default function ModalComponent({
             <Button
               onClick={handleRemoveTransaction}
               variant="contained"
+              color="error"
               sx={ConfirmTextSx}
             >
               Remover
@@ -368,13 +396,19 @@ export default function ModalComponent({
                 <Typography variant="body2" sx={TypographyTypeSx}>
                   Tipo:
                 </Typography>
-                <Typography variant="body1" sx={TypographyTypeOptionsSx}>
-                  {
-                    transactionTypes.find(
-                      (option) => option.value === transaction.type
-                    )?.label
-                  }
-                </Typography>
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                  {(() => {
+                    const Icon = getTransactionIcon(transaction.type);
+                    return <Icon sx={{ fontSize: 20, color: 'text.secondary' }} />;
+                  })()}
+                  <Typography variant="body1" sx={TypographyTypeOptionsSx}>
+                    {
+                      transactionTypes.find(
+                        (option) => option.value === transaction.type
+                      )?.label
+                    }
+                  </Typography>
+                </Box>
               </Box>
               <Box sx={DescriptionBoxSx}>
                 <Typography variant="body2" sx={TypographyTypeSx}>
