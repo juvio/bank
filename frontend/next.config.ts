@@ -1,3 +1,4 @@
+import { getGraphicAppBaseUrl } from '@/utils/getGraphicAppBaseUrl';
 import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
@@ -5,7 +6,7 @@ const nextConfig: NextConfig = {
     return [
       {
         source: '/graphicApp/:path*',
-        destination: 'http://localhost:3001/:path*',
+        destination: `${getGraphicAppBaseUrl()}/:path*`,
       },
     ];
   },
