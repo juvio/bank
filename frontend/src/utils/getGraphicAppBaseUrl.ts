@@ -19,5 +19,5 @@ export function getGraphicAppBaseUrl(): string {
     return 'https://graphic-app-dev.vercel.app';
   }
 
-  return 'https://graphic-app-dev.vercel.app';
+  return 'https://graphic-app-kappa.vercel.app';
 }

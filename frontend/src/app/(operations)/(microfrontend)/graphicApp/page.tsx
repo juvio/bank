@@ -1,10 +1,9 @@
-import { getGraphicAppBaseUrl } from '@/utils/getGraphicAppBaseUrl';
+import GraphicMFEPage from '@/components/@views/GraphicMFEClient';
 
-export default async function MicrofrontendPage() {
+export default function GraphicPage() {
   return (
-    <iframe
-      src={getGraphicAppBaseUrl()}
-      style={{ width: '100%', height: '75vw' }}
-    />
+    <main>
+      <GraphicMFEPage />
+    </main>
   );
 }
