@@ -1,5 +1,6 @@
 'use client';
 
+import { getGraphicAppBaseUrl } from '@/utils/getGraphicAppBaseUrl';
 import { useEffect, useRef } from 'react';
 
 export default function GraphicMFEComponent() {
@@ -10,7 +11,7 @@ export default function GraphicMFEComponent() {
 
     const script = document.createElement('script');
     script.type = 'module';
-    script.src = 'http://localhost:3001/src/main.tsx';
+    script.src = `${getGraphicAppBaseUrl()}/src/main.tsx`;
     script.async = true;
 
     script.onload = () => {

@@ -16,8 +16,8 @@ export function getGraphicAppBaseUrl(): string {
     return 'http://localhost:3001';
   }
   if (vercelEnv === 'preview' || vercelEnv === 'staging') {
-    return 'https://graphic-app-dev.vercel.app';
+    return 'https://mfe-graphics.vercel.app';
   }
 
-  return 'https://graphic-app-kappa.vercel.app';
+  return 'https://mfe-graphics.vercel.app';
 }
