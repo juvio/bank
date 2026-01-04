@@ -16,11 +16,9 @@ import {
   BoxTransactionHistoryCardSx,
   ContainerSx,
 } from './styles';
-import { useAuthStore } from '@/stores/useAuthStore';
 
-export default function HomePage() {
+export default function HomePage({ fullname }: { fullname: string }) {
   const { transactions, balance, balanceNeedsUpdate } = useBankAccountStore();
-  const { user } = useAuthStore();
   const fetchTransactions = useBankAccountStore(
     (state) => state.fetchTransactions
   );
@@ -42,13 +40,11 @@ export default function HomePage() {
     fetchBalance,
   ]);
 
-  const fullName = user?.username ?? '';
-
   return (
-    <Container maxWidth="lg" sx={ContainerSx}>
+    <Container maxWidth='lg' sx={ContainerSx}>
       <Box sx={BoxContainerSx}>
         <Box sx={BoxAccountCardSx}>
-          <AccountCard accountBalance={balance} accountName={fullName} />
+          <AccountCard accountBalance={balance} accountName={fullname} />
         </Box>
 
         <Box sx={BoxContainerHistoryCardSx}>
