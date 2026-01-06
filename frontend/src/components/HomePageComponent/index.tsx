@@ -34,7 +34,7 @@ export default function HomePage({
 
   return (
     <Container
-      maxWidth="lg"
+      maxWidth={false}
       sx={ContainerSx}
       role="main"
       aria-labelledby="homepage-title"

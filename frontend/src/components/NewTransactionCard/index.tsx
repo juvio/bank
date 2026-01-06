@@ -142,25 +142,6 @@ export default function NewTransactionCard() {
                 </MenuItem>
               ))}
             </TextField>
-            <TextField
-              select
-              label="Tipo de Transação"
-              value={newTransaction.type}
-              onChange={(e) =>
-                setNewTransaction({ ...newTransaction, type: e.target.value })
-              }
-              fullWidth
-              required
-            >
-              {transactionTypes.map((option, index) => (
-                <MenuItem
-                  key={`new-${option.value}-${index}`}
-                  value={option.value}
-                >
-                  {option.label}
-                </MenuItem>
-              ))}
-            </TextField>
             <Box sx={{ display: 'flex', gap: 2 }}>
               <TextField
                 label="Valor"

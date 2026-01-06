@@ -1,6 +1,6 @@
 import { SxProps } from '@mui/material';
 
-export const ContainerSx: SxProps = { py: 4 };
+export const ContainerSx: SxProps = { py: 4, width: { xs: '100%', md: '75%' } };
 
 export const BoxContainerSx: SxProps = {
   display: 'flex',

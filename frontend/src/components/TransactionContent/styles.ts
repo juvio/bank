@@ -1,6 +1,10 @@
 import { SxProps } from '@mui/material';
 
-export const ContainerWrapperSx: SxProps = { py: 3, px: { xs: 2, sm: 3 } };
+export const ContainerWrapperSx: SxProps = {
+  py: 3,
+  px: { xs: 2, sm: 3 },
+  width: { xs: '100%', md: '75%' },
+};
 
 export const BoxWrapperSx: SxProps = {
   display: 'flex',
@@ -26,7 +30,7 @@ export const BoxTransactionContentSx: SxProps = {
   flexDirection: 'column',
   gap: 1.5,
   alignSelf: 'center',
-  width: '95%',
+  width: '100%',
 };
 
 export const CardNoTransactionSx: SxProps = { textAlign: 'center', py: 4 };

@@ -45,23 +45,39 @@ function filterByPeriod(
   const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
 
   return transactions.filter((transaction) => {
-    const transactionDate = new Date(transaction.date);
+    // Parsear data como local ao invés de UTC
+    let transactionDate: Date;
+    if (typeof transaction.date === 'string' && transaction.date.includes('-')) {
+      // Formato YYYY-MM-DD ou YYYY-MM-DDTHH:mm:ss
+      const [datePart] = transaction.date.split('T');
+      const [year, month, day] = datePart.split('-').map(Number);
+      transactionDate = new Date(year, month - 1, day);
+    } else {
+      transactionDate = new Date(transaction.date);
+    }
+    
+    // Normalizar a data da transação para início do dia
+    const normalizedTransactionDate = new Date(
+      transactionDate.getFullYear(),
+      transactionDate.getMonth(),
+      transactionDate.getDate()
+    );
 
     switch (filterPeriod) {
       case 'today':
-        return transactionDate >= today;
+        return normalizedTransactionDate.getTime() === today.getTime();
       case 'week':
         const weekAgo = new Date(today);
         weekAgo.setDate(weekAgo.getDate() - 7);
-        return transactionDate >= weekAgo;
+        return normalizedTransactionDate >= weekAgo;
       case 'month':
         const monthAgo = new Date(today);
         monthAgo.setMonth(monthAgo.getMonth() - 1);
-        return transactionDate >= monthAgo;
+        return normalizedTransactionDate >= monthAgo;
       case 'year':
         const yearAgo = new Date(today);
         yearAgo.setFullYear(yearAgo.getFullYear() - 1);
-        return transactionDate >= yearAgo;
+        return normalizedTransactionDate >= yearAgo;
       default:
         return true;
     }
