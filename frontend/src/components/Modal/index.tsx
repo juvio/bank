@@ -44,6 +44,7 @@ import {
   TypographyTypeOptionsSx,
   TypographyTypeSx,
 } from './styles';
+import { revalidateHome } from '@/app/actions';
 
 interface ModalComponentProps {
   title?: string;
@@ -109,6 +110,7 @@ export default function ModalComponent({
     try {
       await addTransaction(transaction);
       await fetchBalance();
+      await revalidateHome();
       onDismiss();
       setAddModal(false);
       resetTransaction(true);
@@ -210,7 +212,9 @@ export default function ModalComponent({
               <TextField
                 label="Valor"
                 type="number"
-                value={Math.abs(newTransaction.amount ?? transaction.amount ?? 0)}
+                value={Math.abs(
+                  newTransaction.amount ?? transaction.amount ?? 0
+                )}
                 onChange={(e) =>
                   setNewTransaction({
                     ...newTransaction,

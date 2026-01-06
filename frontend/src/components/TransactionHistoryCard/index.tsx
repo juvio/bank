@@ -12,48 +12,21 @@ import {
   TableHead,
   TableRow,
 } from '@mui/material';
-import { useBankAccountStore } from '@/stores/useBankAccountStore';
-import { TransactionMapper } from '@/types';
+import { TransactionMapper, Transactions } from '@/types';
 import { CardContentSx, CardWrapperSx } from './styles';
 import { formatDate } from '@/utils/date';
 
-interface Transaction {
-  id: string;
-  type: string;
-  amount: number;
-  description: string;
-  date: string;
-}
-
 interface Props {
-  transactions?: Transaction[];
+  transactions: Transactions;
 }
 
-export default function TransactionHistoryCard({
-  transactions: propTransactions,
-}: Props) {
-  const { transactions: storeTransactions } = useBankAccountStore();
-
-  const transactions =
-    propTransactions ||
-    storeTransactions.map((t) => ({
-      id: t.id.toString(),
-      type: t.type,
-      amount: t.amount,
-      description: t.description || '',
-      date: t.date || new Date().toISOString().split('T')[0],
-      status: 'completed' as const,
-    }));
-  
-  // Pegar apenas as últimas 10 transações
-  const recentTransactions = transactions.slice(0, 10);
-  
+export default function TransactionHistoryCard({ transactions }: Props) {
   return (
     <Card sx={CardWrapperSx}>
       <CardContent sx={CardContentSx}>
         <Typography
-          variant="h6"
-          component="h2"
+          variant='h6'
+          component='h2'
           gutterBottom
           sx={{ flexShrink: 0 }}
         >
@@ -83,18 +56,22 @@ export default function TransactionHistoryCard({
                 <TableCell>Data</TableCell>
                 <TableCell>Tipo</TableCell>
                 <TableCell>Descrição</TableCell>
-                <TableCell align="right">Valor</TableCell>
+                <TableCell align='right'>Valor</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {recentTransactions.length > 0 ? (
-                recentTransactions.map((transaction, index) => (
+              {transactions.length > 0 ? (
+                transactions.map((transaction, index) => (
                   <TableRow key={`history-${transaction.id}-${index}`}>
                     <TableCell>{formatDate(transaction.date)}</TableCell>
                     <TableCell>{TransactionMapper[transaction.type]}</TableCell>
-                    <TableCell>{transaction.description}</TableCell>
+                    {
+                      <TableCell>
+                        {transaction.to || transaction.from}
+                      </TableCell>
+                    }
                     <TableCell
-                      align="right"
+                      align='right'
                       sx={{
                         color:
                           transaction.type === 'deposit'
@@ -104,13 +81,17 @@ export default function TransactionHistoryCard({
                       }}
                     >
                       {transaction.type === 'deposit' ? '+' : '-'}
-                      R$ {transaction.amount.toFixed(2).replace('.', ',')}
+                      R$ {transaction.value.toFixed(2).replace('.', ',')}
                     </TableCell>
                   </TableRow>
                 ))
               ) : (
                 <TableRow>
-                  <TableCell colSpan={4} align="center" sx={{ py: 4, color: 'text.secondary' }}>
+                  <TableCell
+                    colSpan={4}
+                    align='center'
+                    sx={{ py: 4, color: 'text.secondary' }}
+                  >
                     Nenhuma transação encontrada
                   </TableCell>
                 </TableRow>
