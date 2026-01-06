@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect } from 'react';
-import { Box, Container } from '@mui/material';
+import { Box, Card, Container } from '@mui/material';
 
 import AccountCard from '@/components/AccountCard';
 import NewTransactionCard from '@/components/NewTransactionCard';
@@ -16,29 +16,21 @@ import {
   BoxTransactionHistoryCardSx,
   ContainerSx,
 } from './styles';
+import { HomePageComponentProps } from './types';
+import GraphicMFEPage from '../@views/GraphicMFEClient';
+import Link from 'next/link';
 
-export default function HomePage({ fullname }: { fullname: string }) {
-  const { transactions, balance, balanceNeedsUpdate } = useBankAccountStore();
-  const fetchTransactions = useBankAccountStore(
-    (state) => state.fetchTransactions
-  );
-  const fetchBalance = useBankAccountStore((state) => state.fetchBalance);
+export default function HomePage({
+  transactions,
+  fullname,
+}: HomePageComponentProps) {
+  const { balance, balanceNeedsUpdate, fetchBalance } = useBankAccountStore();
 
   useEffect(() => {
-    if (transactions.length === 0) {
-      fetchTransactions(0);
-    }
-
     if (balanceNeedsUpdate || balance === 0) {
       fetchBalance();
     }
-  }, [
-    transactions.length,
-    balanceNeedsUpdate,
-    balance,
-    fetchTransactions,
-    fetchBalance,
-  ]);
+  }, [balanceNeedsUpdate, balance, fetchBalance]);
 
   return (
     <Container maxWidth='lg' sx={ContainerSx}>
@@ -49,11 +41,19 @@ export default function HomePage({ fullname }: { fullname: string }) {
 
         <Box sx={BoxContainerHistoryCardSx}>
           <Box sx={BoxTransactionHistoryCardSx}>
-            <TransactionHistoryCard />
+            <TransactionHistoryCard transactions={transactions} />
           </Box>
           <Box sx={BoxNewTransactionCard}>
             <NewTransactionCard />
           </Box>
+        </Box>
+
+        <Box>
+          <Card>
+            <Link style={{ textDecoration: 'none' }} href='/graphicApp'>
+              <GraphicMFEPage data={transactions} />
+            </Link>
+          </Card>
         </Box>
       </Box>
     </Container>

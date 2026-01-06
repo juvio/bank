@@ -8,6 +8,6 @@ const GraphicNoSSR = dynamic(
   }
 );
 
-export default function GraphicMFEPage() {
-  return <GraphicNoSSR />;
+export default function GraphicMFEPage({ data }: { data: any }) {
+  return <GraphicNoSSR data={data} />;
 }

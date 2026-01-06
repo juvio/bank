@@ -39,6 +39,7 @@ import {
   TypographyTypeOptionsSx,
   TypographyTypeSx,
 } from './styles';
+import { revalidateHome } from '@/app/actions';
 
 interface ModalComponentProps {
   title?: string;
@@ -92,6 +93,7 @@ export default function ModalComponent({
     try {
       await addTransaction(transaction);
       await fetchBalance();
+      await revalidateHome();
       onDismiss();
       setAddModal(false);
       resetTransaction(true);
@@ -136,7 +138,7 @@ export default function ModalComponent({
     <Dialog
       open={open}
       onClose={onDismiss}
-      aria-labelledby="modal-title"
+      aria-labelledby='modal-title'
       key={
         editModal
           ? 'edit'
@@ -156,10 +158,10 @@ export default function ModalComponent({
     >
       {editModal && !addModal && !deleteModal && (
         <>
-          <DialogTitle id="modal-title" sx={DialogTitleSx}>
+          <DialogTitle id='modal-title' sx={DialogTitleSx}>
             <Typography
-              variant="h6"
-              component="div"
+              variant='h6'
+              component='div'
               sx={DialogTitleTypographySx}
             >
               Editar transação
@@ -168,7 +170,7 @@ export default function ModalComponent({
           <DialogContent sx={DialogContentWrapperSx}>
             <TextField
               select
-              label="Tipo de Transação"
+              label='Tipo de Transação'
               value={newTransaction.type ?? transaction.type}
               onChange={(e) =>
                 setNewTransaction({ ...newTransaction, type: e.target.value })
@@ -186,8 +188,8 @@ export default function ModalComponent({
               ))}
             </TextField>
             <TextField
-              label="Valor"
-              type="number"
+              label='Valor'
+              type='number'
               value={Math.abs(newTransaction.amount ?? transaction.amount ?? 0)}
               onChange={(e) =>
                 setNewTransaction({
@@ -202,7 +204,7 @@ export default function ModalComponent({
               }}
             />
             <TextField
-              label="Descrição"
+              label='Descrição'
               value={newTransaction.description ?? transaction.description}
               onChange={(e) =>
                 setNewTransaction({
@@ -219,14 +221,14 @@ export default function ModalComponent({
           <DialogActions sx={DialogActionsSx}>
             <Button
               onClick={onDismiss}
-              variant="outlined"
+              variant='outlined'
               sx={ButtonCancelTextSx}
             >
               {cancelText}
             </Button>
             <Button
               onClick={handleEditTransaction}
-              variant="contained"
+              variant='contained'
               sx={ConfirmTextSx}
             >
               {confirmText}
@@ -236,10 +238,10 @@ export default function ModalComponent({
       )}
       {addModal && !editModal && !deleteModal && (
         <>
-          <DialogTitle id="modal-title" sx={DialogTitleSx}>
+          <DialogTitle id='modal-title' sx={DialogTitleSx}>
             <Typography
-              variant="h6"
-              component="div"
+              variant='h6'
+              component='div'
               sx={DialogTitleTypographySx}
             >
               {title}
@@ -247,7 +249,7 @@ export default function ModalComponent({
           </DialogTitle>
           <DialogContent sx={DialogContentWrapperSx}>
             {typeof content === 'string' ? (
-              <Typography variant="body1" sx={TypographyContentSx}>
+              <Typography variant='body1' sx={TypographyContentSx}>
                 {content}
               </Typography>
             ) : (
@@ -257,14 +259,14 @@ export default function ModalComponent({
           <DialogActions sx={DialogActionsSx}>
             <Button
               onClick={onDismiss}
-              variant="outlined"
+              variant='outlined'
               sx={ButtonCancelTextSx}
             >
               {cancelText}
             </Button>
             <Button
               onClick={handleAddTransaction}
-              variant="contained"
+              variant='contained'
               sx={ConfirmTextSx}
             >
               {confirmText}
@@ -274,26 +276,26 @@ export default function ModalComponent({
       )}
       {deleteModal && !editModal && !addModal && (
         <>
-          <DialogTitle id="modal-title" sx={DialogTitleSx}>
+          <DialogTitle id='modal-title' sx={DialogTitleSx}>
             <Typography
-              variant="h6"
-              component="div"
+              variant='h6'
+              component='div'
               sx={DialogTitleTypographySx}
             >
               Remover transação
             </Typography>
           </DialogTitle>
           <DialogContent sx={DialogContentWrapperSx}>
-            <Typography variant="body1" sx={TypographyContentSx}>
+            <Typography variant='body1' sx={TypographyContentSx}>
               Tem certeza que deseja remover esta transação?
             </Typography>
 
             <Box sx={BoxWrapperRemoveSx}>
               <Box sx={TypographyBoxRemoveSx}>
-                <Typography variant="body2" sx={TypographyTypeSx}>
+                <Typography variant='body2' sx={TypographyTypeSx}>
                   Tipo:
                 </Typography>
-                <Typography variant="body1" sx={TypographyTypeOptionsSx}>
+                <Typography variant='body1' sx={TypographyTypeOptionsSx}>
                   {
                     transactionTypes.find(
                       (option) => option.value === transaction.type
@@ -302,18 +304,18 @@ export default function ModalComponent({
                 </Typography>
               </Box>
               <Box sx={TypographyBoxRemoveSx}>
-                <Typography variant="body2" sx={TypographyTypeSx}>
+                <Typography variant='body2' sx={TypographyTypeSx}>
                   Valor:
                 </Typography>
-                <Typography variant="h6" sx={DialogTitleTypographySx}>
+                <Typography variant='h6' sx={DialogTitleTypographySx}>
                   R$ {Math.abs(transaction.amount ?? 0).toFixed(2)}
                 </Typography>
               </Box>
               <Box sx={TypographyBoxRemoveSx}>
-                <Typography variant="body2" sx={TypographyTypeSx}>
+                <Typography variant='body2' sx={TypographyTypeSx}>
                   Data:
                 </Typography>
-                <Typography variant="body1">
+                <Typography variant='body1'>
                   {transaction.date
                     ? new Date(transaction.date).toLocaleDateString('pt-BR')
                     : ''}
@@ -321,10 +323,10 @@ export default function ModalComponent({
               </Box>
               {transaction.description && (
                 <Box sx={DescriptionBoxSx}>
-                  <Typography variant="body2" sx={TypographyTypeSx}>
+                  <Typography variant='body2' sx={TypographyTypeSx}>
                     Descrição:
                   </Typography>
-                  <Typography variant="body2" sx={TransactionDescriptionSx}>
+                  <Typography variant='body2' sx={TransactionDescriptionSx}>
                     {transaction.description}
                   </Typography>
                 </Box>
@@ -334,14 +336,14 @@ export default function ModalComponent({
           <DialogActions sx={DialogActionsSx}>
             <Button
               onClick={onDismiss}
-              variant="outlined"
+              variant='outlined'
               sx={ButtonCancelTextSx}
             >
               {cancelText}
             </Button>
             <Button
               onClick={handleRemoveTransaction}
-              variant="contained"
+              variant='contained'
               sx={ConfirmTextSx}
             >
               Remover
@@ -351,10 +353,10 @@ export default function ModalComponent({
       )}
       {viewModal && !editModal && !addModal && !deleteModal && (
         <>
-          <DialogTitle id="modal-title" sx={DialogTitleSx}>
+          <DialogTitle id='modal-title' sx={DialogTitleSx}>
             <Typography
-              variant="h6"
-              component="div"
+              variant='h6'
+              component='div'
               sx={DialogTitleTypographySx}
             >
               Detalhes da Transação
@@ -365,10 +367,10 @@ export default function ModalComponent({
               <Box
                 sx={{ display: 'flex', justifyContent: 'space-between', mt: 2 }}
               >
-                <Typography variant="body2" sx={TypographyTypeSx}>
+                <Typography variant='body2' sx={TypographyTypeSx}>
                   Tipo:
                 </Typography>
-                <Typography variant="body1" sx={TypographyTypeOptionsSx}>
+                <Typography variant='body1' sx={TypographyTypeOptionsSx}>
                   {
                     transactionTypes.find(
                       (option) => option.value === transaction.type
@@ -377,18 +379,18 @@ export default function ModalComponent({
                 </Typography>
               </Box>
               <Box sx={DescriptionBoxSx}>
-                <Typography variant="body2" sx={TypographyTypeSx}>
+                <Typography variant='body2' sx={TypographyTypeSx}>
                   Valor:
                 </Typography>
-                <Typography variant="h6" sx={DialogTitleTypographySx}>
+                <Typography variant='h6' sx={DialogTitleTypographySx}>
                   R$ {Math.abs(transaction.amount ?? 0).toFixed(2)}
                 </Typography>
               </Box>
               <Box sx={DescriptionBoxSx}>
-                <Typography variant="body2" sx={TypographyTypeSx}>
+                <Typography variant='body2' sx={TypographyTypeSx}>
                   Data:
                 </Typography>
-                <Typography variant="body1">
+                <Typography variant='body1'>
                   {transaction.date
                     ? new Date(transaction.date).toLocaleDateString('pt-BR')
                     : ''}
@@ -396,11 +398,11 @@ export default function ModalComponent({
               </Box>
               {transaction.description && (
                 <Box sx={{ mt: 2 }}>
-                  <Typography variant="body2" sx={DescriptionTitleSx}>
+                  <Typography variant='body2' sx={DescriptionTitleSx}>
                     Descrição:
                   </Typography>
                   <Typography
-                    variant="body1"
+                    variant='body1'
                     sx={TransactionDescriptionTypographySx}
                   >
                     {transaction.description}
@@ -409,13 +411,13 @@ export default function ModalComponent({
               )}
               {transaction.attachmentUrl && (
                 <Box sx={{ mt: 2 }}>
-                  <Typography variant="body2" sx={DescriptionTitleSx}>
+                  <Typography variant='body2' sx={DescriptionTitleSx}>
                     Anexo:
                   </Typography>
                   {transaction.attachmentUrl?.endsWith('.pdf') ? (
                     <Button
-                      variant="outlined"
-                      size="small"
+                      variant='outlined'
+                      size='small'
                       href={
                         transaction.attachmentUrl.startsWith('blob:')
                           ? transaction.attachmentUrl
@@ -424,8 +426,8 @@ export default function ModalComponent({
                               'http://localhost:5000'
                             }${transaction.attachmentUrl}`
                       }
-                      target="_blank"
-                      component="a"
+                      target='_blank'
+                      component='a'
                       startIcon={<AttachFileIcon />}
                       sx={{ mt: 1, textTransform: 'none' }}
                     >
@@ -441,11 +443,11 @@ export default function ModalComponent({
                               'http://localhost:5000'
                             }${transaction.attachmentUrl}`
                       }
-                      target="_blank"
+                      target='_blank'
                       sx={{ display: 'block', mt: 1 }}
                     >
                       <Box
-                        component="img"
+                        component='img'
                         src={
                           transaction.attachmentUrl.startsWith('blob:')
                             ? transaction.attachmentUrl
@@ -454,7 +456,7 @@ export default function ModalComponent({
                                 'http://localhost:5000'
                               }${transaction.attachmentUrl}`
                         }
-                        alt="Anexo"
+                        alt='Anexo'
                         sx={{
                           maxWidth: '100%',
                           maxHeight: '200px',
@@ -473,7 +475,7 @@ export default function ModalComponent({
           <DialogActions sx={CloseDialogActionSx}>
             <Button
               onClick={onDismiss}
-              variant="contained"
+              variant='contained'
               fullWidth
               sx={CloseModalTextSx}
             >

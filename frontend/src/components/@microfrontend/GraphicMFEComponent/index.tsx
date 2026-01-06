@@ -1,9 +1,10 @@
 'use client';
 
+import { Transactions } from '@/types';
 import { getGraphicAppBaseUrl } from '@/utils/getGraphicAppBaseUrl';
 import { useEffect, useRef } from 'react';
 
-export default function GraphicMFEComponent() {
+export default function GraphicMFEComponent({ data }: { data: Transactions }) {
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -16,7 +17,7 @@ export default function GraphicMFEComponent() {
 
     script.onload = () => {
       cleanup = window.mfeGraphics?.mount(ref.current!, {
-        testeMfe: 'TESTE',
+        transactions: data,
       });
     };
 
