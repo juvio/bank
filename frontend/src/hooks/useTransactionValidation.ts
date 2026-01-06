@@ -34,7 +34,7 @@ export const useTransactionValidation = (
     } else {
       const amountNum = Number(amount);
       if (Number.isNaN(amountNum) || amountNum < 1) {
-        errorMsg = 'O valor deve ser no mínimo R$ 1,00';
+        errorMsg = 'Valor inválido';
       }
     }
 
