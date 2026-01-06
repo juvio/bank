@@ -15,19 +15,43 @@ import {
 import { TransactionMapper, Transactions } from '@/types';
 import { CardContentSx, CardWrapperSx } from './styles';
 import { formatDate } from '@/utils/date';
+import { useBankAccountStore } from '@/stores/useBankAccountStore';
 
 interface Props {
   transactions: Transactions;
 }
 
-export default function TransactionHistoryCard({ transactions }: Props) {
+export default function TransactionHistoryCard({
+  transactions: propTransactions,
+}: Props) {
+  const { transactions: storeTransactions } = useBankAccountStore();
+
+  const transactions =
+    propTransactions ||
+    storeTransactions.map((t) => ({
+      id: t.id.toString(),
+      type: t.type,
+      amount: t.amount,
+      description: t.description || '',
+      date: t.date || new Date().toISOString().split('T')[0],
+      status: 'completed' as const,
+    }));
+
+  // Pegar apenas as últimas 10 transações
+  const recentTransactions = transactions.slice(0, 10);
+
   return (
-    <Card sx={CardWrapperSx}>
+    <Card
+      sx={CardWrapperSx}
+      role="region"
+      aria-labelledby="transaction-history-title"
+    >
       <CardContent sx={CardContentSx}>
         <Typography
-          variant='h6'
-          component='h2'
+          variant="h6"
+          component="h2"
           gutterBottom
+          id="transaction-history-title"
           sx={{ flexShrink: 0 }}
         >
           Histórico de Transações
@@ -50,13 +74,17 @@ export default function TransactionHistoryCard({ transactions }: Props) {
             },
           }}
         >
-          <Table>
+          <Table aria-label="Tabela de histórico de transações">
+            <caption style={{ position: 'absolute', left: '-10000px' }}>
+              Lista das últimas 10 transações, incluindo data, tipo, descrição e
+              valor.
+            </caption>
             <TableHead>
               <TableRow>
-                <TableCell>Data</TableCell>
+                <TableCell id="transaction-date-header">Data</TableCell>
                 <TableCell>Tipo</TableCell>
                 <TableCell>Descrição</TableCell>
-                <TableCell align='right'>Valor</TableCell>
+                <TableCell align="right">Valor</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -71,7 +99,7 @@ export default function TransactionHistoryCard({ transactions }: Props) {
                       </TableCell>
                     }
                     <TableCell
-                      align='right'
+                      align="right"
                       sx={{
                         color:
                           transaction.type === 'deposit'
@@ -89,7 +117,7 @@ export default function TransactionHistoryCard({ transactions }: Props) {
                 <TableRow>
                   <TableCell
                     colSpan={4}
-                    align='center'
+                    align="center"
                     sx={{ py: 4, color: 'text.secondary' }}
                   >
                     Nenhuma transação encontrada

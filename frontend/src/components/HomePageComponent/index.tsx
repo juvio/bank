@@ -33,8 +33,26 @@ export default function HomePage({
   }, [balanceNeedsUpdate, balance, fetchBalance]);
 
   return (
-    <Container maxWidth='lg' sx={ContainerSx}>
+    <Container
+      maxWidth="lg"
+      sx={ContainerSx}
+      role="main"
+      aria-labelledby="homepage-title"
+    >
       <Box sx={BoxContainerSx}>
+        <h1
+          id="homepage-title"
+          style={{
+            position: 'absolute',
+            left: '-10000px',
+            top: 'auto',
+            width: '1px',
+            height: '1px',
+            overflow: 'hidden',
+          }}
+        >
+          Página Inicial do Banco - {fullname}
+        </h1>
         <Box sx={BoxAccountCardSx}>
           <AccountCard accountBalance={balance} accountName={fullname} />
         </Box>
@@ -50,7 +68,7 @@ export default function HomePage({
 
         <Box>
           <Card>
-            <Link style={{ textDecoration: 'none' }} href='/graphicApp'>
+            <Link style={{ textDecoration: 'none' }} href="/graphicApp">
               <GraphicMFEPage data={transactions} />
             </Link>
           </Card>
