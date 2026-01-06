@@ -31,6 +31,10 @@ Uma aplicação bancária moderna construída com Next.js, Material-UI e TypeScr
 - **Documentação**: [Storybook](https://storybook.js.org/)
 - **Linting**: [ESLint](https://eslint.org/)
 
+### Decisões projetuais
+
+1. Microfrontend: Optou-se por utilizar a injeção da aplicação microfrontend via script, devido às limitações das bibliotecas para suporte a aplicações Next com app router. Foram realizadas duas provas de conceito, uma com aplicação remote Next com app router (incompatível com Module Federation e Single SPA), que foi descartada, e com uma aplicação remote Next com pages router utilizando o Plugin Module Federation, mas que também se provou limitada devido ao host estar em app router. Uma opção também seria migrar a aplicação atual para pages router, mas foi descartada já que o Next pretende seguir com o app router para o futuro. A prova de conceito que se mostrou eficiente como microfrontend mantendo as principais vantagens (código apartado e passar props da aplicação host para remota, evitando chamadas desnecessárias ao backend) foi com uma aplicação remote React com framework Vite, utilizando a injeção no DOM via script.
+
 ## 🚀 Como executar
 
 ### Pré-requisitos
