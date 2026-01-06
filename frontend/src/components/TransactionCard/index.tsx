@@ -4,7 +4,17 @@ import { useState } from 'react';
 import { useBankAccountStore } from '@/stores/useBankAccountStore';
 import { useModalStore } from '@/stores/useModalStore';
 import { TransactionMapper } from '@/types';
-import { Box, IconButton, Typography, Card, CardContent, Menu, MenuItem, ListItemIcon, ListItemText } from '@mui/material';
+import {
+  Box,
+  IconButton,
+  Typography,
+  Card,
+  CardContent,
+  Menu,
+  MenuItem,
+  ListItemIcon,
+  ListItemText,
+} from '@mui/material';
 import {
   Delete as DeleteIcon,
   Visibility as VisibilityIcon,
@@ -133,7 +143,9 @@ export default function TransactionCard({
               flexShrink: 0,
             }}
           >
-            <TransactionIcon sx={{ color: borderColor, fontSize: { xs: 20, sm: 24 } }} />
+            <TransactionIcon
+              sx={{ color: borderColor, fontSize: { xs: 20, sm: 24 } }}
+            />
           </Box>
 
           {/* Título e Data */}
@@ -149,9 +161,9 @@ export default function TransactionCard({
             >
               {TransactionMapper[type]}
             </Typography>
-            <Typography 
-              variant="body2" 
-              sx={{ 
+            <Typography
+              variant="body2"
+              sx={{
                 color: 'text.secondary',
                 fontSize: { xs: '0.75rem', sm: '0.875rem' },
               }}
@@ -175,10 +187,10 @@ export default function TransactionCard({
           </Typography>
 
           {/* Botões de ação - Desktop */}
-          <Box 
-            sx={{ 
+          <Box
+            sx={{
               display: { xs: 'none', md: 'flex' },
-              gap: 1, 
+              gap: 1,
               flexShrink: 0,
             }}
           >
@@ -187,6 +199,7 @@ export default function TransactionCard({
                 onClick={handleOpenViewModal}
                 size="small"
                 sx={IconButtonViewSx}
+                aria-label="Ver detalhes da transação"
               >
                 <VisibilityIcon fontSize="small" />
               </IconButton>
@@ -196,6 +209,7 @@ export default function TransactionCard({
                 onClick={handleOpenEditModal}
                 size="small"
                 sx={IconButtonEditSx}
+                aria-label="Editar transação"
               >
                 <EditIcon fontSize="small" />
               </IconButton>
@@ -205,6 +219,7 @@ export default function TransactionCard({
                 onClick={handleOpenDeleteModal}
                 size="small"
                 sx={IconButtonDeleteSx}
+                aria-label="Remover transação"
               >
                 <DeleteIcon fontSize="small" />
               </IconButton>
@@ -237,7 +252,10 @@ export default function TransactionCard({
               horizontal: 'right',
             }}
           >
-            <Link href="/transaction" style={{ textDecoration: 'none', color: 'inherit' }}>
+            <Link
+              href="/transaction"
+              style={{ textDecoration: 'none', color: 'inherit' }}
+            >
               <MenuItem onClick={handleOpenViewModal}>
                 <ListItemIcon>
                   <VisibilityIcon fontSize="small" sx={{ color: '#1976d2' }} />
@@ -245,7 +263,10 @@ export default function TransactionCard({
                 <ListItemText>Visualizar</ListItemText>
               </MenuItem>
             </Link>
-            <Link href="/transaction" style={{ textDecoration: 'none', color: 'inherit' }}>
+            <Link
+              href="/transaction"
+              style={{ textDecoration: 'none', color: 'inherit' }}
+            >
               <MenuItem onClick={handleOpenEditModal}>
                 <ListItemIcon>
                   <EditIcon fontSize="small" sx={{ color: '#2e7d32' }} />
@@ -253,7 +274,10 @@ export default function TransactionCard({
                 <ListItemText>Editar</ListItemText>
               </MenuItem>
             </Link>
-            <Link href="/transaction" style={{ textDecoration: 'none', color: 'inherit' }}>
+            <Link
+              href="/transaction"
+              style={{ textDecoration: 'none', color: 'inherit' }}
+            >
               <MenuItem onClick={handleOpenDeleteModal}>
                 <ListItemIcon>
                   <DeleteIcon fontSize="small" sx={{ color: '#d32f2f' }} />
