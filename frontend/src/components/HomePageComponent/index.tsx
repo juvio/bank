@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect } from 'react';
-import { Box, Container } from '@mui/material';
+import { Box, Card, Container } from '@mui/material';
 
 import AccountCard from '@/components/AccountCard';
 import NewTransactionCard from '@/components/NewTransactionCard';
@@ -16,36 +16,29 @@ import {
   BoxTransactionHistoryCardSx,
   ContainerSx,
 } from './styles';
-import { useAuthStore } from '@/stores/useAuthStore';
+import { HomePageComponentProps } from './types';
+import GraphicMFEPage from '../@views/GraphicMFEClient';
+import Link from 'next/link';
 
-export default function HomePage() {
-  const { transactions, balance, balanceNeedsUpdate } = useBankAccountStore();
-  const { user } = useAuthStore();
-  const fetchTransactions = useBankAccountStore(
-    (state) => state.fetchTransactions
-  );
-  const fetchBalance = useBankAccountStore((state) => state.fetchBalance);
+export default function HomePage({
+  transactions,
+  fullname,
+}: HomePageComponentProps) {
+  const { balance, balanceNeedsUpdate, fetchBalance } = useBankAccountStore();
 
   useEffect(() => {
-    if (transactions.length === 0) {
-      fetchTransactions(0);
-    }
-
     if (balanceNeedsUpdate || balance === 0) {
       fetchBalance();
     }
-  }, [
-    transactions.length,
-    balanceNeedsUpdate,
-    balance,
-    fetchTransactions,
-    fetchBalance,
-  ]);
-
-  const fullName = user?.username ?? '';
+  }, [balanceNeedsUpdate, balance, fetchBalance]);
 
   return (
-    <Container maxWidth="lg" sx={ContainerSx} role="main" aria-labelledby="homepage-title">
+    <Container
+      maxWidth="lg"
+      sx={ContainerSx}
+      role="main"
+      aria-labelledby="homepage-title"
+    >
       <Box sx={BoxContainerSx}>
         <h1
           id="homepage-title"
@@ -58,19 +51,27 @@ export default function HomePage() {
             overflow: 'hidden',
           }}
         >
-          Página Inicial do Banco - {fullName}
+          Página Inicial do Banco - {fullname}
         </h1>
         <Box sx={BoxAccountCardSx}>
-          <AccountCard accountBalance={balance} accountName={fullName} />
+          <AccountCard accountBalance={balance} accountName={fullname} />
         </Box>
 
         <Box sx={BoxContainerHistoryCardSx}>
           <Box sx={BoxTransactionHistoryCardSx}>
-            <TransactionHistoryCard />
+            <TransactionHistoryCard transactions={transactions} />
           </Box>
           <Box sx={BoxNewTransactionCard}>
             <NewTransactionCard />
           </Box>
+        </Box>
+
+        <Box>
+          <Card>
+            <Link style={{ textDecoration: 'none' }} href="/graphicApp">
+              <GraphicMFEPage data={transactions} />
+            </Link>
+          </Card>
         </Box>
       </Box>
     </Container>

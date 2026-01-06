@@ -12,21 +12,13 @@ import {
   TableHead,
   TableRow,
 } from '@mui/material';
-import { useBankAccountStore } from '@/stores/useBankAccountStore';
-import { TransactionMapper } from '@/types';
+import { TransactionMapper, Transactions } from '@/types';
 import { CardContentSx, CardWrapperSx } from './styles';
 import { formatDate } from '@/utils/date';
-
-interface Transaction {
-  id: string;
-  type: string;
-  amount: number;
-  description: string;
-  date: string;
-}
+import { useBankAccountStore } from '@/stores/useBankAccountStore';
 
 interface Props {
-  transactions?: Transaction[];
+  transactions: Transactions;
 }
 
 export default function TransactionHistoryCard({
@@ -96,12 +88,16 @@ export default function TransactionHistoryCard({
               </TableRow>
             </TableHead>
             <TableBody>
-              {recentTransactions.length > 0 ? (
-                recentTransactions.map((transaction, index) => (
+              {transactions.length > 0 ? (
+                transactions.map((transaction, index) => (
                   <TableRow key={`history-${transaction.id}-${index}`}>
                     <TableCell>{formatDate(transaction.date)}</TableCell>
                     <TableCell>{TransactionMapper[transaction.type]}</TableCell>
-                    <TableCell>{transaction.description}</TableCell>
+                    {
+                      <TableCell>
+                        {transaction.to || transaction.from}
+                      </TableCell>
+                    }
                     <TableCell
                       align="right"
                       sx={{
@@ -113,7 +109,7 @@ export default function TransactionHistoryCard({
                       }}
                     >
                       {transaction.type === 'deposit' ? '+' : '-'}
-                      R$ {transaction.amount.toFixed(2).replace('.', ',')}
+                      R$ {transaction.value.toFixed(2).replace('.', ',')}
                     </TableCell>
                   </TableRow>
                 ))

@@ -1,6 +1,6 @@
 import './globals.css';
 import { Inter } from 'next/font/google';
-import ClientThemeProvider from '@/components/ClientThemeProvider';
+import { ClientThemeProvider } from '@carollyb/bank-design-system';
 import { GlobalStyles } from '@mui/material';
 
 export const inter = Inter({
