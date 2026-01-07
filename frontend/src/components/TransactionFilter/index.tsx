@@ -102,7 +102,7 @@ function SearchField({
       fullWidth
       size="small"
       variant="outlined"
-      placeholder="Buscar por tipo, valor ou descrição..."
+      placeholder="Buscar por tipo ou valor..."
       value={searchTerm}
       onChange={(e) => onSearchTermChange(e.target.value)}
       sx={SearchFieldSx}
@@ -150,6 +150,7 @@ function FilterToggleButton({
         invisible={activeFiltersCount === 0}
       >
         <IconButton
+          aria-label="Filtros"
           onClick={onToggle}
           sx={{
             border: '1.5px solid',
@@ -168,6 +169,7 @@ function FilterToggleButton({
       </Badge>
 
       <IconButton
+        aria-label={isExpanded ? 'Recolher filtros' : 'Expandir filtros'}
         onClick={onToggle}
         size="small"
         sx={{
@@ -267,6 +269,7 @@ function ClearFiltersButton({ onClear }: { onClear: () => void }) {
             boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
           },
         }}
+        aria-label="Limpar todos os filtros"
       />
     </Box>
   );

@@ -15,9 +15,20 @@ import {
   Box,
   Link,
 } from '@mui/material';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
+import dayjs, { Dayjs } from 'dayjs';
 import AttachFileIcon from '@mui/icons-material/AttachFile';
+import {
+  AccountBalanceWallet as WalletIcon,
+  TrendingUp as DepositIcon,
+  Payment as PaymentIcon,
+  TrendingDown as WithdrawIcon,
+} from '@mui/icons-material';
 import { useRouter } from 'next/navigation';
 import { useState, ReactNode } from 'react';
+import { useTransactionValidation } from '@/hooks/useTransactionValidation';
 import {
   BoxWrapperRemoveSx,
   ButtonCancelTextSx,
@@ -39,6 +50,7 @@ import {
   TypographyTypeOptionsSx,
   TypographyTypeSx,
 } from './styles';
+import { revalidateHome } from '@/app/actions';
 
 interface ModalComponentProps {
   title?: string;
@@ -52,6 +64,7 @@ interface EditTransaction {
   amount: number;
   id: number;
   description?: string;
+  date?: string;
 }
 
 export default function ModalComponent({
@@ -83,6 +96,32 @@ export default function ModalComponent({
     Partial<EditTransaction>
   >({});
 
+  const getTransactionIcon = (type: string) => {
+    switch (type) {
+      case 'deposit':
+        return DepositIcon;
+      case 'withdraw':
+        return WithdrawIcon;
+      case 'payment':
+        return PaymentIcon;
+      case 'transfer':
+        return WalletIcon;
+      default:
+        return WalletIcon;
+    }
+  };
+
+  const { errors, isFormValid, handleAmountBlur } = useTransactionValidation(
+    newTransaction.amount ?? transaction.amount,
+    newTransaction.type ?? transaction.type,
+    newTransaction.date ?? transaction.date
+  );
+
+  const handleDateChange = (dateValue: Dayjs | null) => {
+    const dateString = dateValue ? dateValue.format('YYYY-MM-DD') : '';
+    setNewTransaction({ ...newTransaction, date: dateString });
+  };
+
   function onDismiss() {
     setOpen(false);
     router.back();
@@ -92,6 +131,7 @@ export default function ModalComponent({
     try {
       await addTransaction(transaction);
       await fetchBalance();
+      await revalidateHome();
       onDismiss();
       setAddModal(false);
       resetTransaction(true);
@@ -102,12 +142,16 @@ export default function ModalComponent({
   };
 
   const handleEditTransaction = async () => {
+    if (!isFormValid()) {
+      return;
+    }
+
     try {
       const updatedData = {
         type: newTransaction.type ?? transaction.type,
         amount: newTransaction.amount ?? transaction.amount,
         description: newTransaction.description ?? transaction.description,
-        date: transaction.date,
+        date: newTransaction.date ?? transaction.date,
       };
 
       await editTransaction(transaction.id, updatedData);
@@ -155,7 +199,7 @@ export default function ModalComponent({
       }}
     >
       {editModal && !addModal && !deleteModal && (
-        <>
+        <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="pt-br">
           <DialogTitle id="modal-title" sx={DialogTitleSx}>
             <Typography
               variant="h6"
@@ -185,22 +229,46 @@ export default function ModalComponent({
                 </MenuItem>
               ))}
             </TextField>
-            <TextField
-              label="Valor"
-              type="number"
-              value={Math.abs(newTransaction.amount ?? transaction.amount ?? 0)}
-              onChange={(e) =>
-                setNewTransaction({
-                  ...newTransaction,
-                  amount: Number(e.target.value),
-                })
-              }
-              fullWidth
-              sx={TextFieldSx}
-              InputProps={{
-                startAdornment: <Typography sx={{ mr: 1 }}>R$</Typography>,
-              }}
-            />
+            <Box sx={{ display: 'flex', gap: 2 }}>
+              <TextField
+                label="Valor"
+                type="number"
+                value={Math.abs(
+                  newTransaction.amount ?? transaction.amount ?? 0
+                )}
+                onChange={(e) =>
+                  setNewTransaction({
+                    ...newTransaction,
+                    amount: Number(e.target.value),
+                  })
+                }
+                fullWidth
+                sx={TextFieldSx}
+                slotProps={{
+                  input: {
+                    startAdornment: <Typography sx={{ mr: 1 }}>R$</Typography>,
+                  },
+                }}
+                onBlur={handleAmountBlur}
+                error={Boolean(errors)}
+                helperText={errors}
+              />
+              <DesktopDatePicker
+                label="Data"
+                value={dayjs(newTransaction.date ?? transaction.date)}
+                onChange={handleDateChange}
+                maxDate={dayjs()}
+                disableFuture
+                format="DD/MM/YYYY"
+                slotProps={{
+                  textField: {
+                    fullWidth: true,
+                    required: true,
+                    sx: TextFieldSx,
+                  },
+                }}
+              />
+            </Box>
             <TextField
               label="Descrição"
               value={newTransaction.description ?? transaction.description}
@@ -212,8 +280,8 @@ export default function ModalComponent({
               }
               fullWidth
               multiline
-              rows={4}
-              sx={TextFieldSx}
+              rows={3}
+              sx={{ ...TextFieldSx, mt: errors ? 0 : 2 }}
             />
           </DialogContent>
           <DialogActions sx={DialogActionsSx}>
@@ -228,11 +296,12 @@ export default function ModalComponent({
               onClick={handleEditTransaction}
               variant="contained"
               sx={ConfirmTextSx}
+              disabled={!isFormValid()}
             >
               {confirmText}
             </Button>
           </DialogActions>
-        </>
+        </LocalizationProvider>
       )}
       {addModal && !editModal && !deleteModal && (
         <>
@@ -293,13 +362,21 @@ export default function ModalComponent({
                 <Typography variant="body2" sx={TypographyTypeSx}>
                   Tipo:
                 </Typography>
-                <Typography variant="body1" sx={TypographyTypeOptionsSx}>
-                  {
-                    transactionTypes.find(
-                      (option) => option.value === transaction.type
-                    )?.label
-                  }
-                </Typography>
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                  {(() => {
+                    const Icon = getTransactionIcon(transaction.type);
+                    return (
+                      <Icon sx={{ fontSize: 20, color: 'text.secondary' }} />
+                    );
+                  })()}
+                  <Typography variant="body1" sx={TypographyTypeOptionsSx}>
+                    {
+                      transactionTypes.find(
+                        (option) => option.value === transaction.type
+                      )?.label
+                    }
+                  </Typography>
+                </Box>
               </Box>
               <Box sx={TypographyBoxRemoveSx}>
                 <Typography variant="body2" sx={TypographyTypeSx}>
@@ -342,6 +419,7 @@ export default function ModalComponent({
             <Button
               onClick={handleRemoveTransaction}
               variant="contained"
+              color="error"
               sx={ConfirmTextSx}
             >
               Remover
@@ -368,13 +446,21 @@ export default function ModalComponent({
                 <Typography variant="body2" sx={TypographyTypeSx}>
                   Tipo:
                 </Typography>
-                <Typography variant="body1" sx={TypographyTypeOptionsSx}>
-                  {
-                    transactionTypes.find(
-                      (option) => option.value === transaction.type
-                    )?.label
-                  }
-                </Typography>
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                  {(() => {
+                    const Icon = getTransactionIcon(transaction.type);
+                    return (
+                      <Icon sx={{ fontSize: 20, color: 'text.secondary' }} />
+                    );
+                  })()}
+                  <Typography variant="body1" sx={TypographyTypeOptionsSx}>
+                    {
+                      transactionTypes.find(
+                        (option) => option.value === transaction.type
+                      )?.label
+                    }
+                  </Typography>
+                </Box>
               </Box>
               <Box sx={DescriptionBoxSx}>
                 <Typography variant="body2" sx={TypographyTypeSx}>
@@ -476,6 +562,7 @@ export default function ModalComponent({
               variant="contained"
               fullWidth
               sx={CloseModalTextSx}
+              aria-label="Fechar modal"
             >
               Fechar
             </Button>
