@@ -8,7 +8,7 @@
     {
       "id": "1",
       "type": "transfer",
-      "amount": 250.0,
+      "value": 250.0,
       "description": "Transferência para João Silva",
       "date": "2025-11-20",
       "status": "completed"
@@ -16,7 +16,7 @@
     {
       "id": "2",
       "type": "deposit",
-      "amount": 1500.0,
+      "value": 1500.0,
       "description": "Depósito via PIX",
       "date": "2025-11-19",
       "status": "completed"
@@ -24,7 +24,7 @@
     {
       "id": "3",
       "type": "payment",
-      "amount": 89.9,
+      "value": 89.9,
       "description": "Pagamento de conta de luz",
       "date": "2025-11-18",
       "status": "completed"
@@ -32,7 +32,7 @@
     {
       "id": "4",
       "type": "withdraw",
-      "amount": 100.0,
+      "value": 100.0,
       "description": "Saque no caixa eletrônico",
       "date": "2025-11-17",
       "status": "completed"
@@ -40,7 +40,7 @@
     {
       "id": "5",
       "type": "payment",
-      "amount": 45.99,
+      "value": 45.99,
       "description": "Netflix - Assinatura mensal",
       "date": "2025-11-16",
       "status": "completed"
@@ -48,7 +48,7 @@
     {
       "id": "6",
       "type": "transfer",
-      "amount": 320.0,
+      "value": 320.0,
       "description": "Transferência para Maria Santos",
       "date": "2025-11-15",
       "status": "completed"
@@ -56,7 +56,7 @@
     {
       "id": "7",
       "type": "payment",
-      "amount": 156.78,
+      "value": 156.78,
       "description": "Supermercado Extra",
       "date": "2025-11-14",
       "status": "completed"
@@ -64,7 +64,7 @@
     {
       "id": "8",
       "type": "deposit",
-      "amount": 2500.0,
+      "value": 2500.0,
       "description": "Salário - Empresa XYZ",
       "date": "2025-11-13",
       "status": "completed"
@@ -72,7 +72,7 @@
     {
       "id": "9",
       "type": "payment",
-      "amount": 75.0,
+      "value": 75.0,
       "description": "Restaurante Sabor & Arte",
       "date": "2025-11-12",
       "status": "completed"
@@ -80,7 +80,7 @@
     {
       "id": "10",
       "type": "withdraw",
-      "amount": 200.0,
+      "value": 200.0,
       "description": "Saque no caixa eletrônico",
       "date": "2025-11-11",
       "status": "completed"
@@ -88,7 +88,7 @@
     {
       "id": "11",
       "type": "payment",
-      "amount": 129.9,
+      "value": 129.9,
       "description": "Farmácia Drogasil",
       "date": "2025-11-10",
       "status": "completed"
@@ -96,7 +96,7 @@
     {
       "id": "12",
       "type": "transfer",
-      "amount": 500.0,
+      "value": 500.0,
       "description": "Transferência para Pedro Oliveira",
       "date": "2025-11-09",
       "status": "completed"
@@ -104,7 +104,7 @@
     {
       "id": "13",
       "type": "payment",
-      "amount": 39.9,
+      "value": 39.9,
       "description": "Spotify Premium",
       "date": "2025-11-08",
       "status": "completed"
@@ -112,7 +112,7 @@
     {
       "id": "14",
       "type": "deposit",
-      "amount": 850.0,
+      "value": 850.0,
       "description": "Freelance - Projeto Web",
       "date": "2025-11-07",
       "status": "completed"
@@ -120,7 +120,7 @@
     {
       "id": "15",
       "type": "payment",
-      "amount": 234.56,
+      "value": 234.56,
       "description": "Posto de gasolina Shell",
       "date": "2025-11-06",
       "status": "completed"
@@ -128,7 +128,7 @@
     {
       "id": "16",
       "type": "payment",
-      "amount": 890.0,
+      "value": 890.0,
       "description": "Aluguel - Novembro 2025",
       "date": "2025-11-05",
       "status": "completed"
@@ -136,7 +136,7 @@
     {
       "id": "17",
       "type": "payment",
-      "amount": 65.0,
+      "value": 65.0,
       "description": "Uber - Corridas",
       "date": "2025-11-04",
       "status": "completed"
@@ -144,7 +144,7 @@
     {
       "id": "18",
       "type": "deposit",
-      "amount": 1200.0,
+      "value": 1200.0,
       "description": "Reembolso - Despesas médicas",
       "date": "2025-11-03",
       "status": "completed"
@@ -152,7 +152,7 @@
     {
       "id": "19",
       "type": "payment",
-      "amount": 189.9,
+      "value": 189.9,
       "description": "Livraria Cultura",
       "date": "2025-11-02",
       "status": "completed"
@@ -160,7 +160,7 @@
     {
       "id": "20",
       "type": "transfer",
-      "amount": 450.0,
+      "value": 450.0,
       "description": "Transferência para Ana Costa",
       "date": "2025-11-01",
       "status": "completed"
@@ -168,7 +168,7 @@
     {
       "id": "21",
       "type": "payment",
-      "amount": 299.0,
+      "value": 299.0,
       "description": "Academia - Mensalidade",
       "date": "2025-10-31",
       "status": "completed"
@@ -176,7 +176,7 @@
     {
       "id": "22",
       "type": "withdraw",
-      "amount": 150.0,
+      "value": 150.0,
       "description": "Saque no caixa eletrônico",
       "date": "2025-10-30",
       "status": "completed"
@@ -184,7 +184,7 @@
     {
       "id": "23",
       "type": "payment",
-      "amount": 98.5,
+      "value": 98.5,
       "description": "iFood - Delivery",
       "date": "2025-10-29",
       "status": "completed"
@@ -192,7 +192,7 @@
     {
       "id": "24",
       "type": "deposit",
-      "amount": 3200.0,
+      "value": 3200.0,
       "description": "Salário - Empresa XYZ",
       "date": "2025-10-28",
       "status": "completed"
@@ -200,7 +200,7 @@
     {
       "id": "25",
       "type": "payment",
-      "amount": 145.0,
+      "value": 145.0,
       "description": "Conta de internet",
       "date": "2025-10-27",
       "status": "completed"
@@ -208,7 +208,7 @@
     {
       "id": "26",
       "type": "transfer",
-      "amount": 600.0,
+      "value": 600.0,
       "description": "Transferência para Lucas Mendes",
       "date": "2025-10-26",
       "status": "completed"

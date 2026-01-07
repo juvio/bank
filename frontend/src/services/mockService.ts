@@ -1,12 +1,22 @@
 import mockData from '@/mocks/mock.json';
-import { TransactionType } from '@/types';
+import { TransactionType, Transactions } from '@/types';
 
 const convertMockTransactions = (): TransactionType[] => {
   return mockData.transactions.map((t) => ({
     id: parseInt(t.id),
     type: t.type,
-    amount: t.amount,
+    amount: t.value,
     description: t.description,
+    date: t.date,
+  }));
+};
+
+export const convertMockToTransactions = (): Transactions => {
+  return mockData.transactions.map((t) => ({
+    id: t.id,
+    accountId: '1', // ID de conta padrão para mock
+    type: t.type as 'payment' | 'deposit' | 'withdraw' | 'transfer',
+    value: t.value,
     date: t.date,
   }));
 };
