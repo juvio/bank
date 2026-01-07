@@ -2,6 +2,7 @@ import { headers } from 'next/headers';
 import HomePageComponent from '@/components/HomePageComponent';
 import { parse } from 'cookie';
 import { Transactions } from '@/types';
+import { convertMockToTransactions } from '@/services/mockService';
 
 export default async function HomePage() {
   const USE_MOCK = process.env.NEXT_PUBLIC_USE_MOCK === 'true';
@@ -34,7 +35,7 @@ export default async function HomePage() {
 
   return (
     <HomePageComponent
-      transactions={USE_MOCK ? [] : transactions}
+      transactions={USE_MOCK ? convertMockToTransactions() : transactions}
       fullname={USE_MOCK ? 'Mock User' : fullname}
     />
   );
