@@ -2,6 +2,7 @@ import { TransactionType } from '@/types';
 import { create } from 'zustand';
 import { persist, devtools } from 'zustand/middleware';
 import { api } from '@/utils/api';
+import mock from '../mocks/mock.json';
 
 type AccountBankStore = {
   transaction: TransactionType;
@@ -34,7 +35,10 @@ export const useBankAccountStore = create<AccountBankStore>()(
         transactionShouldReset: false,
         resetTransaction: (shouldReset: boolean) =>
           set({ transactionShouldReset: shouldReset }),
-        transactions: [],
+        transactions: mock.transactions.map((t) => ({
+          ...t,
+          id: typeof t.id === 'string' ? parseInt(t.id, 10) : t.id,
+        })),
         balance: 0,
         balanceNeedsUpdate: false,
         page: 0,

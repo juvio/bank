@@ -5,7 +5,7 @@ const convertMockTransactions = (): TransactionType[] => {
   return mockData.transactions.map((t) => ({
     id: parseInt(t.id),
     type: t.type,
-    amount: t.value,
+    amount: t.amount,
     description: t.description,
     date: t.date,
   }));
@@ -16,7 +16,7 @@ export const convertMockToTransactions = (): Transactions => {
     id: t.id,
     accountId: '1', // ID de conta padrão para mock
     type: t.type as 'payment' | 'deposit' | 'withdraw' | 'transfer',
-    value: t.value,
+    value: t.amount,
     date: t.date,
   }));
 };
