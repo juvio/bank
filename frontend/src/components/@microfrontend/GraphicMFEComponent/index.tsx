@@ -10,9 +10,12 @@ export default function GraphicMFEComponent({ data }: { data: Transactions }) {
   useEffect(() => {
     let cleanup: (() => void) | undefined;
 
+    const baseUrl = getGraphicAppBaseUrl();
+    const isDev = baseUrl.includes('localhost');
+
     const script = document.createElement('script');
     script.type = 'module';
-    script.src = `${getGraphicAppBaseUrl()}/src/main.tsx`;
+    script.src = isDev ? `${baseUrl}/src/main.tsx` : `${baseUrl}/remote.js`;
     script.async = true;
 
     script.onload = () => {
