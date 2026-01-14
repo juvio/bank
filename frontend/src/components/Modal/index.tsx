@@ -176,6 +176,43 @@ export default function ModalComponent({
     }
   };
 
+  const handleOpenAttachment = async () => {
+    if (!transaction.attachmentUrl) return;
+
+    // Se for blob URL (mock), abre diretamente
+    if (transaction.attachmentUrl.startsWith('blob:')) {
+      window.open(transaction.attachmentUrl, '_blank');
+      return;
+    }
+
+    try {
+      // Faz a requisição para o BFF
+      const response = await fetch(
+        `/api/attachments${transaction.attachmentUrl}`
+      );
+      console.log('Attachment response:', response);
+
+      // if (!response.ok) {
+      //   throw new Error('Erro ao carregar anexo');
+      // }
+
+      // Converte a resposta em blob
+      const blob = await response.blob();
+
+      // Cria uma URL temporária para o blob
+      const blobUrl = URL.createObjectURL(blob);
+
+      // Abre em nova janela
+      window.open(blobUrl, '_blank');
+
+      // Limpa a URL após um tempo para evitar vazamento de memória
+      setTimeout(() => URL.revokeObjectURL(blobUrl), 100);
+    } catch (error) {
+      console.error('Erro ao abrir anexo:', error);
+      alert('Erro ao abrir anexo. Tente novamente.');
+    }
+  };
+
   return (
     <Dialog
       open={open}
@@ -502,14 +539,14 @@ export default function ModalComponent({
                     <Button
                       variant="outlined"
                       size="small"
-                      href={
-                        transaction.attachmentUrl.startsWith('blob:')
-                          ? transaction.attachmentUrl
-                          : `${
-                              process.env.NEXT_PUBLIC_API_URL ||
-                              'http://localhost:5000'
-                            }${transaction.attachmentUrl}`
-                      }
+                      // href={
+                      //   transaction.attachmentUrl.startsWith('blob:')
+                      //     ? transaction.attachmentUrl
+                      //     : `${'http://localhost:3000'}/api/attachments${
+                      //         transaction.attachmentUrl
+                      //       }`
+                      // }
+                      onClick={handleOpenAttachment}
                       target="_blank"
                       component="a"
                       startIcon={<AttachFileIcon />}
@@ -519,14 +556,14 @@ export default function ModalComponent({
                     </Button>
                   ) : (
                     <Link
-                      href={
-                        transaction.attachmentUrl.startsWith('blob:')
-                          ? transaction.attachmentUrl
-                          : `${
-                              process.env.NEXT_PUBLIC_API_URL ||
-                              'http://localhost:5000'
-                            }${transaction.attachmentUrl}`
-                      }
+                      // href={
+                      //   transaction.attachmentUrl.startsWith('blob:')
+                      //     ? transaction.attachmentUrl
+                      //     : `${'http://localhost:3000'}/api/attachments${
+                      //         transaction.attachmentUrl
+                      //       }`
+                      // }
+                      onClick={handleOpenAttachment}
                       target="_blank"
                       sx={{ display: 'block', mt: 1 }}
                     >
