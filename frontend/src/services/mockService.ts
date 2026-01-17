@@ -138,6 +138,7 @@ export const mockService = {
       newTransaction.attachmentUrl = URL.createObjectURL(
         transaction.attachment
       );
+      newTransaction.attachmentType = transaction.attachment.type;
     }
 
     if (transaction.type === 'deposit') {

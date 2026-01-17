@@ -71,6 +71,9 @@ export default function NewTransactionCard() {
       description: newTransaction.description,
       date: newTransaction.date,
       attachment: newTransaction.attachment || undefined,
+      attachmentType: newTransaction.attachment
+        ? newTransaction.attachment.type
+        : undefined,
     });
 
     setEditModal(false);
@@ -103,29 +106,29 @@ export default function NewTransactionCard() {
   }, [transactionShouldReset, transactions.length]);
 
   return (
-    <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="pt-br">
+    <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale='pt-br'>
       <Card
         sx={CardWrapperSx}
-        role="region"
-        aria-labelledby="new-transaction-title"
+        role='region'
+        aria-labelledby='new-transaction-title'
       >
         <CardContent sx={CardContentSx}>
           <Typography
-            variant="h6"
-            component="h2"
+            variant='h6'
+            component='h2'
             gutterBottom
-            id="new-transaction-title"
+            id='new-transaction-title'
           >
             Nova Transação
           </Typography>
           <Box
-            component="form"
+            component='form'
             sx={BoxTextFieldSx}
-            aria-labelledby="new-transaction-title"
+            aria-labelledby='new-transaction-title'
           >
             <TextField
               select
-              label="Tipo de Transação"
+              label='Tipo de Transação'
               value={newTransaction.type}
               onChange={(e) =>
                 setNewTransaction({ ...newTransaction, type: e.target.value })
@@ -144,8 +147,8 @@ export default function NewTransactionCard() {
             </TextField>
             <Box sx={{ display: 'flex', gap: 2 }}>
               <TextField
-                label="Valor"
-                type="number"
+                label='Valor'
+                type='number'
                 value={newTransaction.amount}
                 onChange={(e) =>
                   setNewTransaction({
@@ -165,12 +168,12 @@ export default function NewTransactionCard() {
                 helperText={errors}
               />
               <DesktopDatePicker
-                label="Data"
+                label='Data'
                 value={dayjs(newTransaction.date)}
                 onChange={handleDateChange}
                 maxDate={dayjs()}
                 disableFuture
-                format="DD/MM/YYYY"
+                format='DD/MM/YYYY'
                 slotProps={{
                   textField: {
                     fullWidth: true,
@@ -180,7 +183,7 @@ export default function NewTransactionCard() {
               />
             </Box>
             <TextField
-              label="Descrição"
+              label='Descrição'
               value={newTransaction.description}
               onChange={(e) =>
                 setNewTransaction({
@@ -202,30 +205,30 @@ export default function NewTransactionCard() {
               }}
             >
               <Button
-                variant="outlined"
-                component="label"
+                variant='outlined'
+                component='label'
                 startIcon={<AttachFileIcon />}
-                size="small"
+                size='small'
                 sx={{ flex: 1, textTransform: 'none' }}
               >
                 {newTransaction.attachment ? 'Trocar' : 'Anexar'}
                 <input
-                  type="file"
+                  type='file'
                   hidden
                   onChange={onFileChange}
-                  accept="image/*,.pdf"
+                  accept='image/*,.pdf'
                 />
               </Button>
               {newTransaction.attachment && (
-                <IconButton onClick={onRemoveFile} size="small" color="error">
+                <IconButton onClick={onRemoveFile} size='small' color='error'>
                   <CloseIcon />
                 </IconButton>
               )}
             </Box>
             {newTransaction.attachment && (
               <Typography
-                variant="caption"
-                color="text.secondary"
+                variant='caption'
+                color='text.secondary'
                 sx={{
                   mt: -1,
                   overflow: 'hidden',
@@ -239,7 +242,7 @@ export default function NewTransactionCard() {
           </Box>
           <CardActions sx={CardActionsSx}>
             <Button
-              variant="contained"
+              variant='contained'
               fullWidth
               onClick={handleOpenModal}
               disabled={!isFormValid()}

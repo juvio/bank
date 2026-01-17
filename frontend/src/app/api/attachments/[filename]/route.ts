@@ -1,3 +1,4 @@
+import { sanitizeFilename } from '@/utils/sanitizedFilename';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function GET(
@@ -7,9 +8,10 @@ export async function GET(
   const token = request.cookies.get('token')?.value;
   const backendUrl = process.env.BACKEND_URL || 'http://localhost:5000';
   const { filename } = await params;
+  const sanitizedFilename = sanitizeFilename(filename);
 
   try {
-    const response = await fetch(`${backendUrl}/uploads/${filename}`, {
+    const response = await fetch(`${backendUrl}/uploads/${sanitizedFilename}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -30,7 +32,7 @@ export async function GET(
       headers: {
         'Content-Type':
           response.headers.get('Content-Type') || 'application/octet-stream',
-        'Content-Disposition': `inline; filename="${filename}"`,
+        'Content-Disposition': `inline; filename="${sanitizedFilename}"`,
       },
     });
   } catch (error) {
