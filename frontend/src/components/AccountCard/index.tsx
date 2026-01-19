@@ -28,7 +28,7 @@ export default function AccountCard({
     return new Intl.NumberFormat('pt-BR', {
       style: 'currency',
       currency: 'BRL',
-    }).format(Math.abs(value));
+    }).format(value);
   };
 
   const fullName = accountName;
