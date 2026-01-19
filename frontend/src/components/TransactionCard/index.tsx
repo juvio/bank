@@ -40,6 +40,7 @@ type TransactionCardProps = {
   amount: number;
   date: string;
   attachmentUrl?: string;
+  attachmentType?: string;
 };
 
 export default function TransactionCard({
@@ -49,6 +50,7 @@ export default function TransactionCard({
   description,
   date,
   attachmentUrl,
+  attachmentType,
 }: TransactionCardProps) {
   const { setEditModal, setDeleteModal, setAddModal, setViewModal } =
     useModalStore();
@@ -77,7 +79,8 @@ export default function TransactionCard({
       amount: amount,
       description: description,
       date: date ?? '',
-      attachmentUrl: attachmentUrl ?? '',
+      attachmentUrl: attachmentUrl,
+      attachmentType: attachmentType,
     });
     setEditModal(true);
   };
@@ -110,7 +113,8 @@ export default function TransactionCard({
       amount: amount,
       description: description,
       date: date ?? '',
-      attachmentUrl: attachmentUrl ?? '',
+      attachmentUrl: attachmentUrl,
+      attachmentType: attachmentType,
     });
     setViewModal(true);
   };
@@ -151,7 +155,7 @@ export default function TransactionCard({
           {/* Título e Data */}
           <Box sx={{ flex: 1, minWidth: 0 }}>
             <Typography
-              variant="body1"
+              variant='body1'
               sx={{
                 fontWeight: 600,
                 color: 'text.primary',
@@ -162,7 +166,7 @@ export default function TransactionCard({
               {TransactionMapper[type]}
             </Typography>
             <Typography
-              variant="body2"
+              variant='body2'
               sx={{
                 color: 'text.secondary',
                 fontSize: { xs: '0.75rem', sm: '0.875rem' },
@@ -174,7 +178,7 @@ export default function TransactionCard({
 
           {/* Valor */}
           <Typography
-            variant="h6"
+            variant='h6'
             sx={{
               fontWeight: 700,
               color: amountColor,
@@ -194,34 +198,34 @@ export default function TransactionCard({
               flexShrink: 0,
             }}
           >
-            <Link href="/transaction">
+            <Link href='/transaction'>
               <IconButton
                 onClick={handleOpenViewModal}
-                size="small"
+                size='small'
                 sx={IconButtonViewSx}
-                aria-label="Ver detalhes da transação"
+                aria-label='Ver detalhes da transação'
               >
-                <VisibilityIcon fontSize="small" />
+                <VisibilityIcon fontSize='small' />
               </IconButton>
             </Link>
-            <Link href="/transaction">
+            <Link href='/transaction'>
               <IconButton
                 onClick={handleOpenEditModal}
-                size="small"
+                size='small'
                 sx={IconButtonEditSx}
-                aria-label="Editar transação"
+                aria-label='Editar transação'
               >
-                <EditIcon fontSize="small" />
+                <EditIcon fontSize='small' />
               </IconButton>
             </Link>
-            <Link href="/transaction">
+            <Link href='/transaction'>
               <IconButton
                 onClick={handleOpenDeleteModal}
-                size="small"
+                size='small'
                 sx={IconButtonDeleteSx}
-                aria-label="Remover transação"
+                aria-label='Remover transação'
               >
-                <DeleteIcon fontSize="small" />
+                <DeleteIcon fontSize='small' />
               </IconButton>
             </Link>
           </Box>
@@ -229,7 +233,7 @@ export default function TransactionCard({
           {/* Botão de menu - Mobile */}
           <IconButton
             onClick={handleClick}
-            size="small"
+            size='small'
             sx={{
               flexShrink: 0,
               display: { xs: 'block', md: 'none' },
@@ -253,34 +257,34 @@ export default function TransactionCard({
             }}
           >
             <Link
-              href="/transaction"
+              href='/transaction'
               style={{ textDecoration: 'none', color: 'inherit' }}
             >
               <MenuItem onClick={handleOpenViewModal}>
                 <ListItemIcon>
-                  <VisibilityIcon fontSize="small" sx={{ color: '#1976d2' }} />
+                  <VisibilityIcon fontSize='small' sx={{ color: '#1976d2' }} />
                 </ListItemIcon>
                 <ListItemText>Visualizar</ListItemText>
               </MenuItem>
             </Link>
             <Link
-              href="/transaction"
+              href='/transaction'
               style={{ textDecoration: 'none', color: 'inherit' }}
             >
               <MenuItem onClick={handleOpenEditModal}>
                 <ListItemIcon>
-                  <EditIcon fontSize="small" sx={{ color: '#2e7d32' }} />
+                  <EditIcon fontSize='small' sx={{ color: '#2e7d32' }} />
                 </ListItemIcon>
                 <ListItemText>Editar</ListItemText>
               </MenuItem>
             </Link>
             <Link
-              href="/transaction"
+              href='/transaction'
               style={{ textDecoration: 'none', color: 'inherit' }}
             >
               <MenuItem onClick={handleOpenDeleteModal}>
                 <ListItemIcon>
-                  <DeleteIcon fontSize="small" sx={{ color: '#d32f2f' }} />
+                  <DeleteIcon fontSize='small' sx={{ color: '#d32f2f' }} />
                 </ListItemIcon>
                 <ListItemText>Excluir</ListItemText>
               </MenuItem>

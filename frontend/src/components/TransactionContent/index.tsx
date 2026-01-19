@@ -47,7 +47,10 @@ function filterByPeriod(
   return transactions.filter((transaction) => {
     // Parsear data como local ao invés de UTC
     let transactionDate: Date;
-    if (typeof transaction.date === 'string' && transaction.date.includes('-')) {
+    if (
+      typeof transaction.date === 'string' &&
+      transaction.date.includes('-')
+    ) {
       // Formato YYYY-MM-DD ou YYYY-MM-DDTHH:mm:ss
       const [datePart] = transaction.date.split('T');
       const [year, month, day] = datePart.split('-').map(Number);
@@ -55,7 +58,7 @@ function filterByPeriod(
     } else {
       transactionDate = new Date(transaction.date);
     }
-    
+
     // Normalizar a data da transação para início do dia
     const normalizedTransactionDate = new Date(
       transactionDate.getFullYear(),
@@ -160,23 +163,23 @@ export default function TransactionContent() {
     <Container
       maxWidth={false}
       sx={ContainerWrapperSx}
-      component="main"
-      role="region"
-      aria-labelledby="transactions-title"
+      component='main'
+      role='region'
+      aria-labelledby='transactions-title'
     >
       <Box sx={BoxWrapperSx}>
         <Card sx={CardWrapperSx}>
           <CardContent sx={CardContentSx}>
             <Typography
-              variant="h5"
-              component="h2"
+              variant='h5'
+              component='h2'
               gutterBottom
-              id="transactions-title"
+              id='transactions-title'
               sx={TransactionTypographySx}
             >
               💰 Suas Transações
             </Typography>
-            <Typography variant="body1" sx={DescriptionTypographySx}>
+            <Typography variant='body1' sx={DescriptionTypographySx}>
               Confira aqui todo o histórico das suas movimentações financeiras
             </Typography>
           </CardContent>
@@ -194,10 +197,10 @@ export default function TransactionContent() {
 
         {isLoading && transactions.length === 0 ? (
           <Box
-            role="status"
-            aria-live="polite"
+            role='status'
+            aria-live='polite'
             aria-busy={isLoading}
-            aria-label="Carregando suas transações"
+            aria-label='Carregando suas transações'
             sx={{
               display: 'flex',
               flexDirection: 'column',
@@ -206,11 +209,11 @@ export default function TransactionContent() {
               py: 8,
             }}
           >
-            <CircularProgress size={50} thickness={4} aria-hidden="true" />
+            <CircularProgress size={50} thickness={4} aria-hidden='true' />
             <Typography
-              variant="body1"
+              variant='body1'
               sx={{ color: 'text.secondary' }}
-              id="loading-message"
+              id='loading-message'
             >
               Carregando transações...
             </Typography>
@@ -218,8 +221,8 @@ export default function TransactionContent() {
         ) : filteredTransactions.length > 0 ? (
           <Box
             sx={BoxTransactionContentSx}
-            role="feed"
-            aria-label="Lista de transações"
+            role='feed'
+            aria-label='Lista de transações'
           >
             <InfiniteScroll
               dataLength={filteredTransactions.length}
@@ -233,9 +236,9 @@ export default function TransactionContent() {
               scrollThreshold={0.9}
               loader={
                 <Box
-                  role="status"
-                  aria-live="polite"
-                  aria-label="Carregando mais transações"
+                  role='status'
+                  aria-live='polite'
+                  aria-label='Carregando mais transações'
                   sx={{
                     display: 'flex',
                     flexDirection: 'column',
@@ -247,9 +250,9 @@ export default function TransactionContent() {
                   <CircularProgress
                     size={30}
                     thickness={4}
-                    aria-hidden="true"
+                    aria-hidden='true'
                   />
-                  <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                  <Typography variant='body2' sx={{ color: 'text.secondary' }}>
                     Carregando mais transações...
                   </Typography>
                 </Box>
@@ -257,10 +260,10 @@ export default function TransactionContent() {
               endMessage={
                 page > 0 ? (
                   <Typography
-                    variant="body2"
+                    variant='body2'
                     sx={{ textAlign: 'center', py: 3, color: 'text.secondary' }}
-                    aria-live="polite"
-                    role="status"
+                    aria-live='polite'
+                    role='status'
                   >
                     ✓ Você viu todas as {filteredTransactions.length} transações
                   </Typography>
@@ -270,7 +273,7 @@ export default function TransactionContent() {
               {filteredTransactions.map((transaction, index) => (
                 <Box
                   key={`transaction-${transaction.id}-${index}`}
-                  role="article"
+                  role='article'
                   aria-label={`Transação ${index + 1} de ${
                     filteredTransactions.length
                   }`}
@@ -282,6 +285,7 @@ export default function TransactionContent() {
                     description={transaction.description}
                     date={transaction.date}
                     attachmentUrl={transaction.attachmentUrl}
+                    attachmentType={transaction.attachmentType}
                   />
                 </Box>
               ))}
@@ -290,23 +294,23 @@ export default function TransactionContent() {
         ) : (
           <Card
             sx={CardNoTransactionSx}
-            role="status"
-            aria-live="polite"
-            aria-label="Nenhuma transação encontrada"
+            role='status'
+            aria-live='polite'
+            aria-label='Nenhuma transação encontrada'
           >
             <CardContent sx={{ py: 2 }}>
               <Typography
-                variant="h6"
-                component="h3"
+                variant='h6'
+                component='h3'
                 sx={TypographyNoTransactionSx}
-                id="empty-state-title"
+                id='empty-state-title'
               >
                 📋 Nenhuma transação encontrada
               </Typography>
               <Typography
-                variant="body2"
+                variant='body2'
                 sx={{ color: 'text.secondary' }}
-                aria-describedby="empty-state-title"
+                aria-describedby='empty-state-title'
               >
                 {transactions.length > 0
                   ? 'Nenhuma transação corresponde aos filtros aplicados. Tente ajustar os critérios de busca.'
