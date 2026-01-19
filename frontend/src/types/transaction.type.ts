@@ -6,6 +6,7 @@ export type TransactionType = {
   date: string;
   attachment?: File | string;
   attachmentUrl?: string;
+  attachmentType?: string;
 };
 
 export type Transactions = {
