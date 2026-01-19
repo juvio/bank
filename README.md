@@ -34,6 +34,7 @@ Uma aplicação bancária moderna construída com Next.js, Material-UI e TypeScr
 ### Decisões projetuais
 
 1. Microfrontend: Optou-se por utilizar a injeção da aplicação microfrontend via script, devido às limitações das bibliotecas para suporte a aplicações Next com app router. Foram realizadas duas provas de conceito, uma com aplicação remote Next com app router (incompatível com Module Federation e Single SPA), que foi descartada, e com uma aplicação remote Next com pages router utilizando o Plugin Module Federation, mas que também se provou limitada devido ao host estar em app router. Uma opção também seria migrar a aplicação atual para pages router, mas foi descartada já que o Next pretende seguir com o app router para o futuro. A prova de conceito que se mostrou eficiente como microfrontend mantendo as principais vantagens (código apartado e passar props da aplicação host para remota, evitando chamadas desnecessárias ao backend) foi com uma aplicação remote React com framework Vite, utilizando a injeção no DOM via script.
+2. Design System em pacote NPM: Para compartilhar o estilo entre as duas aplicações, o design system criado durante o módulo 1, com as principais definições de paleta de cores e tipografia, foi migrado para um repositório à parte e transformado em módulo NPM, de forma que pode ser instalado por qualquer remote da aplicação, tornando as propriedades e temas acessíveis facilmente.
 
 ## 🚀 Como executar
 
@@ -43,7 +44,7 @@ Uma aplicação bancária moderna construída com Next.js, Material-UI e TypeScr
 - npm, yarn, pnpm ou bun
 - Docker e Docker Compose (para rodar com containers)
 
-#### 1. Obter autorização para o pacote bank-design system:
+#### 1. Obter autorização para o pacote bank-design-system:
 
 ##### 1.1 Gerar token GitHub (PAT):
 
@@ -66,6 +67,23 @@ $env:NPM_TOKEN="SEU_TOKEN_AQUI"
 cd frontend
 npm install
 ```
+
+#### Opcional: Executar o microfrontend
+
+##### 2.1 Clone o repositório
+
+- [Microfrontend de gráfico](https://github.com/carollyb/mfe-graphics)
+
+##### 2.2 Siga os mesmos passos acima para instalação do bank-design-system
+
+##### 2.3 No terminal, execute
+
+```bash
+npm install
+npm run dev
+```
+
+##### 2.4 A aplicação remote será exposta na porta 3001. Ao acessar a home deste projeto ou o endpoint /graphicApp, você verá a aplicação remote executando
 
 ## Executar o projeto
 
@@ -248,4 +266,3 @@ bun storybook
 ```
 
 Abra [http://localhost:6006](http://localhost:6006) no seu navegador para ver o Storybook.
-

@@ -4,7 +4,7 @@ export type TransactionType = {
   amount: number;
   description?: string;
   date: string;
-  attachment?: File;
+  attachment?: File | string;
   attachmentUrl?: string;
 };
 
