@@ -194,6 +194,8 @@ NEXT_PUBLIC_USE_MOCK=false
 NEXT_PUBLIC_API_URL=http://localhost:5000
 ```
 
+Atenção: no arquivo `backend/.env.local` NÃO PODE conter a env MONGO_URI
+
 #### 3. Executar os servidores:
 
 ```bash
@@ -210,6 +212,8 @@ npm run dev
 
 - Frontend: [http://localhost:3000](http://localhost:3000)
 - Backend API: [http://localhost:5000](http://localhost:5000)
+
+Nesse caso é necessário criar nova conta!
 
 **Dados:** ❌ **Não persistem** (apagados ao parar o servidor)
 
