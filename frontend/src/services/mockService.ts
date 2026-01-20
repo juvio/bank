@@ -11,9 +11,11 @@ const convertMockTransactions = (): TransactionType[] => {
   }));
 };
 
-export const convertMockToTransactions = (): Transactions => {
-  return mockData.transactions.map((t) => ({
-    id: t.id,
+export const convertMockToTransactions = (
+  transactions: TransactionType[],
+): Transactions => {
+  return transactions.map((t) => ({
+    id: t.id.toString(),
     accountId: '1', // ID de conta padrão para mock
     type: t.type as 'payment' | 'deposit' | 'withdraw' | 'transfer',
     value: t.amount,
@@ -56,7 +58,7 @@ export const mockService = {
           username: mockState.user.username,
           email: mockState.user.email,
           exp: Date.now() + 86400000, // 24h
-        })
+        }),
       );
 
       return {
@@ -105,7 +107,7 @@ export const mockService = {
     const endIndex = startIndex + limit;
     const paginatedTransactions = mockState.transactions.slice(
       startIndex,
-      endIndex
+      endIndex,
     );
     const hasMore = endIndex < mockState.transactions.length;
 
@@ -136,7 +138,7 @@ export const mockService = {
 
     if (transaction.attachment) {
       newTransaction.attachmentUrl = URL.createObjectURL(
-        transaction.attachment
+        transaction.attachment,
       );
       newTransaction.attachmentType = transaction.attachment.type;
     }
@@ -162,7 +164,7 @@ export const mockService = {
       amount?: number;
       description?: string;
       date?: string;
-    }
+    },
   ) => {
     await delay();
 

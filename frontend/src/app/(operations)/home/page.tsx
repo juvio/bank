@@ -2,7 +2,7 @@ import { headers } from 'next/headers';
 import HomePageComponent from '@/components/HomePageComponent';
 import { parse } from 'cookie';
 import { Transactions } from '@/types';
-import { convertMockToTransactions } from '@/services/mockService';
+import { convertMockToTransactions, mockService } from '@/services/mockService';
 
 export default async function HomePage() {
   const USE_MOCK = process.env.NEXT_PUBLIC_USE_MOCK === 'true';
@@ -31,12 +31,11 @@ export default async function HomePage() {
     const response2 = await data2.json();
     fullname = response1.result[0].username;
     transactions = response2.result.transactions;
+  } else {
+    const getTransaction = await mockService.getTransactions();
+    transactions = convertMockToTransactions(getTransaction.data);
+    fullname = (await mockService.getAccount()).result.user.username;
   }
 
-  return (
-    <HomePageComponent
-      transactions={USE_MOCK ? convertMockToTransactions() : transactions}
-      fullname={USE_MOCK ? 'Mock User' : fullname}
-    />
-  );
+  return <HomePageComponent transactions={transactions} fullname={fullname} />;
 }
