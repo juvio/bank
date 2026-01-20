@@ -115,7 +115,7 @@ export default function ModalComponent({
   const { errors, isFormValid, handleAmountBlur } = useTransactionValidation(
     newTransaction.amount ?? transaction.amount,
     newTransaction.type ?? transaction.type,
-    newTransaction.date ?? transaction.date
+    newTransaction.date ?? transaction.date,
   );
 
   const handleDateChange = (dateValue: Dayjs | null) => {
@@ -222,12 +222,12 @@ export default function ModalComponent({
         editModal
           ? 'edit'
           : addModal
-          ? 'add'
-          : deleteModal
-          ? 'delete'
-          : viewModal
-          ? 'view'
-          : 'modal'
+            ? 'add'
+            : deleteModal
+              ? 'delete'
+              : viewModal
+                ? 'view'
+                : 'modal'
       }
       slotProps={{
         paper: {
@@ -271,7 +271,7 @@ export default function ModalComponent({
                 label='Valor'
                 type='number'
                 value={Math.abs(
-                  newTransaction.amount ?? transaction.amount ?? 0
+                  newTransaction.amount ?? transaction.amount ?? 0,
                 )}
                 onChange={(e) =>
                   setNewTransaction({
@@ -409,7 +409,7 @@ export default function ModalComponent({
                   <Typography variant='body1' sx={TypographyTypeOptionsSx}>
                     {
                       transactionTypes.find(
-                        (option) => option.value === transaction.type
+                        (option) => option.value === transaction.type,
                       )?.label
                     }
                   </Typography>
@@ -493,7 +493,7 @@ export default function ModalComponent({
                   <Typography variant='body1' sx={TypographyTypeOptionsSx}>
                     {
                       transactionTypes.find(
-                        (option) => option.value === transaction.type
+                        (option) => option.value === transaction.type,
                       )?.label
                     }
                   </Typography>

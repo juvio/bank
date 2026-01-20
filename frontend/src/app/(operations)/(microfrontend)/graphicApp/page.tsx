@@ -2,7 +2,7 @@ import GraphicMFEPage from '@/components/@views/GraphicMFEClient';
 import { headers } from 'next/headers';
 import { parse } from 'cookie';
 import { Box } from '@mui/material';
-import { convertMockToTransactions } from '@/services/mockService';
+import { convertMockToTransactions, mockService } from '@/services/mockService';
 
 export default async function GraphicPage() {
   const USE_MOCK = process.env.NEXT_PUBLIC_USE_MOCK === 'true';
@@ -17,11 +17,15 @@ export default async function GraphicPage() {
         Authorization: `Bearer ${token}`,
       },
     });
-    data = await response.json();
+    const r1 = await response.json();
+    data = r1.result.transactions;
+  } else {
+    const getTransaction = await mockService.getTransactions();
+    data = convertMockToTransactions(getTransaction.data);
   }
   return (
     <Box component='main' sx={{ p: 3 }}>
-      <GraphicMFEPage data={USE_MOCK ? convertMockToTransactions() : data.result.transactions} />
+      <GraphicMFEPage data={data} />
     </Box>
   );
 }

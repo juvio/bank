@@ -29,7 +29,7 @@ import {
 
 function filterByType(
   transactions: TransactionType[],
-  filterType: string
+  filterType: string,
 ): TransactionType[] {
   if (filterType === 'all') return transactions;
   return transactions.filter((transaction) => transaction.type === filterType);
@@ -37,7 +37,7 @@ function filterByType(
 
 function filterByPeriod(
   transactions: TransactionType[],
-  filterPeriod: string
+  filterPeriod: string,
 ): TransactionType[] {
   if (filterPeriod === 'all') return transactions;
 
@@ -63,7 +63,7 @@ function filterByPeriod(
     const normalizedTransactionDate = new Date(
       transactionDate.getFullYear(),
       transactionDate.getMonth(),
-      transactionDate.getDate()
+      transactionDate.getDate(),
     );
 
     switch (filterPeriod) {
@@ -89,7 +89,7 @@ function filterByPeriod(
 
 function matchesSearchTerm(
   transaction: TransactionType,
-  searchLower: string
+  searchLower: string,
 ): boolean {
   const typeLabel =
     transactionTypes
@@ -114,24 +114,19 @@ function matchesSearchTerm(
 
 function filterBySearchTerm(
   transactions: TransactionType[],
-  searchTerm: string
+  searchTerm: string,
 ): TransactionType[] {
   if (searchTerm.trim() === '') return transactions;
 
   const searchLower = searchTerm.toLowerCase();
   return transactions.filter((transaction) =>
-    matchesSearchTerm(transaction, searchLower)
+    matchesSearchTerm(transaction, searchLower),
   );
 }
 
 export default function TransactionContent() {
-  const transactions = useBankAccountStore((state) => state.transactions);
-  const page = useBankAccountStore((state) => state.page);
-  const hasMore = useBankAccountStore((state) => state.hasMore);
-  const isLoading = useBankAccountStore((state) => state.isLoading);
-  const fetchTransactions = useBankAccountStore(
-    (state) => state.fetchTransactions
-  );
+  const { transactions, page, hasMore, isLoading, fetchTransactions } =
+    useBankAccountStore();
 
   const [filterType, setFilterType] = useState('all');
   const [filterPeriod, setFilterPeriod] = useState('all');
