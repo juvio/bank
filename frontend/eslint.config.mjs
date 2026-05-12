@@ -12,17 +12,20 @@ const compat = new FlatCompat({
   baseDirectory: __dirname,
 });
 
-const eslintConfig = [...compat.extends("next/core-web-vitals", "next/typescript"), {
-  rules: {
-    "@typescript-eslint/no-explicit-any": "off"
-  },
+const eslintConfig = [{
   ignores: [
     "node_modules/**",
     ".next/**",
     "out/**",
     "build/**",
+    "coverage/**",
+    "storybook-static/**",
     "next-env.d.ts",
   ],
+}, ...compat.extends("next/core-web-vitals", "next/typescript"), {
+  rules: {
+    "@typescript-eslint/no-explicit-any": "off"
+  },
 }, ...storybook.configs["flat/recommended"]];
 
 export default eslintConfig;
