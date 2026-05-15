@@ -1,8 +1,7 @@
 export const formatDate = (dateString?: string) => {
-  if (!dateString) return "";
+  if (!dateString) return '';
 
-  const [year, month, day] = dateString.split("-");
-  const date = new Date(parseInt(year), parseInt(month) - 1, parseInt(day));
+  const [year, month, day] = dateString.split('-');
 
-  return date.toLocaleDateString("pt-BR");
+  return `${Number(day)}/${Number(month)}/${year}`;
 };
