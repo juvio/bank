@@ -1,4 +1,4 @@
-# Plano de Migração de Arquitetura - Frontend
+﻿# Plano de Migração de Arquitetura - Frontend
 
 **Data:** Maio 2026  
 **Status:** Planejamento  
@@ -678,25 +678,25 @@ export default function DashboardPage() {
 3. Rodar ESLint/TypeScript: `npm run lint` e `npm run build`
 4. Atualizar `.eslintrc.json` para validar imports (ex.: `@features/*` imports só de features)
 
-**Fase 2: Migrar tipos (PR 2)**
+**Fase 2: Criar estrutura base (PR 2)**
 
-1. Mover `src/types/` → `src/front-types-domain/`
-2. Atualizar imports: `from '@/types'` → `from '@types'`
-3. Criar `front-types-domain/index.ts` com barrels
+1. Criar pastas base: `core/`, `features/`, `lib/`, `common/`, `front-types-domain/`
+2. Criar barrels/arquivos ancora sem mover codigo de dominio
+3. Preservar imports e comportamento existentes
 
-**Fase 3: Migrar services (PR 3)**
+**Fase 3: Atualizar paths e migrar tipos (PR 3)**
 
-1. Criar `features/auth/services/`, `features/transactions/services/`, etc
-2. Mover lógica de API calls para services
-3. Atualizar imports em hooks/components
+1. Atualizar `tsconfig.json` e `vitest.config.ts` para aliases da estrutura criada no PR 2
+2. Mover `src/types/` para `src/front-types-domain/`
+3. Atualizar imports de `@/types` para `@types`
+4. Criar/ajustar `front-types-domain/index.ts` com barrels dos tipos reais
 
-**Fase 4: Migrar components (PR 4-10)**
+**Fase 4: Migrar auth e demais features (PR 4-10)**
 
-1. Para cada feature (auth, transactions, accounts, dashboard):
-   - Mover components para `features/*/components/`
-   - Criar `features/*/hooks/` com lógica extraída
-   - Criar `features/*/services/` com API calls
-   - Criar barrel exports (`index.ts`)
+1. PR 4: migrar auth para `features/auth`
+2. PR 5: migrar transactions para `features/transactions`
+3. PR 6: migrar accounts para `features/accounts`
+4. PR 7-10: refatorar components/hooks, barrels, testes e cleanup incremental
 
 **Fase 5: Atualizar app/ routes (PR 11)**
 
@@ -734,9 +734,10 @@ npx jscodeshift --transform ./codemods/updateImports.js src/ --extensions tsx,ts
 ### 2.6 Checklist de PRs Incrementais
 
 - [ ] **PR 1:** Setup: criar pastas, atualizar tsconfig, validar
-- [ ] **PR 2:** Migrar tipos para front-types-domain/
-- [ ] **PR 3:** Migrar services de auth/transactions/accounts
-- [ ] **PR 4-6:** Migrar components & hooks para features/
+- [ ] **PR 2:** Criar estrutura de pastas (core, features, lib, common, front-types-domain)
+- [ ] **PR 3:** Atualizar paths e migrar tipos para front-types-domain/
+- [ ] **PR 4:** Migrar auth para features/auth
+- [ ] **PR 5-6:** Migrar transactions/accounts para features/
 - [ ] **PR 7:** Atualizar imports em app/ routes
 - [ ] **PR 8:** Verificar testes e cobertura
 - [ ] **PR 9:** Atualizar ESLint rules (import boundaries)
@@ -1318,7 +1319,7 @@ npm run build:analyze
 
 **Problema:** Componentes pesados (gráficos, editores) aumentam bundle inicial
 
-**Solução: next/dynamic para lazy-load**
+**SoluÃ§Ã£o: next/dynamic para lazy-load**
 
 ```tsx
 // ❌ Sem dynamic import (carrega sempre)
@@ -1506,7 +1507,7 @@ node scripts/create-barrel.js src/hooks
 
 - [ ] **PR 1:** Setup Vitest + tipos centralizados
 - [ ] **PR 2:** Criar estrutura de pastas (core, features, lib)
-- [ ] **PR 3:** Atualizar tsconfig paths
+- [ ] **PR 3:** Atualizar tsconfig paths e migrar tipos para front-types-domain
 
 ### Fase 2: Refactoring (5-8 PRs)
 

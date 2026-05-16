@@ -261,9 +261,9 @@ See full troubleshooting in [PR1-CHECKLIST.md](PR1-CHECKLIST.md).
 
 This PR unblocks:
 
-- ✅ **PR 2** — Migrate types to front-types-domain/
-- ✅ **PR 3+** — Component refactoring (Container/Presentational)
-- ✅ **PR 4+** — Feature folder structure
+- **PR 2** - Create architecture folder foundation
+- **PR 3** - Migrate types to front-types-domain/ and update path aliases
+- **PR 4+** - Feature migration and component refactoring
 - ✅ **Team** — Can start writing tests on new components
 
 ---

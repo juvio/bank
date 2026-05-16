@@ -294,7 +294,7 @@ Full examples in [PR1-TEST-GUIDE.md](PR1-TEST-GUIDE.md).
 1. ✅ **Complete** — All PR 1 tasks done
 2. 📋 **Review** — Stakeholder approval needed
 3. 🔀 **Merge** — Merge to main branch
-4. 🚀 **Unblock** — Start PR 2 (Types Migration)
+4. 🚀 **Unblock** — PR 2 creates folder structure; PR 3 migrates types to front-types-domain
 
 ---
 

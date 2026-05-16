@@ -193,9 +193,10 @@ All files                         |    XX   |    XX    |    XX   |    XX
 ## 🎯 Next Steps After Merge
 
 1. ✅ **Merge PR 1** to main
-2. ⏭️ **Create PR 2** — Migrate types to front-types-domain/
-3. ⏭️ **Create PR 3+** — Component refactoring
-4. ⏭️ **Continue migration** per 16-PR plan
+2. **PR 2** - Create architecture folder foundation
+3. **PR 3** - Migrate types to front-types-domain/ and update path aliases
+4. **PR 4+** - Feature migration and component refactoring
+5. ⏭️ **Continue migration** per 16-PR plan
 
 ---
 
