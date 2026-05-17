@@ -1,4 +1,4 @@
-import RegisterCard from '@/components/RegisterCard';
+import { RegisterCard } from '@features/auth';
 
 export default function RegisterPage() {
   return (

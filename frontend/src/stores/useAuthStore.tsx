@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import { api } from '@/utils/api';
+import { loginService, registerService } from '@features/auth/services';
 
 type AuthStore = {
   token: string | null;
@@ -27,11 +27,7 @@ export const useAuthStore = create<AuthStore>()(
 
       login: async (email: string, password: string) => {
         try {
-          const data = await api.post(
-            '/user/auth',
-            { email, password },
-            { requireAuth: false }
-          );
+          const data = await loginService(email, password);
 
           const token = data.result.token;
 
@@ -73,11 +69,7 @@ export const useAuthStore = create<AuthStore>()(
 
       register: async (username: string, email: string, password: string) => {
         try {
-          await api.post(
-            '/user',
-            { username, email, password },
-            { requireAuth: false }
-          );
+          await registerService(username, email, password);
         } catch (error) {
           console.error('Erro no registro:', error);
           throw error;
