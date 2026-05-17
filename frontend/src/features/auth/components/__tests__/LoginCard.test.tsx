@@ -29,7 +29,9 @@ describe('LoginCard', () => {
   it('renders form fields and buttons', () => {
     render(<LoginCard />);
 
-    expect(screen.getByRole('heading', { name: /login/i })).toBeInTheDocument();
+    expect(
+      screen.getByRole('heading', { name: /entrar na sua conta/i })
+    ).toBeInTheDocument();
     expect(screen.getByRole('textbox', { name: /email/i })).toBeInTheDocument();
     expect(screen.getByLabelText(/senha/i)).toBeInTheDocument();
     expect(screen.getByRole('button', { name: /entrar/i })).toBeInTheDocument();
