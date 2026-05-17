@@ -29,6 +29,9 @@
 6. Quando o PR for migracao de modulo para `features/<modulo>`, e obrigatorio
    usar a skill `feature-module-migration` localizada em:
    `frontend/.agents/skills/feature-module-migration/SKILL.md`.
+7. Em migracao/refatoracao de componentes, evitar estilos inline espalhados no
+   JSX; centralizar estilos em `styles.ts` com constantes tipadas em `SxProps`,
+   seguindo o padrao adotado em `features/auth/components`.
 
 ## Regras de rastreabilidade
 
