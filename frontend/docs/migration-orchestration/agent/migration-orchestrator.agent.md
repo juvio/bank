@@ -46,8 +46,29 @@ dominio para `src/features/<modulo>` ou reorganizar uma feature em:
    `feature-module-migration` antes de editar codigo.
 4. Executar implementacao incremental.
 5. Rodar validacoes tecnicas.
+   - Se `npm` nao for reconhecido no terminal, localizar os executaveis
+     instalados de Node/NPM e executar os mesmos comandos via caminho absoluto
+     (ex.: `C:\Program Files\nodejs\npm.cmd`).
 6. Gerar pacote de documentacao obrigatoria do PR.
 7. Consolidar checklist de aceite e proximos passos.
+
+## Fallback de Node/NPM (Windows)
+
+Quando o terminal nao encontrar `npm`/`node` no PATH:
+
+1. Tentar caminhos padrao:
+   - `C:\Program Files\nodejs\npm.cmd`
+   - `C:\Program Files\nodejs\node.exe`
+2. Se necessario, localizar binarios com:
+   - `where.exe npm`
+   - `where.exe node`
+   - `Get-Command npm -All`
+   - `Get-Command node -All`
+3. Rodar validacoes com caminho absoluto:
+   - `& '<caminho-absoluto-para-npm.cmd>' run lint`
+   - `& '<caminho-absoluto-para-npm.cmd>' run build`
+   - `& '<caminho-absoluto-para-npm.cmd>' run test -- --run`
+4. Registrar na documentacao do PR que o fallback foi utilizado.
 
 ## Definicao de pronto (DoD)
 

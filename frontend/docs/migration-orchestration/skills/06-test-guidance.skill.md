@@ -11,6 +11,9 @@ Orientar estrategia de testes co-localizados e cobertura minima durante a migrac
 3. Priorizar testes de fluxos criticos da feature afetada.
 4. Manter consistencia com Vitest + RTL.
 5. Medir cobertura e apontar lacunas.
+6. Executar suite de testes mesmo sem `npm` no PATH, usando binario instalado
+   por caminho absoluto quando necessario:
+   - `& 'C:\Program Files\nodejs\npm.cmd' run test -- --run`
 
 ## Saida esperada
 

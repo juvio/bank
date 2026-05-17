@@ -12,6 +12,12 @@ Garantir fechamento padrao da entrega antes de abrir PR.
 4. Dependencias e impactos registrados.
 5. Resumo executivo pronto para revisao.
 
+## Regra de gate para ambiente sem npm no PATH
+
+Antes de marcar validacao como pendente por erro de comando, tentar fallback com
+binario instalado de NPM por caminho absoluto (ex.:
+`C:\Program Files\nodejs\npm.cmd`) para rodar lint/build/test.
+
 ## Saida esperada
 
 - Status final: pronto ou pendente
