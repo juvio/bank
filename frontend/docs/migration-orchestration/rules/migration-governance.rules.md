@@ -22,6 +22,9 @@
 2. Respeitar estrategia de estrutura hibrida (features/core/lib/types).
 3. Favorecer imports absolutos e barrels conforme evolucao planejada.
 4. Manter testes co-localizados com os modulos alterados.
+5. Quando o PR for migracao de modulo para `features/<modulo>`, e obrigatorio
+   usar a skill `feature-module-migration` localizada em:
+   `frontend/.agents/skills/feature-module-migration/SKILL.md`.
 
 ## Regras de rastreabilidade
 

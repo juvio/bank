@@ -44,6 +44,9 @@ Antes de iniciar qualquer mudanca, leia nesta ordem:
    e registre a divergencia.
 7. Se houver alteracoes pendentes nao relacionadas no working tree, preserve-as
    e trabalhe ao redor delas.
+8. Se o PR for migracao de modulo/feature, use obrigatoriamente a skill
+   `feature-module-migration` em
+   `frontend/.agents/skills/feature-module-migration/SKILL.md`.
 
 ## Cadeia de execucao
 
@@ -80,6 +83,8 @@ Entregue antes de editar codigo:
 5. Criticidade e riscos.
 6. Criterios de aceite mensuraveis.
 7. Sequencia recomendada de commits.
+8. Declaracao explicita se o PR e migracao de modulo e, se for, confirmacao do
+   uso da skill `feature-module-migration`.
 
 ### 3. Analise arquitetural
 
@@ -118,6 +123,8 @@ continue para execucao.
 Use:
 
 - `docs/migration-orchestration/prompts/pr-execution.prompt.md`
+- `frontend/.agents/skills/feature-module-migration/SKILL.md` (obrigatorio
+  quando o PR for migracao de modulo)
 
 Execute somente as mudancas aprovadas para o PR `[N]`.
 
@@ -130,6 +137,9 @@ Durante a execucao:
 5. Nao mova arquivos para fora da arquitetura aprovada.
 6. Nao crie pastas novas fora de `.agents/rules/folder-structure.md` sem
    registrar justificativa.
+7. Em PR de migracao de modulo, seguir o workflow da skill
+   `feature-module-migration` para mapear ownership, mover componentes, extrair
+   hooks, centralizar services, atualizar barrels e rewiring de imports.
 
 ### 6. Validacao tecnica
 

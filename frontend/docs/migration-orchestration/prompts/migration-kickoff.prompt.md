@@ -9,6 +9,8 @@ Entregue:
 3. Riscos principais e mitigacoes.
 4. Proposta de ordem de execucao.
 5. Criterios de validacao obrigatorios por PR.
+6. Quais PRs sao de migracao de modulo e devem usar a skill obrigatoria:
+   `frontend/.agents/skills/feature-module-migration/SKILL.md`.
 
 Restricoes:
 

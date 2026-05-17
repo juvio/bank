@@ -24,15 +24,30 @@ Orquestrar a migracao incremental da arquitetura do frontend, mantendo consisten
    - `npm run build`
    - `npm run test` (ou `npm run test -- --run`)
 5. Aplicar e fiscalizar a regra obrigatoria de documentacao por PR em `frontend/docs/PR[numero-do-PR]`.
+6. Quando o PR for migracao de modulo/feature, usar obrigatoriamente a skill
+   `feature-module-migration` em
+   `frontend/.agents/skills/feature-module-migration/SKILL.md`.
+
+## Identificacao de PR de migracao de modulo
+
+Considere PR de migracao de modulo quando o objetivo principal for mover um
+dominio para `src/features/<modulo>` ou reorganizar uma feature em:
+
+- `components/`
+- `hooks/`
+- `services/`
+- `index.ts` (barrels)
 
 ## Sequencia operacional por PR
 
 1. Ler objetivo e escopo do PR no plano.
 2. Definir lista de arquivos afetados e riscos.
-3. Executar implementacao incremental.
-4. Rodar validacoes tecnicas.
-5. Gerar pacote de documentacao obrigatoria do PR.
-6. Consolidar checklist de aceite e proximos passos.
+3. Se for migracao de modulo, carregar e aplicar a skill
+   `feature-module-migration` antes de editar codigo.
+4. Executar implementacao incremental.
+5. Rodar validacoes tecnicas.
+6. Gerar pacote de documentacao obrigatoria do PR.
+7. Consolidar checklist de aceite e proximos passos.
 
 ## Definicao de pronto (DoD)
 

@@ -10,3 +10,5 @@ Entregue:
 4. Resultado de lint, build e testes.
 5. Riscos residuais e pontos de atencao.
 6. Localizacao de todos os arquivos de documentacao.
+7. Confirmacao de uso da skill `feature-module-migration` quando o PR for de
+   migracao de modulo.
