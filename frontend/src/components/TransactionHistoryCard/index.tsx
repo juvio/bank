@@ -12,7 +12,7 @@ import {
   TableHead,
   TableRow,
 } from '@mui/material';
-import { TransactionMapper, Transactions } from '@/types';
+import { TransactionMapper, Transactions } from '@types';
 import { CardContentSx, CardWrapperSx } from './styles';
 import { formatDate } from '@/utils/date';
 import { useBankAccountStore } from '@/stores/useBankAccountStore';

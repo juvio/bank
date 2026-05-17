@@ -21,8 +21,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import { useRouter } from 'next/navigation';
 import { useBankAccountStore } from '@/stores/useBankAccountStore';
 import { useModalStore } from '@/stores/useModalStore';
-import { transactionTypes } from '@/types';
-import { NewTransaction } from '@/types/new-transaction.type';
+import { transactionTypes, NewTransaction } from '@types';
 import { useTransactionValidation } from '@/hooks/useTransactionValidation';
 import {
   BoxTextFieldSx,

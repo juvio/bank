@@ -19,7 +19,7 @@ export default defineConfig({
       '@components': path.resolve(dirname, './src/components'),
       '@lib': path.resolve(dirname, './src/lib'),
       '@common': path.resolve(dirname, './src/common'),
-      '@types': path.resolve(dirname, './src/types'),
+      '@types': path.resolve(dirname, './src/front-types-domain'),
       '@hooks': path.resolve(dirname, './src/hooks'),
       '@stores': path.resolve(dirname, './src/stores'),
       '@services': path.resolve(dirname, './src/services'),

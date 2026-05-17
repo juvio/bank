@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { useBankAccountStore } from '@/stores/useBankAccountStore';
 import { useModalStore } from '@/stores/useModalStore';
-import { TransactionMapper } from '@/types';
+import { TransactionMapper } from '@types';
 import {
   Box,
   IconButton,
