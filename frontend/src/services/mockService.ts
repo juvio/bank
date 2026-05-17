@@ -1,5 +1,5 @@
 import mockData from '@/mocks/mock.json';
-import { TransactionType, Transactions } from '@/types';
+import { TransactionType, Transactions } from '@types';
 
 const convertMockTransactions = (): TransactionType[] => {
   return mockData.transactions.map((t) => ({

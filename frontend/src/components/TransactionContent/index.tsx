@@ -13,8 +13,7 @@ import {
 import TransactionCard from '../TransactionCard';
 import TransactionFilter from '../TransactionFilter';
 import InfiniteScroll from 'react-infinite-scroll-component';
-import { transactionTypes } from '@/types/transaction-labels.type';
-import { TransactionType } from '@/types/transaction.type';
+import { transactionTypes, TransactionType } from '@types';
 import {
   BoxTransactionContentSx,
   BoxWrapperSx,

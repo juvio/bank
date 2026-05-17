@@ -1,7 +1,7 @@
 import { headers } from 'next/headers';
 import HomePageComponent from '@/components/HomePageComponent';
 import { parse } from 'cookie';
-import { Transactions } from '@/types';
+import { Transactions } from '@types';
 import { convertMockToTransactions, mockService } from '@/services/mockService';
 
 export default async function HomePage() {

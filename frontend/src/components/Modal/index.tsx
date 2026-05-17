@@ -2,7 +2,7 @@
 
 import { useBankAccountStore } from '@/stores/useBankAccountStore';
 import { useModalStore } from '@/stores/useModalStore';
-import { transactionTypes } from '@/types';
+import { transactionTypes } from '@types';
 import {
   Button,
   Dialog,

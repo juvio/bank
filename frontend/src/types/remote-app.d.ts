@@ -1,3 +1,5 @@
+import type { Transactions } from '@types';
+
 declare module 'mfe-graphics/mount' {
   import type * as React from 'react';
   export type RemoteAppProps = {

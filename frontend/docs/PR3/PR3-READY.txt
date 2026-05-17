@@ -1,0 +1,17 @@
+PR3 - Paths + Types Migration
+
+Status: PENDENTE
+
+Entregue:
+- Aliases arquiteturais adicionados ao tsconfig.json.
+- Alias @types redirecionado para src/front-types-domain.
+- Tipos compartilhados migrados para front-types-domain.
+- Imports de tipos no src atualizados para @types.
+- src/types mantido como camada legada de compatibilidade.
+
+Validacao:
+- lint: passed with 5 pre-existing warnings outside PR2 scope.
+- build: passed.
+- tests: passed, 2 files and 16 tests.
+- git diff --name-only: executado.
+- backend: sem arquivos alterados.

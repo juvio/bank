@@ -1,4 +1,4 @@
-import { Transactions } from '@/types';
+import { Transactions } from '@types';
 
 export type HomePageComponentProps = {
   transactions: Transactions;

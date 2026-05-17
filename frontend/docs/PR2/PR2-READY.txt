@@ -1,0 +1,28 @@
+PR 2 - READY CHECK
+
+Status: approved.
+
+Goal:
+- Create the base architecture folders for the frontend migration.
+
+Delivered:
+- src/core/
+- src/features/
+- src/lib/
+- src/common/
+- src/front-types-domain/
+
+Behavior impact:
+- No runtime behavior changed.
+- No existing imports were moved.
+- No backend files were changed.
+
+Validation:
+- lint: passed with 6 pre-existing warnings outside PR2 scope.
+- build: passed after rerun with network access for Google Fonts.
+- tests: passed, 2 files and 16 tests.
+
+Scope note:
+- PR 2 is the folder foundation step.
+- PR 3 is the path aliases and Types Migration step for `src/front-types-domain`.
+- PR 4 remains focused on migrating auth to `features/auth`.

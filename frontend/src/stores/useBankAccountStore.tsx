@@ -1,4 +1,4 @@
-import { TransactionType } from '@/types';
+import { TransactionType } from '@types';
 import { create } from 'zustand';
 import { persist, devtools } from 'zustand/middleware';
 import { api } from '@/utils/api';

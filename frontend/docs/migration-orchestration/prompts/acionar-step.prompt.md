@@ -1,4 +1,4 @@
-# Prompt: Acionar Step
+﻿# Prompt: Acionar Step
 
 Comando de IDE:
 
@@ -263,9 +263,10 @@ Use o plano como fonte final, mas comece por esta leitura:
 
 ```txt
 PR 1: Foundation inicial, Vitest setup e tipos centralizados iniciais.
-PR 2: Types Migration para src/front-types-domain/.
-PR 3: Estrutura base/paths ou services, conforme estado real pos-PR2 e plano.
-PR 4-10: Refactoring de features, componentes, hooks e barrels.
+PR 2: Estrutura base de pastas para core/features/lib/common/front-types-domain.
+PR 3: Atualizacao de paths e Types Migration para src/front-types-domain/.
+PR 4: Migrar auth para features/auth.
+PR 5-10: Refactoring de features, componentes, hooks e barrels.
 PR 11-14: Performance e seguranca.
 PR 15-16: Documentacao final e cleanup.
 ```
@@ -275,17 +276,18 @@ PR 15-16: Documentacao final e cleanup.
 Entrada:
 
 ```txt
-/acionar-step 2
+/acionar-step 3
 ```
 
 Interpretacao:
 
 ```txt
-Acionar a cadeia completa para o PR 2, tratando-o como Types Migration:
+Acionar a cadeia completa para o PR 3, tratando-o como paths + Types Migration:
+- atualizar aliases de path para a estrutura criada no PR 2;
 - planejar migracao de tipos;
 - analisar src/types e src/front-types-domain;
 - executar apenas mudancas de tipos/imports/barrels necessarias;
 - validar lint/build/test;
-- gerar docs/PR2;
+- gerar docs/PR3;
 - entregar handoff para revisao.
 ```

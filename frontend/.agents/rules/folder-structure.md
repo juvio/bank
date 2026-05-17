@@ -315,17 +315,19 @@ ComponentName/
 
 Follow the roadmap from the plan:
 
-1. Foundation: test setup, shared types preparation, base folders, tsconfig
-   aliases.
-2. Types migration: move shared types from `src/types/` to
-   `src/front-types-domain/`.
-3. Services migration: move domain API calls into feature services.
-4. Component and hook migration: move feature components and extract logic into
+1. Foundation PR 1: test setup and shared types preparation.
+2. Foundation PR 2: base folders for `core`, `features`, `lib`, `common`, and
+   `front-types-domain`.
+3. Foundation PR 3: tsconfig/vitest path aliases plus Types migration from
+   `src/types/` to `src/front-types-domain/`.
+4. Feature migration: move auth first into `features/auth`, then transactions
+   and accounts.
+5. Component and hook migration: move feature components and extract logic into
    containers/hooks.
-5. Route composition: update `src/app/` imports to use feature/public barrels.
-6. Barrels and import cleanup: standardize `index.ts` exports.
-7. Performance and security improvements.
-8. Documentation and cleanup of legacy folders/files.
+6. Route composition: update `src/app/` imports to use feature/public barrels.
+7. Barrels and import cleanup: standardize `index.ts` exports.
+8. Performance and security improvements.
+9. Documentation and cleanup of legacy folders/files.
 
 ## Validation checklist for every PR
 
