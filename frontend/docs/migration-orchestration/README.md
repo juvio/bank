@@ -20,6 +20,13 @@ Estrutura de suporte para orquestrar a migracao de arquitetura do `Bank Frontend
 4. Aplicar a skill adequada para cada etapa.
 5. Gerar obrigatoriamente os artefatos de documentacao em `frontend/docs/PR[numero-do-PR]`.
 
+## Politica de testes por feature
+
+- Sempre que aplicavel, cada feature alterada deve receber testes novos ou
+  atualizados (especialmente quando ainda nao houver testes).
+- Os testes devem ser co-localizados no padrao `__tests__` dentro da camada da
+  feature (ex.: `components/__tests__`, `hooks/__tests__`, `services/__tests__`).
+
 ## Fases mapeadas do plano
 
 1. Foundation (PR 1-3)

@@ -17,6 +17,9 @@ Entregue:
 5. Criticidade e riscos.
 6. Criterios de aceite mensuraveis.
 7. Sequencia recomendada de commits.
-8. Classificacao do PR:
+8. Plano de testes por feature impactada:
+   - criar/atualizar testes quando aplicavel;
+   - co-localizar em `__tests__`.
+9. Classificacao do PR:
    - migracao de modulo: sim/nao
    - skill obrigatoria aplicada: sim/nao

@@ -21,8 +21,12 @@
 1. Separar logica de UI quando o plano pedir Container/Presentational + hooks.
 2. Respeitar estrategia de estrutura hibrida (features/core/lib/types).
 3. Favorecer imports absolutos e barrels conforme evolucao planejada.
-4. Manter testes co-localizados com os modulos alterados.
-5. Quando o PR for migracao de modulo para `features/<modulo>`, e obrigatorio
+4. Para cada feature alterada, criar/atualizar testes quando aplicavel,
+   especialmente quando ainda nao houver testes.
+5. Manter testes co-localizados com os modulos alterados no padrao
+   `__tests__` (ex.: `components/__tests__`, `hooks/__tests__`,
+   `services/__tests__`).
+6. Quando o PR for migracao de modulo para `features/<modulo>`, e obrigatorio
    usar a skill `feature-module-migration` localizada em:
    `frontend/.agents/skills/feature-module-migration/SKILL.md`.
 

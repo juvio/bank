@@ -9,7 +9,9 @@ Checklist obrigatorio:
 3. `npm run test` aprovado.
 4. Sem alteracoes em `/backend`.
 5. Padrao arquitetural do plano respeitado.
-6. Documentacao obrigatoria completa em `frontend/docs/PR[N]`.
+6. Testes por feature criados/atualizados quando aplicavel.
+7. Testes co-localizados em `__tests__`.
+8. Documentacao obrigatoria completa em `frontend/docs/PR[N]`.
 
 Entregue status final:
 

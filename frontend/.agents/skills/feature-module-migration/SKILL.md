@@ -14,8 +14,11 @@ For each feature in `auth`, `transactions`, `accounts`, and `dashboard`, enforce
 ```text
 features/<feature>/
   components/
+    __tests__/
   hooks/
+    __tests__/
   services/
+    __tests__/
   index.ts
 ```
 
@@ -54,6 +57,12 @@ Create these files only when there is code to export or a feature-level entrypoi
 6. Rewire imports:
 - Replace deep relative imports with the barrel path where possible.
 - Avoid cross-feature imports from internal files; consume public exports.
+
+7. Add tests per feature when applicable:
+- If the migrated feature has no tests yet, create baseline tests for components,
+  hooks, and/or services impacted by the PR.
+- Co-locate tests in `__tests__` folders under each layer.
+- Keep tests focused on behavior and integration points changed by migration.
 
 ## Barrel template
 
@@ -96,6 +105,7 @@ export * from "./services";
 - Components no longer contain extracted API call code.
 - API calls are centralized under `services/`.
 - Hooks are imported from `features/<feature>/hooks` or feature barrel.
+- Tests are present when applicable and co-localized in `__tests__`.
 - App compiles with updated imports.
 
 Run baseline validation when available:

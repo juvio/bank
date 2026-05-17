@@ -27,6 +27,9 @@ Orquestrar a migracao incremental da arquitetura do frontend, mantendo consisten
 6. Quando o PR for migracao de modulo/feature, usar obrigatoriamente a skill
    `feature-module-migration` em
    `frontend/.agents/skills/feature-module-migration/SKILL.md`.
+7. Garantir politica de testes por feature:
+   - adicionar testes quando aplicavel e inexistentes;
+   - manter co-localizacao em `__tests__`.
 
 ## Identificacao de PR de migracao de modulo
 
@@ -45,12 +48,14 @@ dominio para `src/features/<modulo>` ou reorganizar uma feature em:
 3. Se for migracao de modulo, carregar e aplicar a skill
    `feature-module-migration` antes de editar codigo.
 4. Executar implementacao incremental.
-5. Rodar validacoes tecnicas.
+5. Atualizar ou criar testes da feature impactada no padrao `__tests__`,
+   quando aplicavel.
+6. Rodar validacoes tecnicas.
    - Se `npm` nao for reconhecido no terminal, localizar os executaveis
      instalados de Node/NPM e executar os mesmos comandos via caminho absoluto
      (ex.: `C:\Program Files\nodejs\npm.cmd`).
-6. Gerar pacote de documentacao obrigatoria do PR.
-7. Consolidar checklist de aceite e proximos passos.
+7. Gerar pacote de documentacao obrigatoria do PR.
+8. Consolidar checklist de aceite e proximos passos.
 
 ## Fallback de Node/NPM (Windows)
 

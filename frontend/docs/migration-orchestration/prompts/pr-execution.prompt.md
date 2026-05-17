@@ -14,9 +14,11 @@ Passos:
 3. Se for migracao de modulo, aplique o workflow da skill
    `feature-module-migration` (components/hooks/services/barrels/imports).
 4. Implemente as mudancas no frontend.
-5. Rode validacoes: lint, build e testes.
-6. Corrija regressos identificados.
-7. Gere documentacao obrigatoria em `frontend/docs/PR[N]`.
+5. Para cada feature impactada, criar/atualizar testes quando aplicavel.
+6. Co-localizar testes em `__tests__` por camada da feature.
+7. Rode validacoes: lint, build e testes.
+8. Corrija regressos identificados.
+9. Gere documentacao obrigatoria em `frontend/docs/PR[N]`.
 
 Saida:
 
@@ -25,3 +27,4 @@ Saida:
 - Resultado das validacoes.
 - Riscos residuais.
 - Confirmacao de uso da skill `feature-module-migration` quando aplicavel.
+- Confirmacao da politica de testes por feature e uso de `__tests__`.

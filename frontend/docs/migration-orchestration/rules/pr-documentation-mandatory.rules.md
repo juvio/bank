@@ -30,3 +30,11 @@ Exemplo:
 ## Gate de aprovacao
 
 Sem os 8 arquivos obrigatorios e numeracao coerente, o PR deve ser marcado como `PENDENTE`.
+
+## Requisito adicional para `PR[N]-TEST-GUIDE.md`
+
+O guia de testes do PR deve registrar:
+
+1. Features impactadas no PR.
+2. Testes criados/atualizados por feature quando aplicavel.
+3. Caminhos dos testes no padrao co-localizado `__tests__`.

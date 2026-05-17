@@ -11,6 +11,9 @@ Validar qualidade tecnica e regressao funcional do PR.
 3. Rodar `npm run test` (ou equivalente de execucao unica).
 4. Confirmar ausencia de mudancas em `/backend`.
 5. Verificar aderencia ao padrao arquitetural do plano.
+6. Validar politica de testes por feature:
+   - quando aplicavel, a feature alterada possui testes novos/atualizados;
+   - testes estao co-localizados em `__tests__`.
 
 ## Fallback obrigatorio quando npm nao esta no PATH
 
