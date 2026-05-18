@@ -1,29 +1,19 @@
 'use client';
 
-import { Box, Typography } from '@mui/material';
+import type { ReactNode } from 'react';
+import { Box } from '@mui/material';
 import Image from 'next/image';
-import LoginCard from './LoginCard';
 import {
   LoginLayoutLeftSx,
   LoginLayoutMainSx,
   LoginLayoutRightSx,
-  LoginLayoutSubtitleSx,
-  LoginLayoutTitleSx,
 } from './styles';
 
-const LoginPageLayout = () => {
+const AuthPageLayout = ({ children }: { children: ReactNode }) => {
   return (
     <Box component='main' sx={LoginLayoutMainSx}>
       <Box component='section' sx={LoginLayoutLeftSx}>
-        <Typography component='h1' sx={LoginLayoutTitleSx}>
-          Seu dinheiro em ordem.
-          <br />
-          Seu futuro em movimento.
-        </Typography>
-        <Typography sx={LoginLayoutSubtitleSx}>
-          Faça login para acompanhar suas finanças com clareza e confiança.
-        </Typography>
-        <LoginCard />
+        {children}
       </Box>
 
       <Box component='section' sx={LoginLayoutRightSx}>
@@ -46,4 +36,4 @@ const LoginPageLayout = () => {
   );
 };
 
-export default LoginPageLayout;
+export default AuthPageLayout;
