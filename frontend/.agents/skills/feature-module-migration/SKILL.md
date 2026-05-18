@@ -14,8 +14,11 @@ For each feature in `auth`, `transactions`, `accounts`, and `dashboard`, enforce
 ```text
 features/<feature>/
   components/
+    __tests__/
   hooks/
+    __tests__/
   services/
+    __tests__/
   index.ts
 ```
 
@@ -32,6 +35,10 @@ Create these files only when there is code to export or a feature-level entrypoi
 - Move feature UI files to `features/<feature>/components/`.
 - Preserve component names and public props.
 - Update imports to the new paths or feature barrels.
+- When touching component styling, avoid scattered inline style objects across JSX.
+- Prefer a co-located `styles.ts` in the component folder/module exporting typed
+  style constants with `SxProps` (MUI), aligned with the pattern used in
+  `features/auth/components` (e.g., `LoginCard` and `LoginPageLayout`).
 
 3. Extract hooks:
 - Create `features/<feature>/hooks/`.
@@ -54,6 +61,12 @@ Create these files only when there is code to export or a feature-level entrypoi
 6. Rewire imports:
 - Replace deep relative imports with the barrel path where possible.
 - Avoid cross-feature imports from internal files; consume public exports.
+
+7. Add tests per feature when applicable:
+- If the migrated feature has no tests yet, create baseline tests for components,
+  hooks, and/or services impacted by the PR.
+- Co-locate tests in `__tests__` folders under each layer.
+- Keep tests focused on behavior and integration points changed by migration.
 
 ## Barrel template
 
@@ -89,6 +102,8 @@ export * from "./services";
 - Keep file naming and casing consistent with project conventions.
 - Avoid circular dependencies between `components`, `hooks`, and `services`.
 - If a file is shared by multiple features, move it to a shared/core module defined by project rules instead of duplicating it.
+- Do not leave new inline styles spread across migrated components when a
+  `styles.ts` + `SxProps` extraction is viable.
 
 ## Validation checklist
 
@@ -96,6 +111,9 @@ export * from "./services";
 - Components no longer contain extracted API call code.
 - API calls are centralized under `services/`.
 - Hooks are imported from `features/<feature>/hooks` or feature barrel.
+- Tests are present when applicable and co-localized in `__tests__`.
+- Component style declarations are centralized in `styles.ts` with `SxProps`
+  exports when components are migrated or significantly refactored.
 - App compiles with updated imports.
 
 Run baseline validation when available:

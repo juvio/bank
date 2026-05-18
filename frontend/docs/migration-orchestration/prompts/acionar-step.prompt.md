@@ -44,6 +44,11 @@ Antes de iniciar qualquer mudanca, leia nesta ordem:
    e registre a divergencia.
 7. Se houver alteracoes pendentes nao relacionadas no working tree, preserve-as
    e trabalhe ao redor delas.
+8. Se o PR for migracao de modulo/feature, use obrigatoriamente a skill
+   `feature-module-migration` em
+   `frontend/.agents/skills/feature-module-migration/SKILL.md`.
+9. Para cada feature impactada, criar/atualizar testes quando aplicavel e
+   manter co-localizacao em `__tests__`.
 
 ## Cadeia de execucao
 
@@ -80,6 +85,9 @@ Entregue antes de editar codigo:
 5. Criticidade e riscos.
 6. Criterios de aceite mensuraveis.
 7. Sequencia recomendada de commits.
+8. Declaracao explicita se o PR e migracao de modulo e, se for, confirmacao do
+   uso da skill `feature-module-migration`.
+9. Plano de testes por feature com caminhos `__tests__`.
 
 ### 3. Analise arquitetural
 
@@ -118,6 +126,8 @@ continue para execucao.
 Use:
 
 - `docs/migration-orchestration/prompts/pr-execution.prompt.md`
+- `frontend/.agents/skills/feature-module-migration/SKILL.md` (obrigatorio
+  quando o PR for migracao de modulo)
 
 Execute somente as mudancas aprovadas para o PR `[N]`.
 
@@ -130,6 +140,11 @@ Durante a execucao:
 5. Nao mova arquivos para fora da arquitetura aprovada.
 6. Nao crie pastas novas fora de `.agents/rules/folder-structure.md` sem
    registrar justificativa.
+7. Em PR de migracao de modulo, seguir o workflow da skill
+   `feature-module-migration` para mapear ownership, mover componentes, extrair
+   hooks, centralizar services, atualizar barrels e rewiring de imports.
+8. Em cada feature alterada, criar/atualizar testes quando aplicavel e manter
+   os arquivos em `__tests__`.
 
 ### 6. Validacao tecnica
 
@@ -154,6 +169,8 @@ git diff --name-only
 ```
 
 Confirme que nenhum arquivo em `../backend/` foi alterado.
+Confirme tambem que a politica de testes por feature foi aplicada (quando
+aplicavel) e que os testes estao em `__tests__`.
 
 Se alguma validacao falhar:
 
@@ -212,7 +229,8 @@ Verifique:
 3. Validacoes executadas e registradas.
 4. Documentacao obrigatoria completa.
 5. Nenhuma alteracao em `../backend/`.
-6. Proximo PR recomendado identificado.
+6. Politica de testes por feature aplicada e registrada.
+7. Proximo PR recomendado identificado.
 
 ### 10. Handoff
 

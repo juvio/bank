@@ -14,3 +14,9 @@ Arquivos obrigatorios:
 8. `PR[N]-INDEX.md`
 
 Cada arquivo deve conter informacao coerente com o codigo entregue no PR [N].
+
+No `PR[N]-TEST-GUIDE.md`, registrar explicitamente:
+
+- features impactadas;
+- testes criados/atualizados;
+- caminhos co-localizados no padrao `__tests__`.

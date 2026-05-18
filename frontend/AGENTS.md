@@ -39,6 +39,25 @@ npm run build
 npm run test -- --run
 ```
 
+If `npm` is not available in PATH, run the installed executable directly and
+continue validation (do not skip checks only because PATH is missing):
+
+```powershell
+& 'C:\Program Files\nodejs\npm.cmd' run lint
+& 'C:\Program Files\nodejs\npm.cmd' run build
+& 'C:\Program Files\nodejs\npm.cmd' run test -- --run
+```
+
+If that path does not exist, discover installed binaries with PowerShell and use
+absolute paths:
+
+```powershell
+where.exe npm
+where.exe node
+Get-Command npm -All
+Get-Command node -All
+```
+
 ## Orchestration references
 
 - Orchestrator: `docs/migration-orchestration/agent/migration-orchestrator.agent.md`
