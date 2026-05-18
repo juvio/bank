@@ -1,21 +1,19 @@
 'use client';
 
-import React from 'react';
 import {
   Card,
   CardContent,
-  Typography,
   Table,
   TableBody,
   TableCell,
   TableContainer,
   TableHead,
   TableRow,
+  Typography,
 } from '@mui/material';
-import { TransactionMapper, Transactions } from '@types';
+import { useTransactionHistoryCard } from '@features/transactions/hooks';
+import type { Transactions } from '@types';
 import { CardContentSx, CardWrapperSx } from './styles';
-import { formatDate } from '@/utils/date';
-import { useBankAccountStore } from '@/stores/useBankAccountStore';
 
 interface Props {
   transactions: Transactions;
@@ -24,21 +22,7 @@ interface Props {
 export default function TransactionHistoryCard({
   transactions: propTransactions,
 }: Props) {
-  const { transactions: storeTransactions } = useBankAccountStore();
-
-  const transactions =
-    propTransactions ||
-    storeTransactions.map((t) => ({
-      id: t.id.toString(),
-      type: t.type,
-      amount: t.amount,
-      description: t.description || '',
-      date: t.date || new Date().toISOString().split('T')[0],
-      status: 'completed' as const,
-    }));
-
-  // Pegar apenas as últimas 10 transações
-  const recentTransactions = storeTransactions.slice(0, 10);
+  const { recentTransactions } = useTransactionHistoryCard(propTransactions);
 
   return (
     <Card
@@ -91,21 +75,17 @@ export default function TransactionHistoryCard({
               {recentTransactions.length > 0 ? (
                 recentTransactions.map((transaction, index) => (
                   <TableRow key={`history-${transaction.id}-${index}`}>
-                    <TableCell>{formatDate(transaction.date)}</TableCell>
-                    <TableCell>{TransactionMapper[transaction.type]}</TableCell>
-                    {<TableCell>{transaction.description}</TableCell>}
+                    <TableCell>{transaction.date}</TableCell>
+                    <TableCell>{transaction.type}</TableCell>
+                    <TableCell>{transaction.description}</TableCell>
                     <TableCell
                       align='right'
                       sx={{
-                        color:
-                          transaction.type === 'deposit'
-                            ? 'success.main'
-                            : 'error.main',
+                        color: transaction.amountColor,
                         fontWeight: 'medium',
                       }}
                     >
-                      {transaction.type === 'deposit' ? '+' : '-'}
-                      R$ {transaction.amount.toFixed(2).replace('.', ',')}
+                      {transaction.amount}
                     </TableCell>
                   </TableRow>
                 ))

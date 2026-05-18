@@ -1,6 +1,11 @@
 'use client';
 
-import { useState } from 'react';
+import type {
+  ChangeEventHandler,
+  MouseEventHandler,
+  ReactElement,
+  ReactNode,
+} from 'react';
 import {
   Card,
   CardContent,
@@ -25,6 +30,7 @@ import {
   FilterList,
   ExpandMore,
 } from '@mui/icons-material';
+import { useTransactionFilter } from '@features/transactions/hooks';
 
 import {
   CardWrapperSx,
@@ -48,7 +54,7 @@ interface TransactionFilterProps {
 interface FilterOption {
   value: string;
   label: string;
-  icon?: React.ReactNode;
+  icon?: ReactNode;
 }
 
 const TRANSACTION_TYPES: FilterOption[] = [
@@ -75,27 +81,16 @@ const PERIODS: FilterOption[] = [
   { value: 'year', label: '1 ano' },
 ];
 
-function calculateActiveFiltersCount(
-  filterType: string,
-  filterPeriod: string
-): number {
-  return (filterType !== 'all' ? 1 : 0) + (filterPeriod !== 'all' ? 1 : 0);
-}
-
-function hasActiveFilters(
-  filterType: string,
-  filterPeriod: string,
-  searchTerm: string
-): boolean {
-  return filterType !== 'all' || filterPeriod !== 'all' || searchTerm !== '';
-}
-
 function SearchField({
   searchTerm,
   onSearchTermChange,
+  onClearSearchTerm,
 }: {
   searchTerm: string;
-  onSearchTermChange: (term: string) => void;
+  onSearchTermChange: ChangeEventHandler<
+    HTMLInputElement | HTMLTextAreaElement
+  >;
+  onClearSearchTerm: () => void;
 }) {
   return (
     <TextField
@@ -104,7 +99,7 @@ function SearchField({
       variant="outlined"
       placeholder="Buscar por tipo ou valor..."
       value={searchTerm}
-      onChange={(e) => onSearchTermChange(e.target.value)}
+      onChange={onSearchTermChange}
       sx={SearchFieldSx}
       slotProps={{
         input: {
@@ -123,7 +118,7 @@ function SearchField({
                   '&:hover': { color: 'error.main' },
                   transition: 'color 0.2s ease',
                 }}
-                onClick={() => onSearchTermChange('')}
+                onClick={onClearSearchTerm}
               />
             </InputAdornment>
           ),
@@ -199,10 +194,10 @@ function FilterSection({
   onSelect,
 }: {
   title: string;
-  icon?: React.ReactNode;
+  icon?: ReactNode;
   options: FilterOption[];
   selectedValue: string;
-  onSelect: (value: string) => void;
+  onSelect: MouseEventHandler<HTMLElement>;
 }) {
   return (
     <Box>
@@ -227,10 +222,11 @@ function FilterSection({
         {options.map((option) => (
           <Chip
             key={option.value}
-            {...(option.icon && { icon: option.icon as React.ReactElement })}
+            {...(option.icon && { icon: option.icon as ReactElement })}
             label={option.label}
             size="small"
-            onClick={() => onSelect(option.value)}
+            data-value={option.value}
+            onClick={onSelect}
             sx={selectedValue === option.value ? ActiveChipSx : ChipSx}
             variant={selectedValue === option.value ? 'filled' : 'outlined'}
             color={selectedValue === option.value ? 'primary' : 'default'}
@@ -284,19 +280,25 @@ export default function TransactionFilter({
   onSearchTermChange,
   onClearFilters,
 }: TransactionFilterProps) {
-  const [isExpanded, setIsExpanded] = useState(false);
-
-  const activeFiltersCount = calculateActiveFiltersCount(
-    filterType,
-    filterPeriod
-  );
-  const showClearButton = hasActiveFilters(
+  const {
+    activeFiltersCount,
+    handleClearFilters,
+    handleClearSearchTerm,
+    handleFilterPeriodChange,
+    handleFilterTypeChange,
+    handleSearchTermChange,
+    handleToggleExpand,
+    isExpanded,
+    showClearButton,
+  } = useTransactionFilter({
     filterType,
     filterPeriod,
-    searchTerm
-  );
-
-  const handleToggleExpand = () => setIsExpanded(!isExpanded);
+    searchTerm,
+    onFilterTypeChange,
+    onFilterPeriodChange,
+    onSearchTermChange,
+    onClearFilters,
+  });
 
   return (
     <Card sx={CardWrapperSx}>
@@ -304,7 +306,8 @@ export default function TransactionFilter({
         <Box sx={{ display: 'flex', gap: 1.5, alignItems: 'center' }}>
           <SearchField
             searchTerm={searchTerm}
-            onSearchTermChange={onSearchTermChange}
+            onSearchTermChange={handleSearchTermChange}
+            onClearSearchTerm={handleClearSearchTerm}
           />
 
           <FilterToggleButton
@@ -320,7 +323,7 @@ export default function TransactionFilter({
               title="Tipo de transação"
               options={TRANSACTION_TYPES}
               selectedValue={filterType}
-              onSelect={onFilterTypeChange}
+              onSelect={handleFilterTypeChange}
             />
 
             <Box sx={{ mt: 2.5 }}>
@@ -329,11 +332,13 @@ export default function TransactionFilter({
                 icon={<CalendarMonth sx={{ fontSize: 16 }} />}
                 options={PERIODS}
                 selectedValue={filterPeriod}
-                onSelect={onFilterPeriodChange}
+                onSelect={handleFilterPeriodChange}
               />
             </Box>
 
-            {showClearButton && <ClearFiltersButton onClear={onClearFilters} />}
+            {showClearButton && (
+              <ClearFiltersButton onClear={handleClearFilters} />
+            )}
           </Box>
         </Collapse>
       </CardContent>

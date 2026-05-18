@@ -1,9 +1,5 @@
 'use client';
 
-import { useState } from 'react';
-import { useBankAccountStore } from '@/stores/useBankAccountStore';
-import { useModalStore } from '@/stores/useModalStore';
-import { TransactionMapper } from '@types';
 import {
   Box,
   IconButton,
@@ -22,16 +18,13 @@ import {
   MoreVert as MoreVertIcon,
 } from '@mui/icons-material';
 import Link from 'next/link';
+import { useTransactionCard } from '@features/transactions/hooks';
 import {
   CardWrapperSx,
   IconButtonDeleteSx,
   IconButtonViewSx,
   IconButtonEditSx,
-  getTransactionIcon,
-  getTransactionBorderColor,
-  getTransactionAmountColor,
 } from './styles';
-import { formatDate } from '@/utils/date';
 
 type TransactionCardProps = {
   id: number;
@@ -43,85 +36,22 @@ type TransactionCardProps = {
   attachmentType?: string;
 };
 
-export default function TransactionCard({
-  id,
-  type,
-  amount,
-  description,
-  date,
-  attachmentUrl,
-  attachmentType,
-}: TransactionCardProps) {
-  const { setEditModal, setDeleteModal, setAddModal, setViewModal } =
-    useModalStore();
-  const { setTransaction } = useBankAccountStore();
-
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const open = Boolean(anchorEl);
-
-  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-
-  const handleOpenEditModal = () => {
-    handleClose();
-    setAddModal(false);
-    setDeleteModal(false);
-    setViewModal(false);
-
-    setTransaction({
-      id: id,
-      type: type,
-      amount: amount,
-      description: description,
-      date: date ?? '',
-      attachmentUrl: attachmentUrl,
-      attachmentType: attachmentType,
-    });
-    setEditModal(true);
-  };
-
-  const handleOpenDeleteModal = () => {
-    handleClose();
-    setAddModal(false);
-    setEditModal(false);
-    setViewModal(false);
-
-    setTransaction({
-      id: id,
-      type: type,
-      amount: amount,
-      description: description,
-      date: date ?? '',
-    });
-    setDeleteModal(true);
-  };
-
-  const handleOpenViewModal = () => {
-    handleClose();
-    setAddModal(false);
-    setEditModal(false);
-    setDeleteModal(false);
-
-    setTransaction({
-      id: id,
-      type: type,
-      amount: amount,
-      description: description,
-      date: date ?? '',
-      attachmentUrl: attachmentUrl,
-      attachmentType: attachmentType,
-    });
-    setViewModal(true);
-  };
-
-  const TransactionIcon = getTransactionIcon(type);
-  const borderColor = getTransactionBorderColor(type);
-  const amountColor = getTransactionAmountColor(type);
+export default function TransactionCard(props: TransactionCardProps) {
+  const {
+    anchorEl,
+    amountColor,
+    borderColor,
+    formattedAmount,
+    formattedDate,
+    handleClick,
+    handleClose,
+    handleOpenDeleteModal,
+    handleOpenEditModal,
+    handleOpenViewModal,
+    open,
+    TransactionIcon,
+    transactionTypeLabel,
+  } = useTransactionCard(props);
 
   return (
     <Card sx={{ ...CardWrapperSx, borderLeft: `5px solid ${borderColor}` }}>
@@ -134,7 +64,6 @@ export default function TransactionCard({
             gap: { xs: 1.5, sm: 2 },
           }}
         >
-          {/* Ícone */}
           <Box
             sx={{
               display: 'flex',
@@ -152,7 +81,6 @@ export default function TransactionCard({
             />
           </Box>
 
-          {/* Título e Data */}
           <Box sx={{ flex: 1, minWidth: 0 }}>
             <Typography
               variant='body1'
@@ -163,7 +91,7 @@ export default function TransactionCard({
                 fontSize: { xs: '0.875rem', sm: '1rem' },
               }}
             >
-              {TransactionMapper[type]}
+              {transactionTypeLabel}
             </Typography>
             <Typography
               variant='body2'
@@ -172,11 +100,10 @@ export default function TransactionCard({
                 fontSize: { xs: '0.75rem', sm: '0.875rem' },
               }}
             >
-              {formatDate(date)}
+              {formattedDate}
             </Typography>
           </Box>
 
-          {/* Valor */}
           <Typography
             variant='h6'
             sx={{
@@ -187,10 +114,9 @@ export default function TransactionCard({
               fontSize: { xs: '1rem', sm: '1.25rem' },
             }}
           >
-            {type === 'deposit' ? '+' : ''}R$ {amount.toFixed(2)}
+            {formattedAmount}
           </Typography>
 
-          {/* Botões de ação - Desktop */}
           <Box
             sx={{
               display: { xs: 'none', md: 'flex' },
@@ -230,7 +156,6 @@ export default function TransactionCard({
             </Link>
           </Box>
 
-          {/* Botão de menu - Mobile */}
           <IconButton
             onClick={handleClick}
             size='small'
@@ -242,7 +167,6 @@ export default function TransactionCard({
             <MoreVertIcon />
           </IconButton>
 
-          {/* Menu de ações */}
           <Menu
             anchorEl={anchorEl}
             open={open}
