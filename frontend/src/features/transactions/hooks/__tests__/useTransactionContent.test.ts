@@ -1,6 +1,6 @@
 import { act, renderHook } from '@testing-library/react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { useTransactionContent } from '../../hooks/useTransactionContent';
+import { useTransactionContent } from '../useTransactionContent';
 import type { TransactionType } from '@types';
 
 const mocks = vi.hoisted(() => ({
@@ -83,8 +83,7 @@ describe('useTransactionContent', () => {
       result.current.setFilterPeriod('week');
     });
     expect(result.current.filteredTransactions.map(({ id }) => id)).toEqual([
-      1,
-      2,
+      1, 2,
     ]);
 
     act(() => {

@@ -2,7 +2,7 @@ import { act, renderHook } from '@testing-library/react';
 import dayjs from 'dayjs';
 import type React from 'react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { useNewTransactionCard } from '../../hooks/useNewTransactionCard';
+import { useNewTransactionCard } from '../useNewTransactionCard';
 import type { TransactionType } from '@types';
 
 const mocks = vi.hoisted(() => ({

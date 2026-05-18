@@ -1,7 +1,7 @@
 import { act, renderHook } from '@testing-library/react';
 import type React from 'react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { useTransactionCard } from '../../hooks/useTransactionCard';
+import { useTransactionCard } from '../useTransactionCard';
 
 const mocks = vi.hoisted(() => ({
   setAddModal: vi.fn(),
@@ -26,7 +26,7 @@ vi.mock('@/stores/useBankAccountStore', () => ({
   }),
 }));
 
-vi.mock('../TransactionCard/styles', () => ({
+vi.mock('../../components/TransactionCard/styles', () => ({
   getTransactionAmountColor: vi.fn(() => '#2e7d32'),
   getTransactionBorderColor: vi.fn(() => '#2e7d32'),
   getTransactionIcon: vi.fn(() => () => null),

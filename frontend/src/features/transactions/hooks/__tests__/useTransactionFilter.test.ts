@@ -1,7 +1,7 @@
 import { act, renderHook } from '@testing-library/react';
 import type React from 'react';
 import { describe, expect, it, vi } from 'vitest';
-import { useTransactionFilter } from '../../hooks/useTransactionFilter';
+import { useTransactionFilter } from '../useTransactionFilter';
 
 describe('useTransactionFilter', () => {
   it('calculates active filters and toggles expansion', () => {

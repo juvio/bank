@@ -1,6 +1,6 @@
 import { renderHook } from '@testing-library/react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { useTransactionHistoryCard } from '../../hooks/useTransactionHistoryCard';
+import { useTransactionHistoryCard } from '../useTransactionHistoryCard';
 import type { TransactionType } from '@types';
 
 const mocks = vi.hoisted(() => ({
