@@ -29,14 +29,13 @@ Migrar `transactions` para arquitetura por feature:
 
 ## Status de validacao
 
-Gate tecnico pendente neste ambiente porque `npm`, `node` e
-`C:\Program Files\nodejs\npm.cmd` nao estao disponiveis no PATH ou no caminho
-esperado.
+Gate tecnico executado com o binario instalado em
+`C:\Program Files\nodejs\npm.cmd`.
 
-- `npm run lint`: nao executado
-- `npm run build`: nao executado
-- `npm run test -- --run`: nao executado
+- `npm run lint`: passou (com 4 warnings pre-existentes fora do escopo da PR4)
+- `npm run build`: passou
+- `npm run test -- --run`: passou (2 files, 16 tests)
 
 ## Ready to merge
 
-Status atual: `PENDENTE` ate executar o gate tecnico em ambiente com Node.js.
+Status atual: `APROVADO`.
