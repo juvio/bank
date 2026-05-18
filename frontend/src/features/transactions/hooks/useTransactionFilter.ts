@@ -1,3 +1,5 @@
+'use client';
+
 import { type ChangeEvent, type MouseEvent, useState } from 'react';
 
 interface UseTransactionFilterParams {
@@ -12,7 +14,7 @@ interface UseTransactionFilterParams {
 
 function calculateActiveFiltersCount(
   filterType: string,
-  filterPeriod: string
+  filterPeriod: string,
 ): number {
   return (filterType !== 'all' ? 1 : 0) + (filterPeriod !== 'all' ? 1 : 0);
 }
@@ -20,7 +22,7 @@ function calculateActiveFiltersCount(
 function hasActiveFilters(
   filterType: string,
   filterPeriod: string,
-  searchTerm: string
+  searchTerm: string,
 ): boolean {
   return filterType !== 'all' || filterPeriod !== 'all' || searchTerm !== '';
 }
@@ -38,17 +40,17 @@ export function useTransactionFilter({
 
   const activeFiltersCount = calculateActiveFiltersCount(
     filterType,
-    filterPeriod
+    filterPeriod,
   );
   const showClearButton = hasActiveFilters(
     filterType,
     filterPeriod,
-    searchTerm
+    searchTerm,
   );
 
   const handleToggleExpand = () => setIsExpanded((current) => !current);
   const handleSearchTermChange = (
-    event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => onSearchTermChange(event.target.value);
   const handleClearSearchTerm = () => onSearchTermChange('');
   const handleFilterTypeChange = (event: MouseEvent<HTMLElement>) => {

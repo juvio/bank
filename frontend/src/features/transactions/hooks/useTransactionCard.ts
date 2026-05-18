@@ -1,3 +1,5 @@
+'use client';
+
 import { useState } from 'react';
 import type React from 'react';
 import { useBankAccountStore } from '@/stores/useBankAccountStore';
@@ -41,7 +43,7 @@ export function useTransactionCard({
   const transactionTypeLabel = TransactionMapper[type];
   const formattedDate = formatDate(date);
   const formattedAmount = `${type === 'deposit' ? '+' : ''}R$ ${amount.toFixed(
-    2
+    2,
   )}`;
 
   const transactionPayload = {

@@ -1,3 +1,5 @@
+'use client';
+
 import { useMemo, useState } from 'react';
 import { useBankAccountStore } from '@/stores/useBankAccountStore';
 import { transactionTypes } from '@types';

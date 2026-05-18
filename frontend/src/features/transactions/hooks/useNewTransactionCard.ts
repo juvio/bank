@@ -1,3 +1,5 @@
+'use client';
+
 import { useEffect, useState } from 'react';
 import type React from 'react';
 import dayjs, { Dayjs } from 'dayjs';
@@ -24,14 +26,14 @@ export function useNewTransactionCard() {
     useBankAccountStore();
   const { setAddModal, setEditModal, setDeleteModal } = useModalStore();
   const [newTransaction, setNewTransaction] = useState<NewTransaction>(() =>
-    createInitialTransaction(transactions.length + 1)
+    createInitialTransaction(transactions.length + 1),
   );
 
   const { errors, isFormValid, handleAmountBlur, setErrors } =
     useTransactionValidation(
       newTransaction.amount,
       newTransaction.type,
-      newTransaction.date
+      newTransaction.date,
     );
 
   const handleTypeChange = (type: string) => {
