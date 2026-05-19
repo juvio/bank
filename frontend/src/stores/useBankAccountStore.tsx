@@ -1,18 +1,18 @@
 import { TransactionType } from '@types';
 import { create } from 'zustand';
 import { persist, devtools } from 'zustand/middleware';
-import { api } from '@/utils/api';
+import { api } from '@utils';
 import {
   createTransactionService,
   deleteTransactionService,
   fetchTransactionsService,
   updateTransactionService,
 } from '@features/transactions/services';
-import mock from '../mocks/mock.json';
+import { mockData } from '@mocks';
 
 const USE_MOCK = process.env.NEXT_PUBLIC_USE_MOCK === 'true';
 const initialTransactions: TransactionType[] = USE_MOCK
-  ? mock.transactions.map((t) => ({
+  ? mockData.transactions.map((t) => ({
       ...t,
       id: typeof t.id === 'string' ? parseInt(t.id, 10) : t.id,
     })) as TransactionType[]

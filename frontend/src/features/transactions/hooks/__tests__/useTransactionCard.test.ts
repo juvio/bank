@@ -11,16 +11,13 @@ const mocks = vi.hoisted(() => ({
   setViewModal: vi.fn(),
 }));
 
-vi.mock('@/stores/useModalStore', () => ({
+vi.mock('@stores', () => ({
   useModalStore: () => ({
     setAddModal: mocks.setAddModal,
     setDeleteModal: mocks.setDeleteModal,
     setEditModal: mocks.setEditModal,
     setViewModal: mocks.setViewModal,
   }),
-}));
-
-vi.mock('@/stores/useBankAccountStore', () => ({
   useBankAccountStore: () => ({
     setTransaction: mocks.setTransaction,
   }),

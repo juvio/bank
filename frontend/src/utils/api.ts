@@ -1,5 +1,5 @@
 import { useAuthStore } from '@/stores/useAuthStore';
-import { mockService } from '@/services/mockService';
+import { mockService } from '@services';
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
 const USE_MOCK = process.env.NEXT_PUBLIC_USE_MOCK === 'true';

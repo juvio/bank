@@ -23,15 +23,12 @@ vi.mock('next/navigation', () => ({
   }),
 }));
 
-vi.mock('@/stores/useModalStore', () => ({
+vi.mock('@stores', () => ({
   useModalStore: () => ({
     setAddModal: mocks.setAddModal,
     setDeleteModal: mocks.setDeleteModal,
     setEditModal: mocks.setEditModal,
   }),
-}));
-
-vi.mock('@/stores/useBankAccountStore', () => ({
   useBankAccountStore: () => ({
     ...mocks.bankState,
     setTransaction: mocks.setTransaction,

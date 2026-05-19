@@ -1,7 +1,6 @@
 'use client';
 
-import { useBankAccountStore } from '@/stores/useBankAccountStore';
-import { useModalStore } from '@/stores/useModalStore';
+import { useBankAccountStore, useModalStore } from '@stores';
 import { transactionTypes } from '@types';
 import {
   Button,
@@ -28,7 +27,7 @@ import {
 } from '@mui/icons-material';
 import { useRouter } from 'next/navigation';
 import { useState, ReactNode } from 'react';
-import { useTransactionValidation } from '@/hooks/useTransactionValidation';
+import { useTransactionValidation } from '@hooks';
 import {
   BoxWrapperRemoveSx,
   ButtonCancelTextSx,
@@ -51,7 +50,7 @@ import {
   TypographyTypeSx,
 } from './styles';
 import { revalidateHome } from '@/app/actions';
-import { sanitizeFilename } from '@/utils/sanitizedFilename';
+import { sanitizeFilename } from '@utils';
 
 interface ModalComponentProps {
   title?: string;

@@ -4,10 +4,9 @@ import { useEffect, useState } from 'react';
 import type React from 'react';
 import dayjs, { Dayjs } from 'dayjs';
 import { useRouter } from 'next/navigation';
-import { useBankAccountStore } from '@/stores/useBankAccountStore';
-import { useModalStore } from '@/stores/useModalStore';
+import { useBankAccountStore, useModalStore } from '@stores';
 import type { NewTransaction } from '@types';
-import { useTransactionValidation } from '@/hooks/useTransactionValidation';
+import { useTransactionValidation } from '@hooks';
 
 function createInitialTransaction(nextId: number): NewTransaction {
   return {

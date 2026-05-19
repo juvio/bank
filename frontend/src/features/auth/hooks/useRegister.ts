@@ -3,7 +3,7 @@
 import { useCallback, useState } from 'react';
 import type { FormEvent } from 'react';
 import { useRouter } from 'next/navigation';
-import { useAuthStore } from '@/stores/useAuthStore';
+import { useAuthStore } from '@stores';
 
 export const useRegister = () => {
   const router = useRouter();

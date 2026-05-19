@@ -11,7 +11,7 @@ vi.mock('next/navigation', () => ({
   }),
 }));
 
-vi.mock('@/stores/useAuthStore', () => ({
+vi.mock('@stores', () => ({
   useAuthStore: () => ({
     login: loginMock,
   }),

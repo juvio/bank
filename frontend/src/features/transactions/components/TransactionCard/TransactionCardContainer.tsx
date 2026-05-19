@@ -1,6 +1,6 @@
 'use client';
 
-import { useTransactionCard } from '../../hooks/useTransactionCard';
+import { useTransactionCard } from '@features/transactions/hooks';
 import { TransactionCard } from './TransactionCard';
 import type { TransactionCardProps } from './types';
 

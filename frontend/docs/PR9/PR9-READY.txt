@@ -1,62 +1,20 @@
-PR 9 — Update ESLint Rules (Import Boundaries)
-===============================================
+PR 9 - READY
 
-Status: ✅ READY
-Date: May 19, 2026
-Branch: feature/barrels
+Status: APROVADO
+Data: 2026-05-19
+Escopo: frontend only
 
-COMPLETION CHECKLIST:
-====================
+Objetivo entregue:
+- Implementar barrels publicos para camadas compartilhadas ainda sem index.ts.
+- Adicionar aliases bare para importar via @components, @hooks, @stores, @services, @utils e @mocks.
+- Atualizar consumidores seguros para usar barrels sem alterar comportamento.
 
-✅ Implementation:
-  • eslint-plugin-import installed
-  • ESLint configuration updated
-  • import/no-cycle rule added
-  • import/no-internal-modules rule added
-  • ~30 violations detected and documented
+Validacoes:
+- npm run lint: passou com warnings conhecidos.
+- npm run build: passou com warnings conhecidos.
+- npm run test -- --run: passou, 25 arquivos e 79 testes.
 
-✅ Validation:
-  • npm run lint — ✅ PASS (~30 warnings, 0 errors)
-  • npm run build — ✅ PASS (no errors)
-  • npm run test — ✅ PASS (all passing)
-  • No breaking changes introduced
+Riscos residuais:
+- Ciclo authStore -> authService -> utils/api -> authStore continua existente e deve ser tratado em PR futuro.
+- Alguns imports internos de App Router permanecem fora do escopo deste PR.
 
-✅ Documentation:
-  • PR9-ESLINT-IMPORT-RULES.md (root) created
-  • PR9-INDEX.md created
-  • PR9-CHECKLIST.md created
-  • PR9-SUMMARY.md created
-  • PR9-TEST-GUIDE.md created
-  • PR9-COMMIT-INSTRUCTIONS.md created
-  • PR9-VISUAL-MAP.md created
-  • PR9-COMPLETE.md created
-  • README-PR9.md created
-
-✅ Git:
-  • Branch: feature/barrels
-  • Commit: feat(eslint): add import boundary rules to enforce barrel exports (PR 9)
-  • All changes committed and pushed
-
-VIOLATIONS DETECTED:
-====================
-- Direct feature imports: ~15 violations
-- Direct store imports: ~8 violations
-- Direct utils imports: ~5 violations
-- Circular dependencies: ~2 violations
-- Total: ~30 warnings (expected, to be fixed in PR 10+)
-
-NEXT STEPS:
-===========
-1. Code review
-2. Merge to main
-3. Proceed with PR 10: Fix Import Violations Phase 1
-
-QUICK START:
-============
-• See README-PR9.md for team overview
-• See PR9-INDEX.md for full navigation
-• See PR9-SUMMARY.md for technical details
-• Run: npm run lint (to see violations)
-
-STATUS: ✅ READY FOR REVIEW & MERGE
-===================================

@@ -1,8 +1,8 @@
 import { headers } from 'next/headers';
-import HomePageComponent from '@/components/HomePageComponent';
+import { HomePageComponent } from '@components';
 import { parse } from 'cookie';
 import { Transactions } from '@types';
-import { convertMockToTransactions, mockService } from '@/services/mockService';
+import { convertMockToTransactions, mockService } from '@services';
 
 export default async function HomePage() {
   const USE_MOCK = process.env.NEXT_PUBLIC_USE_MOCK === 'true';

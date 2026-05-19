@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
-import { TransactionCardContainer } from '../TransactionCard/TransactionCardContainer';
+import { TransactionCardContainer } from '../TransactionCard';
 
 const { TransactionCardMock, useTransactionCardMock } = vi.hoisted(() => ({
   TransactionCardMock: vi.fn(() => <div data-testid='transaction-card-ui' />),
@@ -22,7 +22,7 @@ vi.mock('../TransactionCard/TransactionCard', () => ({
   TransactionCard: TransactionCardMock,
 }));
 
-vi.mock('../../hooks/useTransactionCard', () => ({
+vi.mock('@features/transactions/hooks', () => ({
   useTransactionCard: useTransactionCardMock,
 }));
 

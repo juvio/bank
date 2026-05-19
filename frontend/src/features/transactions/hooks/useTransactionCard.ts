@@ -2,9 +2,8 @@
 
 import { useState } from 'react';
 import type React from 'react';
-import { useBankAccountStore } from '@/stores/useBankAccountStore';
-import { useModalStore } from '@/stores/useModalStore';
-import { formatDate } from '@/utils/date';
+import { useBankAccountStore, useModalStore } from '@stores';
+import { formatDate } from '@utils';
 import { TransactionMapper } from '@types';
 import {
   getTransactionAmountColor,

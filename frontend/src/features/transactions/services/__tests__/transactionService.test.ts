@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { api } from '@/utils/api';
+import { api } from '@utils';
 import {
   createTransactionService,
   deleteTransactionService,
@@ -8,7 +8,7 @@ import {
 } from '../transactionService';
 import type { TransactionType } from '@types';
 
-vi.mock('@/utils/api', () => ({
+vi.mock('@utils', () => ({
   api: {
     get: vi.fn(),
     postFormData: vi.fn(),
