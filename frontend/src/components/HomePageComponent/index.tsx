@@ -3,7 +3,7 @@
 import { useEffect } from 'react';
 import { Box, Card, Container } from '@mui/material';
 
-import AccountCard from '@/components/AccountCard';
+import { AccountCard } from '@features/accounts';
 import {
   NewTransactionCard,
   TransactionHistoryCard,

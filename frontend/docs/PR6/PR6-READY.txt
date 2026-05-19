@@ -1,0 +1,24 @@
+PR6 - READY CHECK
+
+Status: APROVADO
+
+Objetivo:
+- Migrar accounts para src/features/accounts.
+
+Entregue:
+- AccountCard movido para features/accounts/components/AccountCard.
+- AccountMenu movido para features/accounts/components/AccountMenu.
+- Barrel publico @features/accounts atualizado.
+- Imports de app, HomePageComponent e stories reescritos para a feature.
+- Testes co-localizados criados para AccountCard e AccountMenu.
+- Roadmap do plano marcado como PR6 concluido.
+
+Validacoes:
+- npm run lint: passou com 2 warnings preexistentes fora de accounts.
+- npm run build: passou.
+- npm run test -- --run: passou, 22 arquivos e 75 testes.
+
+Restricoes respeitadas:
+- Apenas frontend foi alterado.
+- Backend nao foi alterado.
+- Refactor Container/Presentational profundo ficou fora do PR6.
