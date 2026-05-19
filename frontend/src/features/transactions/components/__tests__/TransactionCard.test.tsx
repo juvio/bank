@@ -1,9 +1,25 @@
 import { fireEvent, render, screen } from '@testing-library/react';
-import { beforeEach, describe, expect, it, vi } from 'vitest';
-import TransactionCard from '../TransactionCard';
+import type { AnchorHTMLAttributes, PropsWithChildren } from 'react';
+import { describe, expect, it, vi } from 'vitest';
+import { TransactionCard } from '../TransactionCard/TransactionCard';
+import type { TransactionCardViewProps } from '../TransactionCard/types';
 
-const { useTransactionCardMock } = vi.hoisted(() => ({
-  useTransactionCardMock: vi.fn(),
+type MockLinkProps = PropsWithChildren<
+  AnchorHTMLAttributes<HTMLAnchorElement> & { href: string }
+>;
+
+vi.mock('next/link', () => ({
+  default: ({ children, href, ...props }: MockLinkProps) => (
+    <a
+      href={href}
+      onClick={(event) => {
+        event.preventDefault();
+      }}
+      {...props}
+    >
+      {children}
+    </a>
+  ),
 }));
 
 vi.mock('@mui/icons-material', () => {
@@ -17,41 +33,33 @@ vi.mock('@mui/icons-material', () => {
   };
 });
 
-vi.mock('@features/transactions/hooks', () => ({
-  useTransactionCard: useTransactionCardMock,
-}));
+const makeProps = (
+  overrides: Partial<TransactionCardViewProps> = {},
+): TransactionCardViewProps => ({
+  anchorEl: null,
+  amount: 100,
+  amountColor: '#2e7d32',
+  borderColor: '#2e7d32',
+  date: '2026-05-18',
+  description: 'PIX recebido',
+  formattedAmount: '+R$ 100.00',
+  formattedDate: '18/05/2026',
+  handleClick: vi.fn(),
+  handleClose: vi.fn(),
+  handleOpenDeleteModal: vi.fn(),
+  handleOpenEditModal: vi.fn(),
+  handleOpenViewModal: vi.fn(),
+  id: 1,
+  open: false,
+  TransactionIcon: () => <span data-testid='transaction-icon' />,
+  transactionTypeLabel: 'Deposito',
+  type: 'deposit',
+  ...overrides,
+});
 
 describe('TransactionCard', () => {
-  beforeEach(() => {
-    vi.clearAllMocks();
-
-    useTransactionCardMock.mockReturnValue({
-      anchorEl: null,
-      amountColor: '#2e7d32',
-      borderColor: '#2e7d32',
-      formattedAmount: '+R$ 100.00',
-      formattedDate: '18/05/2026',
-      handleClick: vi.fn(),
-      handleClose: vi.fn(),
-      handleOpenDeleteModal: vi.fn(),
-      handleOpenEditModal: vi.fn(),
-      handleOpenViewModal: vi.fn(),
-      open: false,
-      TransactionIcon: () => <span data-testid='transaction-icon' />,
-      transactionTypeLabel: 'Deposito',
-    });
-  });
-
   it('renders transaction summary and action buttons', () => {
-    render(
-      <TransactionCard
-        id={1}
-        type='deposit'
-        amount={100}
-        description='PIX recebido'
-        date='2026-05-18'
-      />,
-    );
+    render(<TransactionCard {...makeProps()} />);
 
     expect(screen.getByText('Deposito')).toBeInTheDocument();
     expect(screen.getByText('18/05/2026')).toBeInTheDocument();
@@ -67,29 +75,24 @@ describe('TransactionCard', () => {
     const handleOpenEditModal = vi.fn();
     const handleOpenViewModal = vi.fn();
 
-    useTransactionCardMock.mockReturnValue({
-      anchorEl: document.body,
-      amountColor: '#d32f2f',
-      borderColor: '#d32f2f',
-      formattedAmount: '-R$ 75.00',
-      formattedDate: '18/05/2026',
-      handleClick,
-      handleClose: vi.fn(),
-      handleOpenDeleteModal,
-      handleOpenEditModal,
-      handleOpenViewModal,
-      open: true,
-      TransactionIcon: () => <span data-testid='transaction-icon' />,
-      transactionTypeLabel: 'Pagamento',
-    });
-
     const { container } = render(
       <TransactionCard
-        id={2}
-        type='payment'
-        amount={75}
-        description='Boleto'
-        date='2026-05-18'
+        {...makeProps({
+          anchorEl: document.body,
+          amount: 75,
+          amountColor: '#d32f2f',
+          borderColor: '#d32f2f',
+          description: 'Boleto',
+          formattedAmount: '-R$ 75.00',
+          handleClick,
+          handleOpenDeleteModal,
+          handleOpenEditModal,
+          handleOpenViewModal,
+          id: 2,
+          open: true,
+          transactionTypeLabel: 'Pagamento',
+          type: 'payment',
+        })}
       />,
     );
 

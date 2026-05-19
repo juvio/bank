@@ -1514,7 +1514,7 @@ node scripts/create-barrel.js src/hooks
 - [x] **PR 4:** Migrar auth para features/auth
 - [x] **PR 5:** Migrar transactions para features/transactions
 - [x] **PR 6:** Migrar accounts para features/accounts
-- [ ] **PR 7:** Refactor TransactionCard (Container/Presentational + hook)
+- [x] **PR 7:** Refactor TransactionCard (Container/Presentational + hook)
 - [ ] **PR 8:** Refactor AccountCard (Container/Presentational + hook)
 - [ ] **PR 9:** Implementar barrels em todas as pastas
 - [ ] **PR 10:** Adicionar testes co-localizados (mínimo 80% cobertura)
