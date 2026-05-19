@@ -2,7 +2,21 @@ import { TransactionType } from '@types';
 import { create } from 'zustand';
 import { persist, devtools } from 'zustand/middleware';
 import { api } from '@/utils/api';
+import {
+  createTransactionService,
+  deleteTransactionService,
+  fetchTransactionsService,
+  updateTransactionService,
+} from '@features/transactions/services';
 import mock from '../mocks/mock.json';
+
+const USE_MOCK = process.env.NEXT_PUBLIC_USE_MOCK === 'true';
+const initialTransactions: TransactionType[] = USE_MOCK
+  ? mock.transactions.map((t) => ({
+      ...t,
+      id: typeof t.id === 'string' ? parseInt(t.id, 10) : t.id,
+    })) as TransactionType[]
+  : [];
 
 type AccountBankStore = {
   transaction: TransactionType;
@@ -35,10 +49,7 @@ export const useBankAccountStore = create<AccountBankStore>()(
         transactionShouldReset: false,
         resetTransaction: (shouldReset: boolean) =>
           set({ transactionShouldReset: shouldReset }),
-        transactions: mock.transactions.map((t) => ({
-          ...t,
-          id: typeof t.id === 'string' ? parseInt(t.id, 10) : t.id,
-        })),
+        transactions: initialTransactions,
         balance: 0,
         balanceNeedsUpdate: false,
         page: 0,
@@ -64,9 +75,7 @@ export const useBankAccountStore = create<AccountBankStore>()(
 
           try {
             set({ isLoading: true });
-            const data = await api.get(
-              `/api/transactions?page=${pageToFetch}&limit=10`
-            );
+            const data = await fetchTransactionsService(pageToFetch);
 
             set((state) => {
               if (pageToFetch === 0) {
@@ -99,17 +108,7 @@ export const useBankAccountStore = create<AccountBankStore>()(
 
         addTransaction: async (newTransaction: TransactionType) => {
           try {
-            const formData = new FormData();
-            formData.append('type', newTransaction.type);
-            formData.append('amount', newTransaction.amount.toString());
-            formData.append('description', newTransaction.description || '');
-            formData.append('date', newTransaction.date);
-
-            if (newTransaction.attachment) {
-              formData.append('attachment', newTransaction.attachment);
-            }
-
-            const data = await api.postFormData('/api/transactions', formData);
+            const data = await createTransactionService(newTransaction);
 
             set((state) => ({
               transactions: [data.result, ...state.transactions],
@@ -123,7 +122,7 @@ export const useBankAccountStore = create<AccountBankStore>()(
 
         removeTransaction: async (id: number) => {
           try {
-            await api.delete(`/api/transactions/${id}`);
+            await deleteTransactionService(id);
 
             set((state) => ({
               transactions: state.transactions.filter((item) => item.id !== id),
@@ -140,12 +139,7 @@ export const useBankAccountStore = create<AccountBankStore>()(
           updatedItem: Partial<TransactionType>
         ) => {
           try {
-            const data = await api.put(`/api/transactions/${id}`, {
-              type: updatedItem.type,
-              amount: updatedItem.amount,
-              description: updatedItem.description,
-              date: updatedItem.date,
-            });
+            const data = await updateTransactionService(id, updatedItem);
 
             set((state) => ({
               transactions: state.transactions.map((item) =>

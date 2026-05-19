@@ -1,6 +1,5 @@
 'use client';
 
-import React, { useEffect, useState, useCallback } from 'react';
 import {
   Card,
   CardContent,
@@ -15,14 +14,10 @@ import {
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
-import dayjs, { Dayjs } from 'dayjs';
 import AttachFileIcon from '@mui/icons-material/AttachFile';
 import CloseIcon from '@mui/icons-material/Close';
-import { useRouter } from 'next/navigation';
-import { useBankAccountStore } from '@/stores/useBankAccountStore';
-import { useModalStore } from '@/stores/useModalStore';
-import { transactionTypes, NewTransaction } from '@types';
-import { useTransactionValidation } from '@/hooks/useTransactionValidation';
+import { transactionTypes } from '@types';
+import { useNewTransactionCard } from '@features/transactions/hooks';
 import {
   BoxTextFieldSx,
   CardActionsSx,
@@ -31,78 +26,21 @@ import {
 } from './styles';
 
 export default function NewTransactionCard() {
-  const router = useRouter();
-  const { transactions, setTransaction, transactionShouldReset } =
-    useBankAccountStore();
-  const { setAddModal, setEditModal, setDeleteModal } = useModalStore();
-  const [newTransaction, setNewTransaction] = useState<NewTransaction>({
-    id: transactions.length + 1,
-    type: '',
-    amount: '',
-    description: '',
-    date: new Date().toISOString().split('T')[0],
-    attachment: null,
-  });
-
-  const { errors, isFormValid, handleAmountBlur, setErrors } =
-    useTransactionValidation(
-      newTransaction.amount,
-      newTransaction.type,
-      newTransaction.date
-    );
-
-  const handleDateChange = (dateValue: Dayjs | null) => {
-    const dateString = dateValue ? dateValue.format('YYYY-MM-DD') : '';
-
-    setNewTransaction((prev) => ({
-      ...prev,
-      date: dateString,
-    }));
-  };
-
-  const handleOpenModal = () => {
-    if (!isFormValid()) return;
-
-    setTransaction({
-      id: 0,
-      type: newTransaction.type,
-      amount: Number(newTransaction.amount),
-      description: newTransaction.description,
-      date: newTransaction.date,
-      attachment: newTransaction.attachment || undefined,
-      attachmentType: newTransaction.attachment
-        ? newTransaction.attachment.type
-        : undefined,
-    });
-
-    setEditModal(false);
-    setDeleteModal(false);
-    setAddModal(true);
-    router.push('/transaction');
-  };
-
-  const onFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0] || null;
-    setNewTransaction({ ...newTransaction, attachment: file });
-  };
-
-  const onRemoveFile = () => {
-    setNewTransaction({ ...newTransaction, attachment: null });
-  };
-
-  useEffect(() => {
-    if (transactionShouldReset) {
-      setNewTransaction({
-        id: transactions.length + 1,
-        type: '',
-        amount: '',
-        description: '',
-        date: new Date().toISOString().split('T')[0],
-        attachment: null,
-      });
-      setErrors('');
-    }
-  }, [transactionShouldReset, transactions.length]);
+  const {
+    datePickerValue,
+    errors,
+    handleAmountBlur,
+    handleAmountChange,
+    handleDateChange,
+    handleDescriptionChange,
+    handleFileChange,
+    handleOpenModal,
+    handleRemoveFile,
+    handleTypeChange,
+    isSubmitDisabled,
+    maxDate,
+    newTransaction,
+  } = useNewTransactionCard();
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale='pt-br'>
@@ -129,9 +67,7 @@ export default function NewTransactionCard() {
               select
               label='Tipo de Transação'
               value={newTransaction.type}
-              onChange={(e) =>
-                setNewTransaction({ ...newTransaction, type: e.target.value })
-              }
+              onChange={(event) => handleTypeChange(event.target.value)}
               fullWidth
               required
             >
@@ -149,12 +85,7 @@ export default function NewTransactionCard() {
                 label='Valor'
                 type='number'
                 value={newTransaction.amount}
-                onChange={(e) =>
-                  setNewTransaction({
-                    ...newTransaction,
-                    amount: e.target.value,
-                  })
-                }
+                onChange={(event) => handleAmountChange(event.target.value)}
                 fullWidth
                 required
                 slotProps={{
@@ -162,15 +93,15 @@ export default function NewTransactionCard() {
                     startAdornment: <Typography sx={{ mr: 1 }}>R$</Typography>,
                   },
                 }}
-                onBlur={() => handleAmountBlur()}
+                onBlur={handleAmountBlur}
                 error={Boolean(errors)}
                 helperText={errors}
               />
               <DesktopDatePicker
                 label='Data'
-                value={dayjs(newTransaction.date)}
+                value={datePickerValue}
                 onChange={handleDateChange}
-                maxDate={dayjs()}
+                maxDate={maxDate}
                 disableFuture
                 format='DD/MM/YYYY'
                 slotProps={{
@@ -184,12 +115,7 @@ export default function NewTransactionCard() {
             <TextField
               label='Descrição'
               value={newTransaction.description}
-              onChange={(e) =>
-                setNewTransaction({
-                  ...newTransaction,
-                  description: e.target.value,
-                })
-              }
+              onChange={(event) => handleDescriptionChange(event.target.value)}
               fullWidth
               multiline
               rows={2}
@@ -214,12 +140,16 @@ export default function NewTransactionCard() {
                 <input
                   type='file'
                   hidden
-                  onChange={onFileChange}
+                  onChange={handleFileChange}
                   accept='image/*,.pdf'
                 />
               </Button>
               {newTransaction.attachment && (
-                <IconButton onClick={onRemoveFile} size='small' color='error'>
+                <IconButton
+                  onClick={handleRemoveFile}
+                  size='small'
+                  color='error'
+                >
                   <CloseIcon />
                 </IconButton>
               )}
@@ -244,7 +174,7 @@ export default function NewTransactionCard() {
               variant='contained'
               fullWidth
               onClick={handleOpenModal}
-              disabled={!isFormValid()}
+              disabled={isSubmitDisabled}
             >
               Criar Transação
             </Button>

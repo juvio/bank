@@ -1,6 +1,6 @@
 import React from "react";
 import { Meta, StoryObj } from "@storybook/nextjs-vite";
-import TransactionCard from "@/components/TransactionCard";
+import { TransactionCard } from "@features/transactions";
 import ClientThemeProvider from "@/components/ClientThemeProvider";
 
 const meta: Meta<typeof TransactionCard> = {

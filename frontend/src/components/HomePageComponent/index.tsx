@@ -4,8 +4,10 @@ import { useEffect } from 'react';
 import { Box, Card, Container } from '@mui/material';
 
 import AccountCard from '@/components/AccountCard';
-import NewTransactionCard from '@/components/NewTransactionCard';
-import TransactionHistoryCard from '@/components/TransactionHistoryCard';
+import {
+  NewTransactionCard,
+  TransactionHistoryCard,
+} from '@features/transactions';
 import { useBankAccountStore } from '@/stores/useBankAccountStore';
 
 import {

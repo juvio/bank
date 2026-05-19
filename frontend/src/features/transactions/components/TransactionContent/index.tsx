@@ -1,19 +1,17 @@
 'use client';
 
-import { useState, useMemo } from 'react';
-import { useBankAccountStore } from '@/stores/useBankAccountStore';
 import {
-  Typography,
-  Container,
   Box,
   Card,
   CardContent,
   CircularProgress,
+  Container,
+  Typography,
 } from '@mui/material';
+import InfiniteScroll from 'react-infinite-scroll-component';
+import { useTransactionContent } from '@features/transactions/hooks';
 import TransactionCard from '../TransactionCard';
 import TransactionFilter from '../TransactionFilter';
-import InfiniteScroll from 'react-infinite-scroll-component';
-import { transactionTypes, TransactionType } from '@types';
 import {
   BoxTransactionContentSx,
   BoxWrapperSx,
@@ -26,132 +24,24 @@ import {
   TypographyNoTransactionSx,
 } from './styles';
 
-function filterByType(
-  transactions: TransactionType[],
-  filterType: string,
-): TransactionType[] {
-  if (filterType === 'all') return transactions;
-  return transactions.filter((transaction) => transaction.type === filterType);
-}
-
-function filterByPeriod(
-  transactions: TransactionType[],
-  filterPeriod: string,
-): TransactionType[] {
-  if (filterPeriod === 'all') return transactions;
-
-  const now = new Date();
-  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-
-  return transactions.filter((transaction) => {
-    // Parsear data como local ao invés de UTC
-    let transactionDate: Date;
-    if (
-      typeof transaction.date === 'string' &&
-      transaction.date.includes('-')
-    ) {
-      // Formato YYYY-MM-DD ou YYYY-MM-DDTHH:mm:ss
-      const [datePart] = transaction.date.split('T');
-      const [year, month, day] = datePart.split('-').map(Number);
-      transactionDate = new Date(year, month - 1, day);
-    } else {
-      transactionDate = new Date(transaction.date);
-    }
-
-    // Normalizar a data da transação para início do dia
-    const normalizedTransactionDate = new Date(
-      transactionDate.getFullYear(),
-      transactionDate.getMonth(),
-      transactionDate.getDate(),
-    );
-
-    switch (filterPeriod) {
-      case 'today':
-        return normalizedTransactionDate.getTime() === today.getTime();
-      case 'week':
-        const weekAgo = new Date(today);
-        weekAgo.setDate(weekAgo.getDate() - 7);
-        return normalizedTransactionDate >= weekAgo;
-      case 'month':
-        const monthAgo = new Date(today);
-        monthAgo.setMonth(monthAgo.getMonth() - 1);
-        return normalizedTransactionDate >= monthAgo;
-      case 'year':
-        const yearAgo = new Date(today);
-        yearAgo.setFullYear(yearAgo.getFullYear() - 1);
-        return normalizedTransactionDate >= yearAgo;
-      default:
-        return true;
-    }
-  });
-}
-
-function matchesSearchTerm(
-  transaction: TransactionType,
-  searchLower: string,
-): boolean {
-  const typeLabel =
-    transactionTypes
-      .find((t) => t.value === transaction.type)
-      ?.label?.toLowerCase() || '';
-  const matchType =
-    typeLabel.includes(searchLower) ||
-    transaction.type.toLowerCase().includes(searchLower);
-
-  const amountStr = transaction.amount.toString();
-  const formattedAmount = new Intl.NumberFormat('pt-BR', {
-    style: 'currency',
-    currency: 'BRL',
-  })
-    .format(transaction.amount)
-    .toLowerCase();
-  const matchAmount =
-    amountStr.includes(searchLower) || formattedAmount.includes(searchLower);
-
-  return matchType || matchAmount;
-}
-
-function filterBySearchTerm(
-  transactions: TransactionType[],
-  searchTerm: string,
-): TransactionType[] {
-  if (searchTerm.trim() === '') return transactions;
-
-  const searchLower = searchTerm.toLowerCase();
-  return transactions.filter((transaction) =>
-    matchesSearchTerm(transaction, searchLower),
-  );
-}
-
 export default function TransactionContent() {
-  const { transactions, page, hasMore, isLoading, fetchTransactions } =
-    useBankAccountStore();
-
-  const [filterType, setFilterType] = useState('all');
-  const [filterPeriod, setFilterPeriod] = useState('all');
-  const [searchTerm, setSearchTerm] = useState('');
-
-  const loadMore = () => {
-    if (!isLoading) {
-      fetchTransactions(page + 1);
-    }
-  };
-
-  const filteredTransactions = useMemo(() => {
-    let filtered = [...transactions];
-
-    filtered = filterByType(filtered, filterType);
-    filtered = filterByPeriod(filtered, filterPeriod);
-    filtered = filterBySearchTerm(filtered, searchTerm);
-
-    return filtered;
-  }, [transactions, filterType, filterPeriod, searchTerm]);
-
-  const handleClearFilters = () => {
-    setFilterType('all');
-    setFilterPeriod('all');
-    setSearchTerm('');
-  };
+  const {
+    canLoadMore,
+    emptyStateMessage,
+    filterPeriod,
+    filterType,
+    filteredTransactions,
+    handleClearFilters,
+    hasFilteredTransactions,
+    isInitialLoading,
+    isLoading,
+    loadMore,
+    page,
+    searchTerm,
+    setFilterPeriod,
+    setFilterType,
+    setSearchTerm,
+  } = useTransactionContent();
 
   return (
     <Container
@@ -189,7 +79,7 @@ export default function TransactionContent() {
           onClearFilters={handleClearFilters}
         />
 
-        {isLoading && transactions.length === 0 ? (
+        {isInitialLoading ? (
           <Box
             role='status'
             aria-live='polite'
@@ -212,7 +102,7 @@ export default function TransactionContent() {
               Carregando transações...
             </Typography>
           </Box>
-        ) : filteredTransactions.length > 0 ? (
+        ) : hasFilteredTransactions ? (
           <Box
             sx={BoxTransactionContentSx}
             role='feed'
@@ -221,12 +111,7 @@ export default function TransactionContent() {
             <InfiniteScroll
               dataLength={filteredTransactions.length}
               next={loadMore}
-              hasMore={
-                hasMore &&
-                filterType === 'all' &&
-                filterPeriod === 'all' &&
-                searchTerm === ''
-              }
+              hasMore={canLoadMore}
               scrollThreshold={0.9}
               loader={
                 <Box
@@ -306,9 +191,7 @@ export default function TransactionContent() {
                 sx={{ color: 'text.secondary' }}
                 aria-describedby='empty-state-title'
               >
-                {transactions.length > 0
-                  ? 'Nenhuma transação corresponde aos filtros aplicados. Tente ajustar os critérios de busca.'
-                  : 'Suas transações aparecerão aqui quando você realizar movimentações na sua conta.'}
+                {emptyStateMessage}
               </Typography>
             </CardContent>
           </Card>
