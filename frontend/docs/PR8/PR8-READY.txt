@@ -1,0 +1,22 @@
+PR 8 READY - AccountCard Container/Presentational + Hook
+
+Status tecnico: APROVADO
+
+Objetivo entregue:
+- AccountCard refatorado para container, view apresentacional e hook co-localizado na feature accounts.
+- API publica preservada: AccountCard continua disponivel via @features/accounts.
+- Testes da feature accounts atualizados e ampliados em pastas __tests__.
+
+Validacoes:
+- npm run lint: passou com 2 warnings preexistentes fora do escopo do PR8.
+- npm run build: passou.
+- npm run test -- --run: passou, 25 arquivos e 79 testes.
+
+Arquivos principais:
+- src/features/accounts/components/AccountCard/index.tsx
+- src/features/accounts/components/AccountCard/AccountCard.tsx
+- src/features/accounts/components/AccountCard/AccountCardContainer.tsx
+- src/features/accounts/components/AccountCard/types.ts
+- src/features/accounts/hooks/useAccountCard.ts
+
+Sem alteracoes em backend.
