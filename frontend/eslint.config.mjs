@@ -1,5 +1,6 @@
 // For more info, see https://github.com/storybookjs/eslint-plugin-storybook#configuration-flat-config-format
 import storybook from "eslint-plugin-storybook";
+import importPlugin from "eslint-plugin-import";
 
 import { dirname } from "path";
 import { fileURLToPath } from "url";
@@ -23,8 +24,31 @@ const eslintConfig = [{
     "next-env.d.ts",
   ],
 }, ...compat.extends("next/core-web-vitals", "next/typescript"), {
+  files: ["src/**/*.{ts,tsx}"],
   rules: {
-    "@typescript-eslint/no-explicit-any": "off"
+    "@typescript-eslint/no-explicit-any": "off",
+    "import/no-cycle": "warn",
+  },
+}, {
+  // Import boundary rules - enforce barrel exports
+  files: ["src/**/*.{ts,tsx}"],
+  plugins: {
+    import: importPlugin,
+  },
+  rules: {
+    "import/no-internal-modules": [
+      "warn",
+      {
+        allow: [
+          "**/node_modules/**",
+          "**/dist/**",
+          "**/index.{ts,tsx}",
+          "**/types.ts",
+          "**/styles.ts",
+          "**/constants.ts",
+        ],
+      },
+    ],
   },
 }, ...storybook.configs["flat/recommended"]];
 
