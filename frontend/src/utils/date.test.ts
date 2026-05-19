@@ -7,6 +7,16 @@ describe('formatDate', () => {
     expect(result).toBe('15/5/2024');
   });
 
+  it('should format an ISO date-time string without returning NaN', () => {
+    const result = formatDate('2026-05-18T00:00:00.000Z');
+    expect(result).toBe('18/5/2026');
+  });
+
+  it('should return empty string for invalid date strings', () => {
+    const result = formatDate('invalid-date');
+    expect(result).toBe('');
+  });
+
   it('should return empty string for undefined input', () => {
     const result = formatDate(undefined);
     expect(result).toBe('');

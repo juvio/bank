@@ -10,6 +10,14 @@ import {
 } from '@features/transactions/services';
 import mock from '../mocks/mock.json';
 
+const USE_MOCK = process.env.NEXT_PUBLIC_USE_MOCK === 'true';
+const initialTransactions: TransactionType[] = USE_MOCK
+  ? mock.transactions.map((t) => ({
+      ...t,
+      id: typeof t.id === 'string' ? parseInt(t.id, 10) : t.id,
+    })) as TransactionType[]
+  : [];
+
 type AccountBankStore = {
   transaction: TransactionType;
   setTransaction: (transaction: TransactionType) => void;
@@ -41,10 +49,7 @@ export const useBankAccountStore = create<AccountBankStore>()(
         transactionShouldReset: false,
         resetTransaction: (shouldReset: boolean) =>
           set({ transactionShouldReset: shouldReset }),
-        transactions: mock.transactions.map((t) => ({
-          ...t,
-          id: typeof t.id === 'string' ? parseInt(t.id, 10) : t.id,
-        })),
+        transactions: initialTransactions,
         balance: 0,
         balanceNeedsUpdate: false,
         page: 0,

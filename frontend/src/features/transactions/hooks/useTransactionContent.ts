@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useBankAccountStore } from '@/stores/useBankAccountStore';
 import { transactionTypes } from '@types';
 import type { TransactionType } from '@types';
@@ -109,6 +109,10 @@ export function useTransactionContent() {
   const [filterType, setFilterType] = useState('all');
   const [filterPeriod, setFilterPeriod] = useState('all');
   const [searchTerm, setSearchTerm] = useState('');
+
+  useEffect(() => {
+    fetchTransactions(0);
+  }, [fetchTransactions]);
 
   const filteredTransactions = useMemo(() => {
     let filtered = [...transactions];

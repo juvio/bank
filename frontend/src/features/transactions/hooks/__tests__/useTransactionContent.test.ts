@@ -95,9 +95,16 @@ describe('useTransactionContent', () => {
     ]);
   });
 
+  it('fetches the first transactions page on mount', () => {
+    renderHook(() => useTransactionContent());
+
+    expect(mocks.fetchTransactions).toHaveBeenCalledWith(0);
+  });
+
   it('loads the next page only when it is not already loading', () => {
     mocks.bankState.page = 2;
     const { result, rerender } = renderHook(() => useTransactionContent());
+    mocks.fetchTransactions.mockClear();
 
     act(() => {
       result.current.loadMore();

@@ -115,9 +115,7 @@ export default function NewTransactionCard() {
             <TextField
               label='Descrição'
               value={newTransaction.description}
-              onChange={(event) =>
-                handleDescriptionChange(event.target.value)
-              }
+              onChange={(event) => handleDescriptionChange(event.target.value)}
               fullWidth
               multiline
               rows={2}

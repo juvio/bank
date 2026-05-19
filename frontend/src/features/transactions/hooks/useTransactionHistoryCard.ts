@@ -1,15 +1,14 @@
 'use client';
 
-import { useBankAccountStore } from '@/stores/useBankAccountStore';
 import { formatDate } from '@/utils/date';
+import { mapTransactionsToTransactionTypes } from '@/utils/mapTransactionsToTransactionTypes';
 import { TransactionMapper } from '@types';
 import type { Transactions } from '@types';
 
 export function useTransactionHistoryCard(propTransactions: Transactions) {
-  void propTransactions;
+  const transactions = mapTransactionsToTransactionTypes(propTransactions);
 
-  const { transactions: storeTransactions } = useBankAccountStore();
-  const recentTransactions = storeTransactions
+  const recentTransactions = transactions
     .slice(0, 10)
     .map((transaction) => ({
       id: transaction.id,
