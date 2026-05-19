@@ -1,6 +1,6 @@
 import React from "react";
 import { Meta, StoryObj } from "@storybook/nextjs-vite";
-import AccountMenu from "@/components/AccountMenu";
+import { AccountMenu } from "@features/accounts";
 import ClientThemeProvider from "@/components/ClientThemeProvider";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import SettingsIcon from "@mui/icons-material/Settings";

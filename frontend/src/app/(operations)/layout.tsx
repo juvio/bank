@@ -1,9 +1,10 @@
 'use client';
 
-import AccountMenu, {
+import {
+  AccountMenu,
   AccountMenuAction,
   AccountMenuNavItem,
-} from '@/components/AccountMenu';
+} from '@features/accounts';
 import mock from '@/mocks/mock.json';
 import { useAuthStore } from '@/stores/useAuthStore';
 import { useRouter } from 'next/navigation';

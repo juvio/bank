@@ -3,7 +3,9 @@
 import React, { useState } from 'react';
 
 import { Card, CardContent, Typography, IconButton, Box } from '@mui/material';
-import { AccountBalance, Visibility, VisibilityOff } from '@mui/icons-material';
+import AccountBalance from '@mui/icons-material/AccountBalance';
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import {
   BoxAccountBalanceSx,
   BoxContaCorrenteSx,
