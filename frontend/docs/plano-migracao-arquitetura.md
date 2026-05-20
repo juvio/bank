@@ -1517,7 +1517,7 @@ node scripts/create-barrel.js src/hooks
 - [x] **PR 7:** Refactor TransactionCard (Container/Presentational + hook)
 - [x] **PR 8:** Refactor AccountCard (Container/Presentational + hook)
 - [x] **PR 9:** Implementar barrels em todas as pastas
-- [ ] **PR 10:** Adicionar testes co-localizados (mínimo 80% cobertura)
+- [x] **PR 10:** Adicionar testes co-localizados (mínimo 80% cobertura)
 
 ### Fase 3: Performance & Security (3-4 PRs)
 
