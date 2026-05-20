@@ -1,8 +1,15 @@
-import { GraphicMFEPage } from '@components';
 import { headers } from 'next/headers';
+import dynamic from 'next/dynamic';
 import { parse } from 'cookie';
 import { Box } from '@mui/material';
 import { convertMockToTransactions, mockService } from '@services';
+
+const GraphicMFEPage = dynamic(
+  () => import('@components/@views/GraphicMFEClient'),
+  {
+    loading: () => <div>Carregando...</div>,
+  }
+);
 
 export default async function GraphicPage() {
   const USE_MOCK = process.env.NEXT_PUBLIC_USE_MOCK === 'true';

@@ -1494,10 +1494,10 @@ node scripts/create-barrel.js src/hooks
 
 **Performance**
 
-- [ ] Bundle Analyzer instalado e testado
-- [ ] Dynamic imports para componentes pesados
-- [ ] `npm run build:analyze` executando
-- [ ] Sem aumento de bundle size > 5%
+- [x] Bundle Analyzer instalado e testado
+- [x] Dynamic imports para componentes pesados
+- [x] `npm run build:analyze` executando
+- [x] Sem aumento de bundle size > 5%
 
 ---
 
@@ -1521,7 +1521,7 @@ node scripts/create-barrel.js src/hooks
 
 ### Fase 3: Performance & Security (3-4 PRs)
 
-- [ ] **PR 11:** Setup Bundle Analyzer + dynamic imports
+- [x] **PR 11:** Setup Bundle Analyzer + dynamic imports
 - [ ] **PR 12:** Implementar auth segura (httpOnly cookies)
 - [ ] **PR 13:** Data masking + sanitização
 - [ ] **PR 14:** Deploy em staging, validar performance
