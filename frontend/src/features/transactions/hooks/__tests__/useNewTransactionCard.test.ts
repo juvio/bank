@@ -78,7 +78,7 @@ describe('useNewTransactionCard', () => {
     act(() => {
       result.current.handleTypeChange('deposit');
       result.current.handleAmountChange('250');
-      result.current.handleDescriptionChange('PIX recebido');
+      result.current.handleDescriptionChange('  <b>PIX recebido</b>  ');
       result.current.handleDateChange(dayjs('2026-05-10'));
       result.current.handleFileChange({
         target: { files: [file] },
@@ -88,7 +88,7 @@ describe('useNewTransactionCard', () => {
     expect(result.current.newTransaction).toMatchObject({
       type: 'deposit',
       amount: '250',
-      description: 'PIX recebido',
+      description: '  <b>PIX recebido</b>  ',
       date: '2026-05-10',
       attachment: file,
     });
@@ -115,7 +115,9 @@ describe('useNewTransactionCard', () => {
     act(() => {
       result.current.handleTypeChange('withdraw');
       result.current.handleAmountChange('99');
-      result.current.handleDescriptionChange('Saque');
+      result.current.handleDescriptionChange(
+        '  <img src=x onerror="x"> Saque com espaços  ',
+      );
       result.current.handleFileChange({
         target: { files: [file] },
       } as unknown as React.ChangeEvent<HTMLInputElement>);
@@ -129,7 +131,7 @@ describe('useNewTransactionCard', () => {
       id: 0,
       type: 'withdraw',
       amount: 99,
-      description: 'Saque',
+      description: 'Saque com espaços',
       date: '2026-05-18',
       attachment: file,
       attachmentType: 'application/pdf',

@@ -1,6 +1,10 @@
 'use client';
 
-import { formatDate, mapTransactionsToTransactionTypes } from '@utils';
+import {
+  formatDate,
+  mapTransactionsToTransactionTypes,
+  prepareDisplayText,
+} from '@utils';
 import { TransactionMapper } from '@types';
 import type { Transactions } from '@types';
 
@@ -13,7 +17,7 @@ export function useTransactionHistoryCard(propTransactions: Transactions) {
       id: transaction.id,
       date: formatDate(transaction.date),
       type: TransactionMapper[transaction.type],
-      description: transaction.description,
+      description: prepareDisplayText(transaction.description),
       amount: `${transaction.type === 'deposit' ? '+' : '-'}R$ ${transaction.amount
         .toFixed(2)
         .replace('.', ',')}`,

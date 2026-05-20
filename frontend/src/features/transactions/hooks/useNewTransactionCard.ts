@@ -7,6 +7,7 @@ import { useRouter } from 'next/navigation';
 import { useBankAccountStore, useModalStore } from '@stores';
 import type { NewTransaction } from '@types';
 import { useTransactionValidation } from '@hooks';
+import { sanitizeTextInput } from '@utils';
 
 function createInitialTransaction(nextId: number): NewTransaction {
   return {
@@ -44,7 +45,10 @@ export function useNewTransactionCard() {
   };
 
   const handleDescriptionChange = (description: string) => {
-    setNewTransaction((prev) => ({ ...prev, description }));
+    setNewTransaction((prev) => ({
+      ...prev,
+      description,
+    }));
   };
 
   const handleDateChange = (dateValue: Dayjs | null) => {
@@ -55,11 +59,13 @@ export function useNewTransactionCard() {
   const handleOpenModal = () => {
     if (!isFormValid()) return;
 
+    const sanitizedDescription = sanitizeTextInput(newTransaction.description);
+
     setTransaction({
       id: 0,
       type: newTransaction.type,
       amount: Number(newTransaction.amount),
-      description: newTransaction.description,
+      description: sanitizedDescription,
       date: newTransaction.date,
       attachment: newTransaction.attachment || undefined,
       attachmentType: newTransaction.attachment

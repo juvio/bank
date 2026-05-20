@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { sanitizeTextInput } from '@utils';
 
 const currencyFormatter = new Intl.NumberFormat('pt-BR', {
   style: 'currency',
@@ -18,7 +19,8 @@ export function useAccountCard({
 }: UseAccountCardParams) {
   const [showBalance, setShowBalance] = useState(true);
 
-  const firstName = accountName.split(' ')[0] ?? accountName;
+  const sanitizedAccountName = sanitizeTextInput(accountName, 80);
+  const firstName = sanitizedAccountName.split(' ')[0] ?? sanitizedAccountName;
   const formattedBalance = currencyFormatter.format(accountBalance);
 
   const handleToggleBalance = () => {
