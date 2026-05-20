@@ -1,0 +1,4 @@
+PR11 READY
+
+Status: Concluido.
+Scope: Bundle analyzer + dynamic imports.

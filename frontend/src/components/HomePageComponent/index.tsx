@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect } from 'react';
+import dynamic from 'next/dynamic';
 import { Box, Card, Container } from '@mui/material';
 
 import { AccountCard } from '@features/accounts';
@@ -19,8 +20,12 @@ import {
   ContainerSx,
 } from './styles';
 import { HomePageComponentProps } from './types';
-import GraphicMFEPage from '../@views/GraphicMFEClient';
 import Link from 'next/link';
+
+const GraphicMFEPage = dynamic(() => import('../@views/GraphicMFEClient'), {
+  ssr: false,
+  loading: () => <div>Carregando...</div>,
+});
 
 export default function HomePage({
   transactions,
