@@ -21,7 +21,7 @@ vi.mock('@hooks', () => ({
   useTransactionValidation: useTransactionValidationMock,
 }));
 
-vi.mock('@/app/actions', () => ({
+vi.mock('@core/config', () => ({
   revalidateHome: revalidateHomeMock,
 }));
 

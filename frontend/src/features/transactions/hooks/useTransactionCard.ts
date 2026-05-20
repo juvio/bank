@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import type React from 'react';
 import { useBankAccountStore, useModalStore } from '@stores';
-import { prepareDisplayText, sanitizeTextInput, formatDate } from '@utils';
+import { formatDate, prepareDisplayText, sanitizeTextInput } from '@lib';
 import { TransactionMapper } from '@types';
 import {
   getTransactionAmountColor,

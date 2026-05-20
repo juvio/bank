@@ -7,8 +7,8 @@ const { getGraphicAppBaseUrlMock } = vi.hoisted(() => ({
   getGraphicAppBaseUrlMock: vi.fn(),
 }));
 
-vi.mock('@utils', async () => {
-  const actual = await vi.importActual<typeof import('@utils')>('@utils');
+vi.mock('@lib', async () => {
+  const actual = await vi.importActual<typeof import('@lib')>('@lib');
   return {
     ...actual,
     getGraphicAppBaseUrl: getGraphicAppBaseUrlMock,

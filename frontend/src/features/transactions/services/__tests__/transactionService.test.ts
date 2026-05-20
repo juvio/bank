@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { api } from '@utils';
+import { api } from '@services';
 import {
   createTransactionService,
   deleteTransactionService,
@@ -8,13 +8,16 @@ import {
 } from '../transactionService';
 import type { TransactionType } from '@types';
 
-vi.mock('@utils', () => ({
+vi.mock('@services', () => ({
   api: {
     get: vi.fn(),
     postFormData: vi.fn(),
     put: vi.fn(),
     delete: vi.fn(),
   },
+}));
+
+vi.mock('@lib', () => ({
   sanitizeTextInput: vi.fn((value?: string) =>
     value ? value.replace(/<[^>]*>/g, '').trim() : '',
   ),

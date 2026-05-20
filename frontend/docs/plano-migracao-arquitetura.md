@@ -1529,7 +1529,7 @@ node scripts/create-barrel.js src/hooks
 ### Fase 4: Documentation & Cleanup (2 PRs)
 
 - [x] **PR 15:** Atualizar README com novo padrão
-- [ ] **PR 16:** Cleanup: deletar arquivos antigos, validar
+- [x] **PR 16:** Cleanup: deletar arquivos antigos, validar
 
 ---
 

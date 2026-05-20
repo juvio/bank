@@ -1,5 +1,6 @@
 import type { TransactionType } from '@types';
-import { api, sanitizeTextInput } from '@utils';
+import { sanitizeTextInput } from '@lib';
+import { api } from '@services';
 
 export type TransactionsPageResponse = {
   data: TransactionType[];

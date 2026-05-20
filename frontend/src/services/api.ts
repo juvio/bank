@@ -1,4 +1,4 @@
-import { mockService } from '@services';
+import { mockService } from './mockService';
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
 const USE_MOCK = process.env.NEXT_PUBLIC_USE_MOCK === 'true';
@@ -10,7 +10,7 @@ type RequestOptions = {
   requireAuth?: boolean;
 };
 
-// Mapeamento de endpoints para funções mock
+// Mapeamento de endpoints para funcoes mock
 const mockHandlers: Record<string, any> = {
   'POST:/user/auth': ({ body }: { body: any }) =>
     mockService.login(body.email, body.password),
@@ -106,7 +106,7 @@ export const apiClient = async <T = any>(
       }
     }
 
-    console.warn(`⚠️ Mock não encontrado para: ${method} ${endpoint}`);
+    console.warn(`⚠️ Mock nao encontrado para: ${method} ${endpoint}`);
   }
 
   const config: RequestInit = {
@@ -127,7 +127,7 @@ export const apiClient = async <T = any>(
   if (!response.ok) {
     const error = await response.json().catch(() => ({}));
     throw new Error(
-      error.message || `Erro na requisição: ${response.statusText}`,
+      error.message || `Erro na requisicao: ${response.statusText}`,
     );
   }
 
@@ -162,7 +162,7 @@ export const api = {
         }
       }
 
-      console.warn(`⚠️ Mock não encontrado para: POST ${endpoint}`);
+      console.warn(`⚠️ Mock nao encontrado para: POST ${endpoint}`);
     }
 
     const response = await fetch(resolveRequestUrl(endpoint), {
@@ -174,7 +174,7 @@ export const api = {
     if (!response.ok) {
       const error = await response.json().catch(() => ({}));
       throw new Error(
-        error.message || `Erro na requisição: ${response.statusText}`,
+        error.message || `Erro na requisicao: ${response.statusText}`,
       );
     }
 
