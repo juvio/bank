@@ -7,7 +7,7 @@ import { useRouter } from 'next/navigation';
 import { useBankAccountStore, useModalStore } from '@stores';
 import type { NewTransaction } from '@types';
 import { useTransactionValidation } from '@hooks';
-import { sanitizeTextInput } from '@utils';
+import { sanitizeTextInput } from '@lib';
 
 function createInitialTransaction(nextId: number): NewTransaction {
   return {

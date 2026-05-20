@@ -1,4 +1,4 @@
-import { sanitizeFilename } from '@utils';
+import { sanitizeFilename } from '@lib';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function GET(

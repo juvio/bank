@@ -8,11 +8,11 @@ type MockImageProps = ImgHTMLAttributes<HTMLImageElement> & {
 };
 
 vi.mock('next/image', () => ({
-  default: ({ priority, ...props }: MockImageProps) => {
+  default: ({ priority, alt = '', ...props }: MockImageProps) => {
     void priority;
 
     // eslint-disable-next-line @next/next/no-img-element
-    return <img {...props} />;
+    return <img alt={alt} {...props} />;
   },
 }));
 

@@ -5,7 +5,7 @@ import {
   maskSensitiveData,
   prepareDisplayText,
   sanitizeTextInput,
-} from './privacy';
+} from '../privacy';
 
 describe('privacy utils', () => {
   it('sanitizes html tags, script-like urls and control characters', () => {

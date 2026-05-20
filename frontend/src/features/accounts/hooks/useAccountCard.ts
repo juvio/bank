@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { sanitizeTextInput } from '@utils';
+import { sanitizeTextInput } from '@lib';
 
 const currencyFormatter = new Intl.NumberFormat('pt-BR', {
   style: 'currency',

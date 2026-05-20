@@ -1,4 +1,4 @@
-import type { Transactions } from '@types';
+import type { Transactions } from './domain.types';
 
 declare module 'mfe-graphics/mount' {
   import type * as React from 'react';

@@ -1,8 +1,8 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { api } from '@utils';
+import { api } from '@services';
 import { loginService, logoutService, registerService } from '../authService';
 
-vi.mock('@utils', () => ({
+vi.mock('@services', () => ({
   api: {
     post: vi.fn(),
   },

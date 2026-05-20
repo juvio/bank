@@ -1,12 +1,9 @@
 'use client';
 
-import {
-  formatDate,
-  mapTransactionsToTransactionTypes,
-  prepareDisplayText,
-} from '@utils';
+import { formatDate, prepareDisplayText } from '@lib';
 import { TransactionMapper } from '@types';
 import type { Transactions } from '@types';
+import { mapTransactionsToTransactionTypes } from '../services/transactionMapper';
 
 export function useTransactionHistoryCard(propTransactions: Transactions) {
   const transactions = mapTransactionsToTransactionTypes(propTransactions);

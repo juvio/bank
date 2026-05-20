@@ -47,8 +47,8 @@ import {
   TypographyTypeOptionsSx,
   TypographyTypeSx,
 } from './styles';
-import { revalidateHome } from '@/app/actions';
-import { prepareDisplayText, sanitizeFilename, sanitizeTextInput } from '@utils';
+import { revalidateHome } from '@core/config';
+import { prepareDisplayText, sanitizeFilename, sanitizeTextInput } from '@lib';
 
 interface ModalComponentProps {
   title?: string;

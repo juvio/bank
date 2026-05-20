@@ -1,0 +1,22 @@
+PR 16 READY
+===========
+
+Status: APROVADO.
+
+Objetivo
+- Cleanup final: remover arquivos legados e consolidar helpers em lib/services.
+
+Entregue
+- Cliente de API movido para src/services/api.ts.
+- Helpers genericos movidos para src/lib/.
+- Mapper de transacoes movido para features/transactions/services/.
+- Declaracao remota movida para front-types-domain/remote-app.d.ts.
+- Arquivos legados removidos de src/utils e src/types.
+
+Validacoes executadas
+- npm run lint: EXECUTADO
+- npm run build: EXECUTADO
+- npm run test -- --run: EXECUTADO
+
+Proximo passo
+- PR pronto para revisao.

@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import type { Transactions } from '@types';
-import { mapTransactionsToTransactionTypes } from './mapTransactionsToTransactionTypes';
+import { mapTransactionsToTransactionTypes } from '../transactionMapper';
 
 describe('mapTransactionsToTransactionTypes', () => {
   it('maps API transactions to the app transaction shape', () => {
