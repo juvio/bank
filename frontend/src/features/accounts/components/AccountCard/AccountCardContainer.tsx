@@ -1,6 +1,6 @@
 'use client';
 
-import { useAccountCard } from '../../hooks/useAccountCard';
+import { useAccountCard } from '@features/accounts/hooks';
 import { AccountCard } from './AccountCard';
 import type { AccountCardProps } from './types';
 

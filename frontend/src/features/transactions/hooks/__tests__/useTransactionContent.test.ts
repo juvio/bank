@@ -13,7 +13,7 @@ const mocks = vi.hoisted(() => ({
   },
 }));
 
-vi.mock('@/stores/useBankAccountStore', () => ({
+vi.mock('@stores', () => ({
   useBankAccountStore: () => ({
     ...mocks.bankState,
     fetchTransactions: mocks.fetchTransactions,

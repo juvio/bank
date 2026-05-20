@@ -8,7 +8,7 @@ import {
   NewTransactionCard,
   TransactionHistoryCard,
 } from '@features/transactions';
-import { useBankAccountStore } from '@/stores/useBankAccountStore';
+import { useBankAccountStore } from '@stores';
 
 import {
   BoxAccountCardSx,

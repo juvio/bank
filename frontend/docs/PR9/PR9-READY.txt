@@ -1,0 +1,20 @@
+PR 9 - READY
+
+Status: APROVADO
+Data: 2026-05-19
+Escopo: frontend only
+
+Objetivo entregue:
+- Implementar barrels publicos para camadas compartilhadas ainda sem index.ts.
+- Adicionar aliases bare para importar via @components, @hooks, @stores, @services, @utils e @mocks.
+- Atualizar consumidores seguros para usar barrels sem alterar comportamento.
+
+Validacoes:
+- npm run lint: passou com warnings conhecidos.
+- npm run build: passou com warnings conhecidos.
+- npm run test -- --run: passou, 25 arquivos e 79 testes.
+
+Riscos residuais:
+- Ciclo authStore -> authService -> utils/api -> authStore continua existente e deve ser tratado em PR futuro.
+- Alguns imports internos de App Router permanecem fora do escopo deste PR.
+

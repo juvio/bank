@@ -1,8 +1,8 @@
-import GraphicMFEPage from '@/components/@views/GraphicMFEClient';
+import { GraphicMFEPage } from '@components';
 import { headers } from 'next/headers';
 import { parse } from 'cookie';
 import { Box } from '@mui/material';
-import { convertMockToTransactions, mockService } from '@/services/mockService';
+import { convertMockToTransactions, mockService } from '@services';
 
 export default async function GraphicPage() {
   const USE_MOCK = process.env.NEXT_PUBLIC_USE_MOCK === 'true';

@@ -1,7 +1,7 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 import type { AnchorHTMLAttributes, PropsWithChildren } from 'react';
 import { describe, expect, it, vi } from 'vitest';
-import { TransactionCard } from '../TransactionCard/TransactionCard';
+import { TransactionCard } from '../TransactionCard';
 import type { TransactionCardViewProps } from '../TransactionCard/types';
 
 type MockLinkProps = PropsWithChildren<

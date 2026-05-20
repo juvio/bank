@@ -14,7 +14,7 @@ vi.mock('next/navigation', () => ({
   }),
 }));
 
-vi.mock('@/stores/useAuthStore', () => ({
+vi.mock('@stores', () => ({
   useAuthStore: (selector: (state: { logout: () => void }) => unknown) =>
     selector({ logout: logoutMock }),
 }));

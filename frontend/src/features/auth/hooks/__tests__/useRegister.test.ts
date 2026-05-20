@@ -11,7 +11,7 @@ vi.mock('next/navigation', () => ({
   }),
 }));
 
-vi.mock('@/stores/useAuthStore', () => ({
+vi.mock('@stores', () => ({
   useAuthStore: (selector?: (state: { register: typeof registerMock }) => unknown) => {
     const state = { register: registerMock };
     return selector ? selector(state) : state;

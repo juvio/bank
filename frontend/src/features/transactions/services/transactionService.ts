@@ -1,5 +1,5 @@
 import type { TransactionType } from '@types';
-import { api } from '@/utils/api';
+import { api } from '@utils';
 
 export type TransactionsPageResponse = {
   data: TransactionType[];

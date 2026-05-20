@@ -1,7 +1,7 @@
 'use client';
 
 import { Transactions } from '@types';
-import { getGraphicAppBaseUrl } from '@/utils/getGraphicAppBaseUrl';
+import { getGraphicAppBaseUrl } from '@utils';
 import { useEffect, useRef } from 'react';
 
 export default function GraphicMFEComponent({ data }: { data: Transactions }) {

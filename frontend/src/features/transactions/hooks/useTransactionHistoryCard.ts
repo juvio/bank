@@ -1,7 +1,6 @@
 'use client';
 
-import { formatDate } from '@/utils/date';
-import { mapTransactionsToTransactionTypes } from '@/utils/mapTransactionsToTransactionTypes';
+import { formatDate, mapTransactionsToTransactionTypes } from '@utils';
 import { TransactionMapper } from '@types';
 import type { Transactions } from '@types';
 

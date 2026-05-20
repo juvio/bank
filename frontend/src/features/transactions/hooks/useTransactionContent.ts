@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useMemo, useState } from 'react';
-import { useBankAccountStore } from '@/stores/useBankAccountStore';
+import { useBankAccountStore } from '@stores';
 import { transactionTypes } from '@types';
 import type { TransactionType } from '@types';
 

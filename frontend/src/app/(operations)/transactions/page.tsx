@@ -1,4 +1,4 @@
-import TransactionContent from '@features/transactions/components/TransactionContent';
+import { TransactionContent } from '@features/transactions';
 
 export default function TransactionPage() {
   return <TransactionContent />;
