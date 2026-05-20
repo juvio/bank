@@ -15,6 +15,9 @@ vi.mock('@utils', () => ({
     put: vi.fn(),
     delete: vi.fn(),
   },
+  sanitizeTextInput: vi.fn((value?: string) =>
+    value ? value.replace(/<[^>]*>/g, '').trim() : '',
+  ),
 }));
 
 describe('transactionService', () => {
@@ -37,7 +40,7 @@ describe('transactionService', () => {
       id: 1,
       type: 'deposit',
       amount: 100,
-      description: 'PIX recebido',
+      description: '<b>PIX recebido</b>',
       date: '2026-05-17',
     } as TransactionType;
     const response = { result: transaction };
@@ -49,6 +52,8 @@ describe('transactionService', () => {
       '/api/transactions',
       expect.any(FormData)
     );
+    const formData = vi.mocked(api.postFormData).mock.calls[0][1] as FormData;
+    expect(formData.get('description')).toBe('PIX recebido');
     expect(result).toEqual(response);
   });
 
@@ -58,7 +63,7 @@ describe('transactionService', () => {
         id: 1,
         type: 'payment',
         amount: 50,
-        description: 'Conta',
+        description: '<b>Conta</b>',
         date: '2026-05-17',
       } as TransactionType,
     };

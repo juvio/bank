@@ -1,5 +1,5 @@
 import type { TransactionType } from '@types';
-import { api } from '@utils';
+import { api, sanitizeTextInput } from '@utils';
 
 export type TransactionsPageResponse = {
   data: TransactionType[];
@@ -20,7 +20,7 @@ export async function createTransactionService(
   const formData = new FormData();
   formData.append('type', newTransaction.type);
   formData.append('amount', newTransaction.amount.toString());
-  formData.append('description', newTransaction.description || '');
+  formData.append('description', sanitizeTextInput(newTransaction.description));
   formData.append('date', newTransaction.date);
 
   if (newTransaction.attachment) {
@@ -41,7 +41,10 @@ export async function updateTransactionService(
   return api.put(`/api/transactions/${id}`, {
     type: updatedItem.type,
     amount: updatedItem.amount,
-    description: updatedItem.description,
+    description:
+      updatedItem.description === undefined
+        ? undefined
+        : sanitizeTextInput(updatedItem.description),
     date: updatedItem.date,
   });
 }

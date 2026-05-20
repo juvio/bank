@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import type React from 'react';
 import { useBankAccountStore, useModalStore } from '@stores';
-import { formatDate } from '@utils';
+import { prepareDisplayText, sanitizeTextInput, formatDate } from '@utils';
 import { TransactionMapper } from '@types';
 import {
   getTransactionAmountColor,
@@ -44,12 +44,13 @@ export function useTransactionCard({
   const formattedAmount = `${type === 'deposit' ? '+' : ''}R$ ${amount.toFixed(
     2,
   )}`;
+  const sanitizedDescription = sanitizeTextInput(description);
 
   const transactionPayload = {
     id,
     type,
     amount,
-    description,
+    description: sanitizedDescription,
     date: date ?? '',
     attachmentUrl,
     attachmentType,
@@ -77,7 +78,13 @@ export function useTransactionCard({
     setAddModal(false);
     setEditModal(false);
     setViewModal(false);
-    setTransaction({ id, type, amount, description, date: date ?? '' });
+    setTransaction({
+      id,
+      type,
+      amount,
+      description: prepareDisplayText(sanitizedDescription),
+      date: date ?? '',
+    });
     setDeleteModal(true);
   };
 

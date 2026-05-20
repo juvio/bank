@@ -1266,7 +1266,7 @@ npm run test:coverage       # Relatório de cobertura
 - [ ] HTTPS obrigatório (prod)
 - [ ] Sem PII em localStorage/sessionStorage/cookies
 - [ ] Mascarar dados sensíveis na UI (ex.: conta, CPF)
-- [ ] Sanitizar inputs (DOMPurify ou similar)
+- [x] Sanitizar inputs (DOMPurify ou similar)
 - [ ] Backend criptografa dados sensíveis em repouso
 - [ ] Não decodificar JWTs sensíveis no frontend
 - [ ] Validar CORS headers
@@ -1487,7 +1487,7 @@ node scripts/create-barrel.js src/hooks
 **Segurança**
 
 - [ ] Auth usa httpOnly cookies (não localStorage)
-- [ ] Dados sensíveis mascarados na UI
+- [x] Dados sensíveis mascarados na UI
 - [ ] Backend criptografa PII em repouso
 - [ ] HTTPS obrigatório
 - [ ] CSP headers configurados
@@ -1523,7 +1523,7 @@ node scripts/create-barrel.js src/hooks
 
 - [x] **PR 11:** Setup Bundle Analyzer + dynamic imports
 - [x] **PR 12:** Implementar auth segura (httpOnly cookies)
-- [ ] **PR 13:** Data masking + sanitização
+- [x] **PR 13:** Data masking + sanitização
 - [ ] **PR 14:** Deploy em staging, validar performance
 
 ### Fase 4: Documentation & Cleanup (2 PRs)

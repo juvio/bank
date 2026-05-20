@@ -10,7 +10,10 @@ describe('useTransactionHistoryCard', () => {
       accountId: '1',
       type: index % 2 === 0 ? 'deposit' : 'payment',
       value: index + 10,
-      from: `Transacao ${index + 1}`,
+      from:
+        index === 0
+          ? '<b>CPF 123.456.789-00 email carol@example.com</b>'
+          : `Transacao ${index + 1}`,
       date: '2026-05-18',
     }));
 
@@ -19,7 +22,7 @@ describe('useTransactionHistoryCard', () => {
     expect(result.current.recentTransactions).toHaveLength(10);
     expect(result.current.recentTransactions[0]).toMatchObject({
       id: 1,
-      description: 'Transacao 1',
+      description: 'CPF ***.***.***-** email c****@example.com',
       amount: '+R$ 10,00',
       amountColor: 'success.main',
     });

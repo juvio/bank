@@ -17,6 +17,17 @@ describe('useAccountCard', () => {
     expect(result.current.showBalance).toBe(true);
   });
 
+  it('sanitizes the account holder name before rendering the first name', () => {
+    const { result } = renderHook(() =>
+      useAccountCard({
+        accountBalance: 10,
+        accountName: '<script>alert(1)</script> Carolina Silva',
+      }),
+    );
+
+    expect(result.current.firstName).toBe('Carolina');
+  });
+
   it('toggles balance visibility', () => {
     const { result } = renderHook(() =>
       useAccountCard({

@@ -48,7 +48,7 @@ import {
   TypographyTypeSx,
 } from './styles';
 import { revalidateHome } from '@/app/actions';
-import { sanitizeFilename } from '@utils';
+import { prepareDisplayText, sanitizeFilename, sanitizeTextInput } from '@utils';
 
 interface ModalComponentProps {
   title?: string;
@@ -114,6 +114,7 @@ export default function ModalComponent({
     newTransaction.type ?? transaction.type,
     newTransaction.date ?? transaction.date,
   );
+  const displayDescription = prepareDisplayText(transaction.description);
 
   const handleDateChange = (dateValue: Dayjs | null) => {
     const dateString = dateValue ? dateValue.format('YYYY-MM-DD') : '';
@@ -148,7 +149,9 @@ export default function ModalComponent({
       const updatedData = {
         type: newTransaction.type ?? transaction.type,
         amount: newTransaction.amount ?? transaction.amount,
-        description: newTransaction.description ?? transaction.description,
+        description: sanitizeTextInput(
+          newTransaction.description ?? transaction.description,
+        ),
         date: newTransaction.date ?? transaction.date,
       };
 
@@ -309,7 +312,7 @@ export default function ModalComponent({
               onChange={(e) =>
                 setNewTransaction({
                   ...newTransaction,
-                  description: e.target.value,
+                  description: sanitizeTextInput(e.target.value),
                 })
               }
               fullWidth
@@ -430,13 +433,13 @@ export default function ModalComponent({
                     : ''}
                 </Typography>
               </Box>
-              {transaction.description && (
+              {displayDescription && (
                 <Box sx={DescriptionBoxSx}>
                   <Typography variant='body2' sx={TypographyTypeSx}>
                     Descrição:
                   </Typography>
                   <Typography variant='body2' sx={TransactionDescriptionSx}>
-                    {transaction.description}
+                    {displayDescription}
                   </Typography>
                 </Box>
               )}
@@ -514,7 +517,7 @@ export default function ModalComponent({
                     : ''}
                 </Typography>
               </Box>
-              {transaction.description && (
+              {displayDescription && (
                 <Box sx={{ mt: 2 }}>
                   <Typography variant='body2' sx={DescriptionTitleSx}>
                     Descrição:
@@ -523,7 +526,7 @@ export default function ModalComponent({
                     variant='body1'
                     sx={TransactionDescriptionTypographySx}
                   >
-                    {transaction.description}
+                    {displayDescription}
                   </Typography>
                 </Box>
               )}
