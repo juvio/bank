@@ -1,6 +1,6 @@
-﻿import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { api } from '@utils';
-import { loginService, registerService } from '../authService';
+import { loginService, logoutService, registerService } from '../authService';
 
 vi.mock('@utils', () => ({
   api: {
@@ -14,13 +14,21 @@ describe('authService', () => {
   });
 
   it('calls login endpoint with expected payload', async () => {
-    const response = { result: { token: 'jwt-token' } };
+    const response = {
+      result: {
+        user: {
+          id: '1',
+          username: 'Carol',
+          email: 'user@email.com',
+        },
+      },
+    };
     vi.mocked(api.post).mockResolvedValueOnce(response);
 
     const result = await loginService('user@email.com', '123456');
 
     expect(api.post).toHaveBeenCalledWith(
-      '/user/auth',
+      '/api/auth/login',
       { email: 'user@email.com', password: '123456' },
       { requireAuth: false }
     );
@@ -37,5 +45,17 @@ describe('authService', () => {
       { username: 'Carol', email: 'carol@email.com', password: '123456' },
       { requireAuth: false }
     );
+  });
+
+  it('calls logout endpoint without exposing the token to the client', async () => {
+    const response = { success: true };
+    vi.mocked(api.post).mockResolvedValueOnce(response);
+
+    const result = await logoutService();
+
+    expect(api.post).toHaveBeenCalledWith('/api/auth/logout', undefined, {
+      requireAuth: false,
+    });
+    expect(result).toEqual(response);
   });
 });

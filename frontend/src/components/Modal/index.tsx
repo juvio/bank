@@ -19,12 +19,10 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 import dayjs, { Dayjs } from 'dayjs';
 import AttachFileIcon from '@mui/icons-material/AttachFile';
-import {
-  AccountBalanceWallet as WalletIcon,
-  TrendingUp as DepositIcon,
-  Payment as PaymentIcon,
-  TrendingDown as WithdrawIcon,
-} from '@mui/icons-material';
+import WalletIcon from '@mui/icons-material/AccountBalanceWallet';
+import DepositIcon from '@mui/icons-material/TrendingUp';
+import PaymentIcon from '@mui/icons-material/Payment';
+import WithdrawIcon from '@mui/icons-material/TrendingDown';
 import { useRouter } from 'next/navigation';
 import { useState, ReactNode } from 'react';
 import { useTransactionValidation } from '@hooks';

@@ -12,10 +12,10 @@ import { mockData } from '@mocks';
 
 const USE_MOCK = process.env.NEXT_PUBLIC_USE_MOCK === 'true';
 const initialTransactions: TransactionType[] = USE_MOCK
-  ? mockData.transactions.map((t) => ({
+  ? (mockData.transactions.map((t) => ({
       ...t,
       id: typeof t.id === 'string' ? parseInt(t.id, 10) : t.id,
-    })) as TransactionType[]
+    })) as TransactionType[])
   : [];
 
 type AccountBankStore = {
@@ -35,7 +35,7 @@ type AccountBankStore = {
   removeTransaction: (id: number) => Promise<void>;
   editTransaction: (
     id: number,
-    updatedItem: Partial<TransactionType>
+    updatedItem: Partial<TransactionType>,
   ) => Promise<void>;
 };
 
@@ -58,7 +58,8 @@ export const useBankAccountStore = create<AccountBankStore>()(
 
         fetchBalance: async () => {
           try {
-            const data = await api.get('/account');
+            const data = await api.get('/api/account');
+            console.log('Balance data received from API:', data);
             if (data.result && typeof data.result.balance === 'number') {
               set({ balance: data.result.balance, balanceNeedsUpdate: false });
             }
@@ -90,7 +91,7 @@ export const useBankAccountStore = create<AccountBankStore>()(
 
               const existingIds = new Set(state.transactions.map((t) => t.id));
               const newTransactions = data.data.filter(
-                (t: TransactionType) => !existingIds.has(t.id)
+                (t: TransactionType) => !existingIds.has(t.id),
               );
 
               return {
@@ -136,14 +137,14 @@ export const useBankAccountStore = create<AccountBankStore>()(
 
         editTransaction: async (
           id: number,
-          updatedItem: Partial<TransactionType>
+          updatedItem: Partial<TransactionType>,
         ) => {
           try {
             const data = await updateTransactionService(id, updatedItem);
 
             set((state) => ({
               transactions: state.transactions.map((item) =>
-                item.id === id ? data.result : item
+                item.id === id ? data.result : item,
               ),
               balanceNeedsUpdate: true,
             }));
@@ -156,7 +157,7 @@ export const useBankAccountStore = create<AccountBankStore>()(
       {
         name: 'AccountStorage',
         partialize: (state) => ({ transaction: state.transaction }),
-      }
-    )
-  )
+      },
+    ),
+  ),
 );

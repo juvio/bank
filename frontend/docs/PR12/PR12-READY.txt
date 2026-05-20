@@ -1,0 +1,22 @@
+PR 12 - READY
+
+Status: APROVADO
+
+Objetivo entregue:
+- Auth segura com token armazenado em cookie httpOnly definido por rota server-side.
+
+Mudancas chave:
+- Login passa por /api/auth/login.
+- Logout passa por /api/auth/logout e expira o cookie.
+- Store de auth nao guarda token; persiste apenas dados basicos do usuario.
+- Cliente usa rotas same-origin /api/* com credentials include.
+- Proxies de transactions leem token do cookie no servidor.
+
+Validacoes:
+- npm run lint: passou com 4 warnings preexistentes/residuais.
+- npm run build: passou.
+- npm run test -- --run: passou, 31 arquivos e 86 testes.
+
+Observacoes:
+- package-lock.json ja estava modificado antes deste PR e foi preservado.
+- Nenhum arquivo em ../backend foi alterado.

@@ -1,4 +1,3 @@
-import { useAuthStore } from '@/stores/useAuthStore';
 import { mockService } from '@services';
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
@@ -71,7 +70,7 @@ const findMockHandler = (method: string, endpoint: string) => {
   for (const pattern in mockHandlers) {
     if (pattern.includes(':id')) {
       const regex = new RegExp(
-        '^' + pattern.replace(':id', '\\d+').replace(':', '') + '$'
+        '^' + pattern.replace(':id', '\\d+').replace(':', '') + '$',
       );
       const testKey = `${method}${endpointWithoutQuery}`;
       if (regex.test(testKey)) {
@@ -83,11 +82,16 @@ const findMockHandler = (method: string, endpoint: string) => {
   return null;
 };
 
+const isSameOriginEndpoint = (endpoint: string) => endpoint.startsWith('/api/');
+
+const resolveRequestUrl = (endpoint: string) =>
+  isSameOriginEndpoint(endpoint) ? endpoint : `${API_URL}${endpoint}`;
+
 export const apiClient = async <T = any>(
   endpoint: string,
-  options: RequestOptions = {}
+  options: RequestOptions = {},
 ): Promise<T> => {
-  const { method = 'GET', body, headers = {}, requireAuth = true } = options;
+  const { method = 'GET', body, headers = {} } = options;
 
   if (USE_MOCK) {
     console.log(`🎭 Mock Mode: ${method} ${endpoint}`);
@@ -105,14 +109,11 @@ export const apiClient = async <T = any>(
     console.warn(`⚠️ Mock não encontrado para: ${method} ${endpoint}`);
   }
 
-  // Chamada real para o backend
-  const token = useAuthStore.getState().token;
-
   const config: RequestInit = {
     method,
+    credentials: isSameOriginEndpoint(endpoint) ? 'include' : undefined,
     headers: {
       'Content-Type': 'application/json',
-      ...(requireAuth && token ? { Authorization: `Bearer ${token}` } : {}),
       ...headers,
     },
   };
@@ -121,12 +122,12 @@ export const apiClient = async <T = any>(
     config.body = JSON.stringify(body);
   }
 
-  const response = await fetch(`${API_URL}${endpoint}`, config);
+  const response = await fetch(resolveRequestUrl(endpoint), config);
 
   if (!response.ok) {
     const error = await response.json().catch(() => ({}));
     throw new Error(
-      error.message || `Erro na requisição: ${response.statusText}`
+      error.message || `Erro na requisição: ${response.statusText}`,
     );
   }
 
@@ -140,12 +141,12 @@ export const api = {
   post: <T = any>(
     endpoint: string,
     body?: any,
-    options?: Omit<RequestOptions, 'method' | 'body'>
+    options?: Omit<RequestOptions, 'method' | 'body'>,
   ) => apiClient<T>(endpoint, { ...options, body, method: 'POST' }),
 
   postFormData: async <T = any>(
     endpoint: string,
-    formData: FormData
+    formData: FormData,
   ): Promise<T> => {
     // Se estiver usando mock, intercepta FormData
     if (USE_MOCK) {
@@ -164,21 +165,16 @@ export const api = {
       console.warn(`⚠️ Mock não encontrado para: POST ${endpoint}`);
     }
 
-    // Chamada real para o backend
-    const token = useAuthStore.getState().token;
-
-    const response = await fetch(`${API_URL}${endpoint}`, {
+    const response = await fetch(resolveRequestUrl(endpoint), {
       method: 'POST',
-      headers: {
-        ...(token ? { Authorization: `Bearer ${token}` } : {}),
-      },
+      credentials: isSameOriginEndpoint(endpoint) ? 'include' : undefined,
       body: formData,
     });
 
     if (!response.ok) {
       const error = await response.json().catch(() => ({}));
       throw new Error(
-        error.message || `Erro na requisição: ${response.statusText}`
+        error.message || `Erro na requisição: ${response.statusText}`,
       );
     }
 
@@ -188,11 +184,11 @@ export const api = {
   put: <T = any>(
     endpoint: string,
     body?: any,
-    options?: Omit<RequestOptions, 'method' | 'body'>
+    options?: Omit<RequestOptions, 'method' | 'body'>,
   ) => apiClient<T>(endpoint, { ...options, body, method: 'PUT' }),
 
   delete: <T = any>(
     endpoint: string,
-    options?: Omit<RequestOptions, 'method'>
+    options?: Omit<RequestOptions, 'method'>,
   ) => apiClient<T>(endpoint, { ...options, method: 'DELETE' }),
 };
