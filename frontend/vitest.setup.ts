@@ -28,6 +28,13 @@ vi.mock('next/navigation', () => ({
   useSearchParams: () => new URLSearchParams(),
 }));
 
+// Mock next/font/google so components depending on layout fonts can render
+vi.mock('next/font/google', () => ({
+  Inter: () => ({
+    style: { fontFamily: 'Inter' },
+  }),
+}));
+
 // Setup for window.matchMedia (used by MUI and responsive components)
 Object.defineProperty(window, 'matchMedia', {
   writable: true,
