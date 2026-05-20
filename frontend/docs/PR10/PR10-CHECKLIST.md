@@ -7,6 +7,6 @@
 - [x] `npm run lint` executado.
 - [x] `npm run build` executado.
 - [x] `npm run test -- --run` executado.
-- [ ] `npm run test:coverage` executado.
+- [x] `npm run test:coverage` executado.
 - [x] Documentacao obrigatoria criada em `docs/PR10`.
 - [x] Nenhum arquivo em `backend` alterado.
