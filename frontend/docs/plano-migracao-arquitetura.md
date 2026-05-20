@@ -1522,7 +1522,7 @@ node scripts/create-barrel.js src/hooks
 ### Fase 3: Performance & Security (3-4 PRs)
 
 - [x] **PR 11:** Setup Bundle Analyzer + dynamic imports
-- [ ] **PR 12:** Implementar auth segura (httpOnly cookies)
+- [x] **PR 12:** Implementar auth segura (httpOnly cookies)
 - [ ] **PR 13:** Data masking + sanitização
 - [ ] **PR 14:** Deploy em staging, validar performance
 
