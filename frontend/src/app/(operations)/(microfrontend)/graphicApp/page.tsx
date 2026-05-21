@@ -1,13 +1,17 @@
 import { headers } from 'next/headers';
 import dynamic from 'next/dynamic';
 import { parse } from 'cookie';
-import { Box } from '@mui/material';
+import { Box, CircularProgress } from '@mui/material';
 import { convertMockToTransactions, mockService } from '@services';
 
 const GraphicMFEPage = dynamic(
   () => import('@components/@views/GraphicMFEClient'),
   {
-    loading: () => <div>Carregando...</div>,
+    loading: () => (
+      <Box sx={{ display: 'flex', justifyContent: 'center', py: 4 }}>
+        <CircularProgress size={28} />
+      </Box>
+    ),
   }
 );
 

@@ -1,11 +1,16 @@
 import { headers } from 'next/headers';
 import dynamic from 'next/dynamic';
 import { parse } from 'cookie';
+import { Box, CircularProgress } from '@mui/material';
 import { Transactions } from '@types';
 import { convertMockToTransactions, mockService } from '@services';
 
 const HomePageComponent = dynamic(() => import('@components/HomePageComponent'), {
-  loading: () => <div>Carregando...</div>,
+  loading: () => (
+    <Box sx={{ display: 'flex', justifyContent: 'center', py: 4 }}>
+      <CircularProgress size={28} />
+    </Box>
+  ),
 });
 
 export default async function HomePage() {

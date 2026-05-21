@@ -2,7 +2,7 @@
 
 import { useEffect } from 'react';
 import dynamic from 'next/dynamic';
-import { Box, Card, Container } from '@mui/material';
+import { Box, Card, CircularProgress, Container } from '@mui/material';
 
 import { AccountCard } from '@features/accounts';
 import {
@@ -24,7 +24,11 @@ import Link from 'next/link';
 
 const GraphicMFEPage = dynamic(() => import('../@views/GraphicMFEClient'), {
   ssr: false,
-  loading: () => <div>Carregando...</div>,
+  loading: () => (
+    <Box sx={{ display: 'flex', justifyContent: 'center', py: 4 }}>
+      <CircularProgress size={28} />
+    </Box>
+  ),
 });
 
 export default function HomePage({
