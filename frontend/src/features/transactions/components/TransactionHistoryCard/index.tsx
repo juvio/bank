@@ -1,0 +1,109 @@
+'use client';
+
+import {
+  Card,
+  CardContent,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Typography,
+} from '@mui/material';
+import { useTransactionHistoryCard } from '@features/transactions/hooks';
+import type { Transactions } from '@types';
+import { CardContentSx, CardWrapperSx } from './styles';
+
+interface Props {
+  transactions: Transactions;
+}
+
+export default function TransactionHistoryCard({
+  transactions: propTransactions,
+}: Props) {
+  const { recentTransactions } = useTransactionHistoryCard(propTransactions);
+
+  return (
+    <Card
+      sx={CardWrapperSx}
+      role='region'
+      aria-labelledby='transaction-history-title'
+    >
+      <CardContent sx={CardContentSx}>
+        <Typography
+          variant='h6'
+          component='h2'
+          gutterBottom
+          id='transaction-history-title'
+          sx={{ flexShrink: 0 }}
+        >
+          Histórico de Transações
+        </Typography>
+        <TableContainer
+          sx={{
+            overflowX: 'hidden',
+            overflowY: 'auto',
+            flex: 1,
+            '&::-webkit-scrollbar': {
+              width: '8px',
+            },
+            '&::-webkit-scrollbar-track': {
+              backgroundColor: 'background.default',
+              borderRadius: '4px',
+            },
+            '&::-webkit-scrollbar-thumb': {
+              backgroundColor: '#cecece',
+              borderRadius: '4px',
+            },
+          }}
+        >
+          <Table aria-label='Tabela de histórico de transações'>
+            <caption style={{ position: 'absolute', left: '-10000px' }}>
+              Lista das últimas 10 transações, incluindo data, tipo, descrição e
+              valor.
+            </caption>
+            <TableHead>
+              <TableRow>
+                <TableCell id='transaction-date-header'>Data</TableCell>
+                <TableCell>Tipo</TableCell>
+                <TableCell>Descrição</TableCell>
+                <TableCell align='right'>Valor</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {recentTransactions.length > 0 ? (
+                recentTransactions.map((transaction, index) => (
+                  <TableRow key={`history-${transaction.id}-${index}`}>
+                    <TableCell>{transaction.date}</TableCell>
+                    <TableCell>{transaction.type}</TableCell>
+                    <TableCell>{transaction.description}</TableCell>
+                    <TableCell
+                      align='right'
+                      sx={{
+                        color: transaction.amountColor,
+                        fontWeight: 'medium',
+                      }}
+                    >
+                      {transaction.amount}
+                    </TableCell>
+                  </TableRow>
+                ))
+              ) : (
+                <TableRow>
+                  <TableCell
+                    colSpan={4}
+                    align='center'
+                    sx={{ py: 4, color: 'text.secondary' }}
+                  >
+                    Nenhuma transação encontrada
+                  </TableCell>
+                </TableRow>
+              )}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </CardContent>
+    </Card>
+  );
+}

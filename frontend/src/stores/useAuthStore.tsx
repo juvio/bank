@@ -1,70 +1,52 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import { api } from '@/utils/api';
+import {
+  loginService,
+  logoutService,
+  registerService,
+} from '@features/auth/services';
+
+type AuthUser = {
+  id: string;
+  username: string;
+  email: string;
+};
 
 type AuthStore = {
-  token: string | null;
-  user: {
-    id: string;
-    username: string;
-    email: string;
-  } | null;
-  login: (email: string, password: string) => Promise<string>;
+  user: AuthUser | null;
+  login: (email: string, password: string) => Promise<void>;
   register: (
     username: string,
     email: string,
     password: string
   ) => Promise<void>;
-  logout: () => void;
+  logout: () => Promise<void>;
   isAuthenticated: () => boolean;
 };
+
+const formatUsername = (username: string) =>
+  username
+    .split(' ')
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+    .join(' ');
 
 export const useAuthStore = create<AuthStore>()(
   persist(
     (set, get) => ({
-      token: null,
       user: null,
 
       login: async (email: string, password: string) => {
         try {
-          const data = await api.post(
-            '/user/auth',
-            { email, password },
-            { requireAuth: false }
-          );
-
-          const token = data.result.token;
-
-          const payload = JSON.parse(atob(token.split('.')[1]));
-
-          const formattedUsername = payload.username
-            .split(' ')
-            .map(
-              (word: string) =>
-                word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
-            )
-            .join(' ');
+          const data = await loginService(email, password);
+          const user = data.result.user;
 
           set({
-            token,
             user: {
-              id: payload.id,
-              username: formattedUsername,
-              email: payload.email,
+              id: user.id,
+              username: formatUsername(user.username),
+              email: user.email,
             },
           });
-          // Salva token nos cookies para ser acessível para as rotas server side
-          if (typeof document !== 'undefined') {
-            const expires = payload.exp
-              ? `; expires=${new Date(payload.exp * 1000).toUTCString()}`
-              : '';
-            document.cookie =
-              `token=${encodeURIComponent(token)}; path=/` +
-              expires +
-              `; Secure; SameSite=Strict`;
-          }
-
-          return token;
         } catch (error) {
           console.error('Erro no login:', error);
           throw error;
@@ -73,27 +55,28 @@ export const useAuthStore = create<AuthStore>()(
 
       register: async (username: string, email: string, password: string) => {
         try {
-          await api.post(
-            '/user',
-            { username, email, password },
-            { requireAuth: false }
-          );
+          await registerService(username, email, password);
         } catch (error) {
           console.error('Erro no registro:', error);
           throw error;
         }
       },
 
-      logout: () => {
-        set({ token: null, user: null });
+      logout: async () => {
+        try {
+          await logoutService();
+        } finally {
+          set({ user: null });
+        }
       },
 
       isAuthenticated: () => {
-        return !!get().token;
+        return !!get().user;
       },
     }),
     {
       name: 'AuthStorage',
+      partialize: (state) => ({ user: state.user }),
     }
   )
 );

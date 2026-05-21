@@ -1,11 +1,12 @@
 'use client';
 
-import AccountMenu, {
+import {
+  AccountMenu,
   AccountMenuAction,
   AccountMenuNavItem,
-} from '@/components/AccountMenu';
-import mock from '@/mocks/mock.json';
-import { useAuthStore } from '@/stores/useAuthStore';
+} from '@features/accounts';
+import { mockData } from '@mocks';
+import { useAuthStore } from '@stores';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 
@@ -30,11 +31,11 @@ export default function CustomerLayout({
   }
 
   const navItems: AccountMenuNavItem[] = (
-    mock as unknown as { navItems: AccountMenuNavItem[] }
+    mockData as unknown as { navItems: AccountMenuNavItem[] }
   ).navItems;
 
   const menuItems: AccountMenuAction[] = (
-    mock as unknown as { menuItems: AccountMenuAction[] }
+    mockData as unknown as { menuItems: AccountMenuAction[] }
   ).menuItems;
 
   const initials = user?.username

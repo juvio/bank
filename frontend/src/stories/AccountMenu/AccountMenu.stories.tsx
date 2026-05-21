@@ -1,7 +1,7 @@
 import React from "react";
 import { Meta, StoryObj } from "@storybook/nextjs-vite";
-import AccountMenu from "@/components/AccountMenu";
-import ClientThemeProvider from "@/components/ClientThemeProvider";
+import { AccountMenu } from "@features/accounts";
+import { ClientThemeProvider } from '@components';
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import SettingsIcon from "@mui/icons-material/Settings";
 import LogoutIcon from "@mui/icons-material/Logout";

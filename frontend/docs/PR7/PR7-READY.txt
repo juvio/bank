@@ -1,0 +1,26 @@
+PR7 - READY CHECK
+
+Status: APROVADO
+
+Objetivo:
+- Refatorar TransactionCard para Container/Presentational + hook co-localizado.
+
+Entregue:
+- TransactionCard.tsx criado como componente presentational.
+- TransactionCardContainer.tsx criado para conectar hook e UI.
+- useTransactionCard.ts movido para o modulo do componente.
+- types.ts criado para props publicas e props da view.
+- Export antigo em features/transactions/hooks mantido como compatibilidade.
+- Teste da UI atualizado sem mock do hook.
+- Teste do container criado com mock do hook.
+- Teste do hook apontado para o novo caminho co-localizado.
+- Roadmap do plano marcado como PR7 concluido.
+
+Validacoes:
+- npm run lint: passou com 2 warnings preexistentes fora de transactions.
+- npm run build: passou com os mesmos 2 warnings preexistentes.
+- npm run test -- --run: passou, 23 arquivos e 76 testes.
+
+Restricoes respeitadas:
+- Apenas frontend foi alterado.
+- Backend nao foi alterado.

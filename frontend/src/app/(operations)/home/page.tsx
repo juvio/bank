@@ -1,8 +1,17 @@
 import { headers } from 'next/headers';
-import HomePageComponent from '@/components/HomePageComponent';
+import dynamic from 'next/dynamic';
 import { parse } from 'cookie';
-import { Transactions } from '@/types';
-import { convertMockToTransactions, mockService } from '@/services/mockService';
+import { Box, CircularProgress } from '@mui/material';
+import { Transactions } from '@types';
+import { convertMockToTransactions, mockService } from '@services';
+
+const HomePageComponent = dynamic(() => import('@components/HomePageComponent'), {
+  loading: () => (
+    <Box sx={{ display: 'flex', justifyContent: 'center', py: 4 }}>
+      <CircularProgress size={28} />
+    </Box>
+  ),
+});
 
 export default async function HomePage() {
   const USE_MOCK = process.env.NEXT_PUBLIC_USE_MOCK === 'true';

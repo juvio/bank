@@ -1,7 +1,7 @@
 'use client';
 
-import { Transactions } from '@/types';
-import { getGraphicAppBaseUrl } from '@/utils/getGraphicAppBaseUrl';
+import { Transactions } from '@types';
+import { getGraphicAppBaseUrl } from '@lib';
 import { useEffect, useRef } from 'react';
 
 export default function GraphicMFEComponent({ data }: { data: Transactions }) {
@@ -34,7 +34,7 @@ export default function GraphicMFEComponent({ data }: { data: Transactions }) {
       cleanup?.();
       document.body.removeChild(script);
     };
-  }, []);
+  }, [data]);
 
   return <div ref={ref} />;
 }

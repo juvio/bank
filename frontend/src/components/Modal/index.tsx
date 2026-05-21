@@ -1,8 +1,7 @@
 'use client';
 
-import { useBankAccountStore } from '@/stores/useBankAccountStore';
-import { useModalStore } from '@/stores/useModalStore';
-import { transactionTypes } from '@/types';
+import { useBankAccountStore, useModalStore } from '@stores';
+import { transactionTypes } from '@types';
 import {
   Button,
   Dialog,
@@ -20,15 +19,13 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 import dayjs, { Dayjs } from 'dayjs';
 import AttachFileIcon from '@mui/icons-material/AttachFile';
-import {
-  AccountBalanceWallet as WalletIcon,
-  TrendingUp as DepositIcon,
-  Payment as PaymentIcon,
-  TrendingDown as WithdrawIcon,
-} from '@mui/icons-material';
+import WalletIcon from '@mui/icons-material/AccountBalanceWallet';
+import DepositIcon from '@mui/icons-material/TrendingUp';
+import PaymentIcon from '@mui/icons-material/Payment';
+import WithdrawIcon from '@mui/icons-material/TrendingDown';
 import { useRouter } from 'next/navigation';
 import { useState, ReactNode } from 'react';
-import { useTransactionValidation } from '@/hooks/useTransactionValidation';
+import { useTransactionValidation } from '@hooks';
 import {
   BoxWrapperRemoveSx,
   ButtonCancelTextSx,
@@ -50,8 +47,8 @@ import {
   TypographyTypeOptionsSx,
   TypographyTypeSx,
 } from './styles';
-import { revalidateHome } from '@/app/actions';
-import { sanitizeFilename } from '@/utils/sanitizedFilename';
+import { revalidateHome } from '@core/config';
+import { prepareDisplayText, sanitizeFilename, sanitizeTextInput } from '@lib';
 
 interface ModalComponentProps {
   title?: string;
@@ -117,6 +114,7 @@ export default function ModalComponent({
     newTransaction.type ?? transaction.type,
     newTransaction.date ?? transaction.date,
   );
+  const displayDescription = prepareDisplayText(transaction.description);
 
   const handleDateChange = (dateValue: Dayjs | null) => {
     const dateString = dateValue ? dateValue.format('YYYY-MM-DD') : '';
@@ -151,7 +149,9 @@ export default function ModalComponent({
       const updatedData = {
         type: newTransaction.type ?? transaction.type,
         amount: newTransaction.amount ?? transaction.amount,
-        description: newTransaction.description ?? transaction.description,
+        description: sanitizeTextInput(
+          newTransaction.description ?? transaction.description,
+        ),
         date: newTransaction.date ?? transaction.date,
       };
 
@@ -312,7 +312,7 @@ export default function ModalComponent({
               onChange={(e) =>
                 setNewTransaction({
                   ...newTransaction,
-                  description: e.target.value,
+                  description: sanitizeTextInput(e.target.value),
                 })
               }
               fullWidth
@@ -433,13 +433,13 @@ export default function ModalComponent({
                     : ''}
                 </Typography>
               </Box>
-              {transaction.description && (
+              {displayDescription && (
                 <Box sx={DescriptionBoxSx}>
                   <Typography variant='body2' sx={TypographyTypeSx}>
                     Descrição:
                   </Typography>
                   <Typography variant='body2' sx={TransactionDescriptionSx}>
-                    {transaction.description}
+                    {displayDescription}
                   </Typography>
                 </Box>
               )}
@@ -517,7 +517,7 @@ export default function ModalComponent({
                     : ''}
                 </Typography>
               </Box>
-              {transaction.description && (
+              {displayDescription && (
                 <Box sx={{ mt: 2 }}>
                   <Typography variant='body2' sx={DescriptionTitleSx}>
                     Descrição:
@@ -526,7 +526,7 @@ export default function ModalComponent({
                     variant='body1'
                     sx={TransactionDescriptionTypographySx}
                   >
-                    {transaction.description}
+                    {displayDescription}
                   </Typography>
                 </Box>
               )}

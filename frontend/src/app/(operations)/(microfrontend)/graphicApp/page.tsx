@@ -1,8 +1,19 @@
-import GraphicMFEPage from '@/components/@views/GraphicMFEClient';
 import { headers } from 'next/headers';
+import dynamic from 'next/dynamic';
 import { parse } from 'cookie';
-import { Box } from '@mui/material';
-import { convertMockToTransactions, mockService } from '@/services/mockService';
+import { Box, CircularProgress } from '@mui/material';
+import { convertMockToTransactions, mockService } from '@services';
+
+const GraphicMFEPage = dynamic(
+  () => import('@components/@views/GraphicMFEClient'),
+  {
+    loading: () => (
+      <Box sx={{ display: 'flex', justifyContent: 'center', py: 4 }}>
+        <CircularProgress size={28} />
+      </Box>
+    ),
+  }
+);
 
 export default async function GraphicPage() {
   const USE_MOCK = process.env.NEXT_PUBLIC_USE_MOCK === 'true';

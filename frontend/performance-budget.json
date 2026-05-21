@@ -1,0 +1,29 @@
+{
+  "description": "PR14 staging performance budgets. Values use PR11 analyzer evidence plus the planned 5% ceiling.",
+  "sharedMaxFirstLoadJsKb": 300,
+  "routes": [
+    {
+      "route": "/",
+      "manifestKeys": ["/page", "/"],
+      "maxFirstLoadJsKb": 250
+    },
+    {
+      "route": "/home",
+      "manifestKeys": ["/(operations)/home/page", "/home"],
+      "maxFirstLoadJsKb": 286
+    },
+    {
+      "route": "/transactions",
+      "manifestKeys": ["/(operations)/transactions/page", "/transactions"],
+      "maxFirstLoadJsKb": 109
+    },
+    {
+      "route": "/graphicApp",
+      "manifestKeys": [
+        "/(operations)/(microfrontend)/graphicApp/page",
+        "/graphicApp"
+      ],
+      "maxFirstLoadJsKb": 136
+    }
+  ]
+}

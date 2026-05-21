@@ -1,6 +1,6 @@
 'use client';
 
-import { inter } from '@/app/layout';
+import { inter } from '@core/config';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 
 const theme = createTheme({

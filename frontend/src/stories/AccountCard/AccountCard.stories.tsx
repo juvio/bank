@@ -1,7 +1,7 @@
 import React from "react";
 import { Meta, StoryObj } from "@storybook/nextjs-vite";
-import AccountCard from "@/components/AccountCard";
-import ClientThemeProvider from "@/components/ClientThemeProvider";
+import { AccountCard } from "@features/accounts";
+import { ClientThemeProvider } from '@components';
 
 const meta: Meta<typeof AccountCard> = {
   title: "AccountCard/AccountCard",

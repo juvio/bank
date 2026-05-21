@@ -1,0 +1,19 @@
+PR4 - Migrar auth para features/auth
+
+Status: APROVADO
+
+Entregue:
+- Componentes de auth movidos para src/features/auth/components.
+- Logica de login e registro extraida para src/features/auth/hooks.
+- API calls de auth centralizadas em src/features/auth/services/authService.ts.
+- Barrels de auth atualizados (components/hooks/services/feature root).
+- Rotas app/login e app/register atualizadas para consumir @features/auth.
+- useAuthStore mantido global, consumindo services da feature auth.
+- Componentes legados removidos de src/components/LoginCard e src/components/RegisterCard.
+
+Validacao:
+- lint: passou (4 warnings pre-existentes fora do escopo da PR4).
+- build: passou.
+- tests: passou (2 files, 16 tests).
+- git diff --name-only: executado.
+- backend: sem alteracoes.

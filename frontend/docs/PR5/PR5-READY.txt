@@ -1,0 +1,22 @@
+PR5 - Migrar transactions para features/transactions
+
+Status: PENDENTE
+
+Entregue:
+- Componentes de transactions movidos para src/features/transactions/components.
+- API calls de transactions centralizadas em src/features/transactions/services/transactionService.ts.
+- useBankAccountStore mantido global, consumindo services da feature transactions.
+- Barrels de transactions atualizados (components/services/feature root).
+- Rota app/(operations)/transactions atualizada para consumir @features/transactions.
+- HomePageComponent e Storybook atualizados para consumir a API publica da feature.
+- Testes co-localizados criados para transactionService.
+
+Validacao:
+- lint: nao executado, node/npm indisponiveis no ambiente.
+- build: nao executado, node/npm indisponiveis no ambiente.
+- tests: nao executado, node/npm indisponiveis no ambiente.
+- git diff --name-only: executado.
+- backend: sem alteracoes identificadas no diff.
+
+Risco residual:
+- Gate tecnico precisa ser executado em ambiente com Node.js disponivel antes do merge.

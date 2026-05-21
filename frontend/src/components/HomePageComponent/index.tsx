@@ -1,12 +1,15 @@
 'use client';
 
 import { useEffect } from 'react';
-import { Box, Card, Container } from '@mui/material';
+import dynamic from 'next/dynamic';
+import { Box, Card, CircularProgress, Container } from '@mui/material';
 
-import AccountCard from '@/components/AccountCard';
-import NewTransactionCard from '@/components/NewTransactionCard';
-import TransactionHistoryCard from '@/components/TransactionHistoryCard';
-import { useBankAccountStore } from '@/stores/useBankAccountStore';
+import { AccountCard } from '@features/accounts';
+import {
+  NewTransactionCard,
+  TransactionHistoryCard,
+} from '@features/transactions';
+import { useBankAccountStore } from '@stores';
 
 import {
   BoxAccountCardSx,
@@ -17,8 +20,16 @@ import {
   ContainerSx,
 } from './styles';
 import { HomePageComponentProps } from './types';
-import GraphicMFEPage from '../@views/GraphicMFEClient';
 import Link from 'next/link';
+
+const GraphicMFEPage = dynamic(() => import('../@views/GraphicMFEClient'), {
+  ssr: false,
+  loading: () => (
+    <Box sx={{ display: 'flex', justifyContent: 'center', py: 4 }}>
+      <CircularProgress size={28} />
+    </Box>
+  ),
+});
 
 export default function HomePage({
   transactions,

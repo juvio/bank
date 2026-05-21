@@ -1,0 +1,25 @@
+PR 15 READY
+===========
+
+Status: APROVADO.
+
+Objetivo
+- Atualizar a documentacao principal do frontend com o novo padrao de arquitetura.
+
+Entregue
+- README operacional criado em frontend/README.md.
+- Roadmap do plano marcou PR 15 como concluido.
+- Pacote documental obrigatorio criado em docs/PR15.
+
+Escopo preservado
+- Nenhuma alteracao em runtime.
+- Nenhuma alteracao em backend.
+- Nenhuma migracao de modulo/feature.
+
+Validacoes executadas
+- npm run lint: passou com 4 warnings conhecidos
+- npm run build: passou com os mesmos 4 warnings de lint
+- npm run test -- --run: passou, 33 arquivos e 98 testes
+
+Proximo PR
+- PR 16: cleanup de arquivos antigos e validacao final.
