@@ -12,13 +12,21 @@ type RequestOptions = {
 
 // Mapeamento de endpoints para funcoes mock
 const mockHandlers: Record<string, any> = {
-  'POST:/user/auth': ({ body }: { body: any }) =>
-    mockService.login(body.email, body.password),
+  'POST:/api/auth/login': async ({ body }: { body: any }) => {
+    await mockService.login(body.email, body.password);
+    const account = await mockService.getAccount();
 
-  'POST:/user': ({ body }: { body: any }) =>
+    return {
+      result: {
+        user: account.result.user,
+      },
+    };
+  },
+
+  'POST:/api/user': ({ body }: { body: any }) =>
     mockService.register(body.username, body.email),
 
-  'GET:/account': () => mockService.getAccount(),
+  'GET:/api/account': () => mockService.getAccount(),
 
   'GET:/api/transactions': ({ endpoint }: { endpoint: string }) => {
     const url = new URL(`http://dummy${endpoint}`);

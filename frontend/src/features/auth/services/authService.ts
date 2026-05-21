@@ -28,7 +28,7 @@ export const registerService = async (
   email: string,
   password: string
 ): Promise<void> => {
-  await api.post('/user', { username, email, password }, { requireAuth: false });
+  await api.post('/api/user', { username, email, password }, { requireAuth: false });
 };
 
 export const logoutService = async (): Promise<LogoutApiResponse> => {

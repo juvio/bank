@@ -41,7 +41,7 @@ describe('authService', () => {
     await registerService('Carol', 'carol@email.com', '123456');
 
     expect(api.post).toHaveBeenCalledWith(
-      '/user',
+      '/api/user',
       { username: 'Carol', email: 'carol@email.com', password: '123456' },
       { requireAuth: false }
     );
